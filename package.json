@@ -1,0 +1,20 @@
+{
+    "name": "kd-monster",
+    "version": "1.0.0",
+    "description": "A Campaign Manager for Kingdom Death: Monster",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": "https://github.com/ItsGameNight/kd-monster",
+    "keywords": [
+        "Electron",
+        "Kingdom Death",
+        "Monster"
+    ],
+    "author": "Alex Karle, Makenzie Schwartz",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^1.8.4"
+    }
+}
