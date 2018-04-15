@@ -16,7 +16,12 @@ module.exports = function(params) {
 
     // Get all survivors in database
     exports.getAll = function (cb) {
-        db.find({}, (err, docs) => {
+        exports.getMatching({}, cb)
+    }
+
+    // Get survivors that match criteria
+    exports.getMatching = function (criteria, cb) {
+        db.find(criteria, (err, docs) => {
             if (err) {
                 throw (err)
             }
@@ -25,6 +30,42 @@ module.exports = function(params) {
                 cb(docs)
             }
         })
+    }
+
+    // Get all survivors sorted by field(s)
+    exports.getAllSortedBy = function (sortCriteria, cb) {
+        exports.getMatchingSortedBy({}, sortCriteria, cb)
+    }
+
+   // Get survivors that match criteria sorted by sort criteria
+    exports.getMatchingSortedBy = function (criteria, sortCriteria, cb) {
+        db.find(criteria).sort(sortCriteria).exec((err, docs) => {
+            if (err) {
+                throw (err)
+            }
+
+            if (cb && typeof cb === "function") {
+                cb(docs)
+            }
+        })
+    }
+
+    // Get count of survivors matching criteria
+    exports.countMatching = function (criteria, cb) {
+        db.count(criteria, (err, count) => {
+            if (err) {
+                throw (err)
+            }
+
+            if (cb && typeof cb === "function") {
+                cb(count)
+            }
+        })
+    }
+
+    // Get count of all survivors
+    exports.count = function (cb) {
+        exports.countMatching({}, cb)
     }
 
     // Add a survivor
