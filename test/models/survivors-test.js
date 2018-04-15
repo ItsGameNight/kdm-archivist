@@ -39,6 +39,7 @@ describe('Survivors', () => {
                 name: 'Testy',
                 sex: 'm',
                 survival: 1,
+                insanity: 0,
                 movement: 5,
                 accuracy: 0,
                 strength: 0,
@@ -58,6 +59,19 @@ describe('Survivors', () => {
             survivors.countMatching('testID', { luck: 2 }, (count) => {
                 if (count == 1) done()
                 else done(new Error())
+            })
+        })
+    })
+
+    describe('update()', function() {
+        it('should update Testy to have 3 insanity', function(done) {
+            survivors.getMatching('testID', { name: 'Testy' }, (docs) => {
+                survivors.update(docs[0]._id, { insanity: 3 }, () => {
+                    survivors.getMatching('testID', { name: 'Testy' }, (docs) => {
+                        if (docs[0].name === 'Testy' && docs[0].insanity === 3) done()
+                        else done(new Error())
+                    })
+                })
             })
         })
     })

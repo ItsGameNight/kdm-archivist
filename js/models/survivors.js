@@ -123,8 +123,21 @@ module.exports = function(params) {
         exports.add(smtID, baseSurvivor, cb)
     }
 
+    // Update a survivor based on id
+    exports.update = function (survID, updates, cb) {
+        db.update({ _id: survID }, { $set: updates }, {}, (err, numUp, upDocs, upsert) => {
+            if (err) {
+                throw (err)
+            }
+
+            if (cb && typeof cb === "function") {
+                cb(upDocs)
+            }
+        })
+    }
+
     // THIS IS ONLY FOR TEST PURPOSES
-    // Delete entire settlement db
+    // Delete entire db
     exports.dropAll = function() {
         db.remove({ }, { multi: true }, (err, numRem) => {
             db.loadDatabase((err) => {
