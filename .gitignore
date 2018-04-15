@@ -1,13 +1,27 @@
-.DS_Store
+# electron-vue
 dist/electron/*
 dist/web/*
 build/*
 !build/icons
+
+# node
 node_modules/
 npm-debug.log
 npm-debug.log.*
-thumbs.db
-!.gitkeep
-.env
 .npm
+
+# git
+!.gitkeep
+
+# vim swap files
 *.swp
+
+# file system junk
+.DS_Store
+thumbs.db
+
+# environment variables
+.env
+
+# Test data
+test_data
