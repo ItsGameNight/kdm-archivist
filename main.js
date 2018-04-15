@@ -10,13 +10,6 @@ const url = require('url')
 // Load survivors database
 const survivors = require('./js/models/survivors')({ dataDir: 'test_data/' })
 
-// Print all survivors in db to console
-survivors.getAll(console.log)
-// Test add a survivor
-survivors.addBaseSurvivor()
-// Print survivors again--should include newly added one
-survivors.getAll(console.log)
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
