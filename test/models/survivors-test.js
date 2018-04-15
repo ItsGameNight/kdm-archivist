@@ -8,7 +8,7 @@ describe('Survivors', () => {
 
     describe('getAll()', () => {
         it('should return [] since no survivors have been added', (done) => {
-            survivors.getAll((docs) => {
+            survivors.getAll('testID', (docs) => {
                 if (docs.length == 0) done()
                 else done(new Error())
             })
@@ -17,7 +17,7 @@ describe('Survivors', () => {
 
     describe('addBaseSurvivor()', () => {
         it('should insert new survivor with baseline stats into db', (done) => {
-            survivors.addBaseSurvivor((newDoc) => {
+            survivors.addBaseSurvivor('testID', (newDoc) => {
                 if (newDoc.name == null && newDoc.xp == 0) done()
                 else done(new Error())
             })
@@ -26,7 +26,7 @@ describe('Survivors', () => {
 
     describe('count()', () => {
         it('should be equal to one', (done) => {
-            survivors.count((count) => {
+            survivors.count('testID', (count) => {
                 if (count == 1) done()
                 else done(new Error())
             })
@@ -46,7 +46,7 @@ describe('Survivors', () => {
                 luck: 2,
                 speed: 0
             }
-            survivors.add(testSurvivor, (newDoc) => {
+            survivors.add('testID', testSurvivor, (newDoc) => {
                 if (newDoc.name === 'Testy') done()
                 else done(new Error())
             })
@@ -55,7 +55,7 @@ describe('Survivors', () => {
 
     describe('countMatching()', function() {
         it('should return one matching test survivor', function(done) {
-            survivors.countMatching({ luck: 2 }, (count) => {
+            survivors.countMatching('testID', { luck: 2 }, (count) => {
                 if (count == 1) done()
                 else done(new Error())
             })

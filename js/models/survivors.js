@@ -15,12 +15,13 @@ module.exports = function(params) {
     db = new datastore({ filename: params.dataDir + 'survivors', autoload: true })
 
     // Get all survivors in database
-    exports.getAll = function (cb) {
-        exports.getMatching({}, cb)
+    exports.getAll = function (smtID, cb) {
+        exports.getMatching(smtID, {}, cb)
     }
 
     // Get survivors that match criteria
-    exports.getMatching = function (criteria, cb) {
+    exports.getMatching = function (smtID, criteria, cb) {
+        criteria.settlementID = smtID
         db.find(criteria, (err, docs) => {
             if (err) {
                 throw (err)
@@ -33,12 +34,13 @@ module.exports = function(params) {
     }
 
     // Get all survivors sorted by field(s)
-    exports.getAllSortedBy = function (sortCriteria, cb) {
-        exports.getMatchingSortedBy({}, sortCriteria, cb)
+    exports.getAllSortedBy = function (smtID, sortCriteria, cb) {
+        exports.getMatchingSortedBy(smtID, {}, sortCriteria, cb)
     }
 
    // Get survivors that match criteria sorted by sort criteria
-    exports.getMatchingSortedBy = function (criteria, sortCriteria, cb) {
+    exports.getMatchingSortedBy = function (smtID, criteria, sortCriteria, cb) {
+        criteria.settlementID = smtID
         db.find(criteria).sort(sortCriteria).exec((err, docs) => {
             if (err) {
                 throw (err)
@@ -51,7 +53,8 @@ module.exports = function(params) {
     }
 
     // Get count of survivors matching criteria
-    exports.countMatching = function (criteria, cb) {
+    exports.countMatching = function (smtID, criteria, cb) {
+        criteria.settlementID = smtID
         db.count(criteria, (err, count) => {
             if (err) {
                 throw (err)
@@ -64,15 +67,16 @@ module.exports = function(params) {
     }
 
     // Get count of all survivors
-    exports.count = function (cb) {
-        exports.countMatching({}, cb)
+    exports.count = function (smtID, cb) {
+        exports.countMatching(smtID, {}, cb)
     }
 
     // Add a survivor
-    exports.add = function (survivor, cb) {
+    exports.add = function (smtID, survivor, cb) {
         // Data validation
         // TODO
 
+        survivor.settlementID = smtID
         db.insert(survivor, (err, newDoc) => {
             if (err) {
                 throw (err)
@@ -85,7 +89,7 @@ module.exports = function(params) {
     }
 
     // Add a base unnamed survivor
-    exports.addBaseSurvivor = function (cb) {
+    exports.addBaseSurvivor = function (smtID, cb) {
         var baseSurvivor = {
             name: null,
             sex: null,
@@ -116,7 +120,19 @@ module.exports = function(params) {
             surname: null,
             other: null
         }
-        exports.add(baseSurvivor, cb)
+        exports.add(smtID, baseSurvivor, cb)
+    }
+
+    // THIS IS ONLY FOR TEST PURPOSES
+    // Delete entire settlement db
+    exports.dropAll = function() {
+        db.remove({ }, { multi: true }, (err, numRem) => {
+            db.loadDatabase((err) => {
+                if (err) {
+                    throw(err)
+                }
+            })
+        })
     }
 
     return exports
