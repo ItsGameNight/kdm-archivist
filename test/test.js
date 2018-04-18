@@ -1,4 +1,5 @@
 // Require test files here
 
-console.log('Surviors Model Tests')
+// Models
+console.log('Model Tests')
 require('./models/survivors-test')

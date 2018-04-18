@@ -6,7 +6,7 @@ describe('Survivors', () => {
         survivors.dropAll()
     })
 
-    describe('getAll()', () => {
+    describe('getAll() on empty database', () => {
         it('should return [] since no survivors have been added', (done) => {
             survivors.getAll('testID', (docs) => {
                 if (docs.length == 0) done()
@@ -72,6 +72,15 @@ describe('Survivors', () => {
                         else done(new Error())
                     })
                 })
+            })
+        })
+    })
+
+    describe('countMatching() after update', function() {
+        it('should equal one matching updated test survivor', function(done) {
+            survivors.countMatching('testID', { luck: 2 }, (count) => {
+                if (count == 1) done()
+                else done(new Error())
             })
         })
     })
