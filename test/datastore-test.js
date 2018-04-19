@@ -1,4 +1,6 @@
-var survivors = require('../../js/models/survivors')({ dataDir: 'test_data/mocha/' })
+var db = require(__dirname + '/../js/datastore')
+survivors = db.survivors
+settlements = db.settlements
 
 describe('Survivors', () => {
     before(function() {
@@ -106,6 +108,17 @@ describe('Survivors', () => {
                     if (numRemoved == 1) done()
                     else done(new Error('Expected: 1, Actual: ' + numRemoved))
                 })
+            })
+        })
+    })
+})
+
+describe('Settlements', () => {
+    describe('getAll() on empty database', () => {
+        it('should return [] since no settlements have been added', function(done) {
+            settlements.getAll((docs) => {
+                if (docs.length == 0) done()
+                else done(new Error('settlements db is: ' + docs))
             })
         })
     })
