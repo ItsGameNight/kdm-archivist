@@ -14,6 +14,37 @@ module.exports = function(params) {
     // Load datastore
     db = new datastore({ filename: params.dataDir + 'survivors', autoload: true })
 
+    // Define base survivor (for initializing settlement base)
+    exports.baseSurvivor = {
+        name: null,
+        sex: null,
+        survival: 0,
+        movement: 5,
+        accuracy: 0,
+        strength: 0,
+        evasion: 0,
+        luck: 0,
+        speed: 0,
+        insanity: 0,
+        xp: 0,
+        courage: 0,
+        boldSkill: null,
+        understanding: 0,
+        insightSkill: null,
+        fightingArt1: null,
+        fightingArt2: null,
+        fightingArt3: null,
+        disorder1: null,
+        disorder2: null,
+        disorder3: null,
+        abilities: null,
+        impairments: null,
+        parent1: null,
+        parent2: null,
+        nickname: null,
+        surname: null,
+        other: null
+    }
     // Get all survivors in database
     exports.getAll = function (smtID, cb) {
         exports.getMatching(smtID, {}, cb)
@@ -38,7 +69,7 @@ module.exports = function(params) {
         exports.getMatchingSortedBy(smtID, {}, sortCriteria, cb)
     }
 
-   // Get survivors that match criteria sorted by sort criteria
+    // Get survivors that match criteria sorted by sort criteria
     exports.getMatchingSortedBy = function (smtID, criteria, sortCriteria, cb) {
         criteria.settlementID = smtID
         db.find(criteria).sort(sortCriteria).exec((err, docs) => {
@@ -90,37 +121,7 @@ module.exports = function(params) {
 
     // Add a base unnamed survivor
     exports.addBaseSurvivor = function (smtID, cb) {
-        var baseSurvivor = {
-            name: null,
-            sex: null,
-            survival: 0,
-            movement: 5,
-            accuracy: 0,
-            strength: 0,
-            evasion: 0,
-            luck: 0,
-            speed: 0,
-            insanity: 0,
-            xp: 0,
-            courage: 0,
-            boldSkill: null,
-            understanding: 0,
-            insightSkill: null,
-            fightingArt1: null,
-            fightingArt2: null,
-            fightingArt3: null,
-            disorder1: null,
-            disorder2: null,
-            disorder3: null,
-            abilities: null,
-            impairments: null,
-            parent1: null,
-            parent2: null,
-            nickname: null,
-            surname: null,
-            other: null
-        }
-        exports.add(smtID, baseSurvivor, cb)
+        exports.add(smtID, exports.baseSurvivor, cb)
     }
 
     // Update a survivor based on id
