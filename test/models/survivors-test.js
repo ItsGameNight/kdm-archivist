@@ -6,6 +6,11 @@ describe('Survivors', () => {
         survivors.dropAll()
     })
 
+    after(function() {
+        // Compact db
+        survivors.loadDatabase()
+    })
+
     describe('getAll() on empty database', () => {
         it('should return [] since no survivors have been added', (done) => {
             survivors.getAll('testID', (docs) => {
@@ -81,6 +86,26 @@ describe('Survivors', () => {
             survivors.countMatching('testID', { luck: 2 }, (count) => {
                 if (count == 1) done()
                 else done(new Error())
+            })
+        })
+    })
+
+    describe('updateSettlement()', function() {
+        it('should update all surivors in settlment', function(done) {
+            survivors.updateSettlement('testID', { strength: 1 }, function(numUp) {
+                if (numUp == 2) done()
+                else done(new Error('Expected: 2, Actual: ' + numUp))
+            })
+        })
+    })
+
+    describe('remove()', function() {
+        it('should remove one survivor', function (done) {
+            survivors.getMatching('testID', { name: 'Testy' }, (docs) => {
+                survivors.remove(docs[0]._id, (numRemoved) => {
+                    if (numRemoved == 1) done()
+                    else done(new Error('Expected: 1, Actual: ' + numRemoved))
+                })
             })
         })
     })

@@ -125,13 +125,39 @@ module.exports = function(params) {
 
     // Update a survivor based on id
     exports.update = function (survID, updates, cb) {
-        db.update({ _id: survID }, { $set: updates }, {}, (err, numUp, upDocs, upsert) => {
+        db.update({ _id: survID }, { $set: updates }, {}, (err, numUp) => {
             if (err) {
                 throw (err)
             }
 
             if (cb && typeof cb === "function") {
-                cb(upDocs)
+                cb(numUp)
+            }
+        })
+    }
+
+    // Update all survivors in a settlement
+    exports.updateSettlement = function (smtID, updates, cb) {
+        db.update({ settlementID: smtID }, { $set: updates }, { multi: true }, (err, numUp) => {
+            if (err) {
+                throw (err)
+            }
+
+            if (cb && typeof cb === "function") {
+                cb(numUp)
+            }
+        })
+    }
+
+    // Remove survivor by ID
+    exports.remove = function (survID, cb) {
+        db.remove({ _id: survID }, {}, (err, numRemoved) => {
+            if (err) {
+                throw (err)
+            }
+
+            if (cb && typeof cb === "function") {
+                cb(numRemoved)
             }
         })
     }
@@ -145,6 +171,15 @@ module.exports = function(params) {
                     throw(err)
                 }
             })
+        })
+    }
+
+    // Compact db into one row per object format
+    exports.loadDatabase = function() {
+        db.loadDatabase((err) => {
+            if (err) {
+                throw (err)
+            }
         })
     }
 
