@@ -1,25 +1,13 @@
-# kd-monster
+# Kingdom Death: Monster Companion App
 
-> Kingdom Death: Monster Campaign app
+From one board game enthusiast to another.
 
-#### Build Setup
+## Pillars
 
-``` bash
-# install dependencies
-npm install
+The guiding principles for this project are:
 
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
-
-```
-
----
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+1. **Focus on Pen and Paper Gameplay:** The app shouldn't distract you from the game, and we truly believe part of the experience is being together, and physically interacting with the game materials.
+2. **Open Source:** We want to give back to the community, and allow the community to help in this project.
+3. **Usability:** The application should be easy to use, intuitive, and efficient--focus on the board, not the app!
+4. **Good Looks:** While you shouldn't be staring at this app... we like pretty things!
+5. **Emerging Stories:** Sometimes the narrative can get lost in all of the dice rolling and card shuffling. The app should help capture the stories of the survivors and the entire settlement without any extra work--so you can live the tale without any extra effort.
