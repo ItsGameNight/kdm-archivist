@@ -225,3 +225,40 @@ module.exports.settlements.createNew = function (cb) {
     })
 }
 
+// Update a settlement
+module.exports.settlements.update = function (smtID, updates, cb) {
+    db.settlements.update({ _id: smtID }, { $set: updates }, {}, (err, numUp) => {
+        if (err) {
+            throw (err)
+        }
+
+        if (cb && typeof cb === "function") {
+            cb(numUp)
+        }
+    })
+}
+
+// Remove settlement
+module.exports.settlements.remove = function (smtID, cb) {
+    db.settlements.remove({ _id: smtID }, {}, (err, numRemoved) => {
+        if (err) {
+            throw (err)
+        }
+
+        if (cb && typeof cb == "function") {
+            cb(numRemoved)
+        }
+    })
+}
+
+// THIS IS ONLY FOR TEST PURPOSES
+// Delete entire db.settlements
+module.exports.settlements.dropAll = function() {
+    db.settlements.remove({ }, { multi: true }, (err, numRem) => {
+        db.settlements.loadDatabase((err) => {
+            if (err) {
+                throw (err)
+            }
+        })
+    })
+}
