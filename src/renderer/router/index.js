@@ -12,8 +12,8 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'hello-page',
-      component: require('@/components/HelloWorld').default
+      name: 'survivor-table',
+      component: require('@/components/SurvivorTable').default
     }
   ]
 })
