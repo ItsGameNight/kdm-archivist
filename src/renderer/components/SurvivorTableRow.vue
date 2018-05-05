@@ -156,10 +156,10 @@ td {
   width: 10%;
 }
 .stats {
-  width: 50%;
+  width: 35%;
 }
 .progress {
-  width: 40%;
+  width: 55%;
 }
 .square-row {
   height: 16px;
