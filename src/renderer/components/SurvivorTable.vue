@@ -7,6 +7,9 @@
         <span class="slider"></span>
       </label>
     </div>
+    <div>
+      <button @click=reload()>Reload</button>
+    </div>
     <div class="table-scroll">
       <table>
         <tr v-for="surv in survivors"><survivor-table-row :survivor="surv" :key='surv._id' :collapsed="collapsedState"></survivor-table-row></tr>
@@ -17,140 +20,27 @@
 
 <script>
 import SurvivorTableRow from './SurvivorTableRow'
+import * as survs from '../../db/survivors'
+import * as smts from '../../db/settlements'
 
 export default {
   name: 'survivor-table',
   components: { SurvivorTableRow },
+  methods: {
+    reload: () => {
+      smts.getAll((smts) => {
+        survs.getAll(smts[0]._id, (s) => {
+          console.log(s)
+          console.log(smts)
+          this.survivors = s
+        })
+      })
+    }
+  },
   data () {
     return {
       collapsedState: true,
-      survivors: [
-        {
-          '_id': 1,
-          'name': 'Olympia',
-          'sex': 'f',
-          'survival': 4,
-          'movement': 5,
-          'strength': 3,
-          'accuracy': 4,
-          'evasion': 2,
-          'luck': 3,
-          'speed': 1,
-          'insanity': 6,
-          'xp': 4,
-          'courage': 5,
-          'boldSkill': 'Prepared',
-          'understanding': 4,
-          'insightSkill': 'Tinker',
-          'weaponProficiency': 'Sword',
-          'weaponProficiencyLevel': 2,
-          'fightingArts': [ 'Mighty Strike', 'Last Man Standing' ],
-          'disorders': [],
-          'abilities': [],
-          'impairments': [],
-          'nickname': 'Wise Fool of the Lantern'
-        },
-        {
-          '_id': 2,
-          'name': 'Swamp Ass',
-          'sex': 'm',
-          'survival': 0,
-          'movement': 4,
-          'strength': 10,
-          'accuracy': -3,
-          'evasion': -6,
-          'luck': 0,
-          'speed': 0,
-          'insanity': 13,
-          'xp': 1,
-          'courage': 0,
-          'boldSkill': null,
-          'understanding': 0,
-          'insightSkill': null,
-          'weaponProficiency': null,
-          'weaponProficiencyLevel': 0,
-          'fightingArts': [],
-          'disorders': [],
-          'abilities': [],
-          'impairments': [],
-          'nickname': null
-        },
-        {
-          '_id': 3,
-          'name': 'Character With An Unreasonably Long Name For Testing Purposes',
-          'sex': 'm',
-          'survival': 3,
-          'movement': 5,
-          'strength': 0,
-          'accuracy': 0,
-          'evasion': 0,
-          'luck': 0,
-          'speed': 0,
-          'insanity': 0,
-          'xp': 0,
-          'courage': 0,
-          'boldSkill': null,
-          'understanding': 0,
-          'insightSkill': null,
-          'weaponProficiency': null,
-          'weaponProficiencyLevel': 0,
-          'fightingArts': [],
-          'disorders': [],
-          'abilities': [],
-          'impairments': [],
-          'nickname': null
-        },
-        {
-          '_id': 3,
-          'name': 'Carol',
-          'sex': 'f',
-          'survival': 3,
-          'movement': 5,
-          'strength': 0,
-          'accuracy': 0,
-          'evasion': 0,
-          'luck': 0,
-          'speed': 0,
-          'insanity': 0,
-          'xp': 0,
-          'courage': 0,
-          'boldSkill': null,
-          'understanding': 0,
-          'insightSkill': null,
-          'weaponProficiency': null,
-          'weaponProficiencyLevel': 0,
-          'fightingArts': [],
-          'disorders': [],
-          'abilities': [],
-          'impairments': [],
-          'nickname': null
-        },
-        {
-          '_id': 3,
-          'name': 'Jon',
-          'sex': 'm',
-          'survival': 3,
-          'movement': 5,
-          'strength': 0,
-          'accuracy': 0,
-          'evasion': 0,
-          'luck': 0,
-          'speed': 0,
-          'insanity': 0,
-          'xp': 0,
-          'courage': 0,
-          'boldSkill': null,
-          'understanding': 0,
-          'insightSkill': null,
-          'weaponProficiency': null,
-          'weaponProficiencyLevel': 0,
-          'fightingArts': [],
-          'disorders': [],
-          'abilities': [],
-          'impairments': [],
-          'nickname': null
-        }
-      ]
+      survivors: []
     }
   }
 }

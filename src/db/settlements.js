@@ -12,6 +12,7 @@ if (typeof remote.app !== 'undefined') {
   baseSmt = JSON.parse(fs.readFileSync(path.join(__static, '/baseSettlement.json'), 'utf8'))
 } else {
   // TESTING
+  console.log('WARNING: NOT USING LOCAL STORAGE')
   db = new Datastore({ filename: 'test_data/settlements.db', autoload: true })
   baseSmt = JSON.parse(fs.readFileSync('static/baseSettlement.json'))
 }
