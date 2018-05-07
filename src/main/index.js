@@ -1,8 +1,8 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-import * as survs from '../db/survivors'
-import * as smts from '../db/settlements'
+import * as survs from '../renderer/survivors'
+import * as smts from '../renderer/settlements'
 
 /**
  * Set `__static` path to static files in production

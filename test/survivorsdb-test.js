@@ -1,5 +1,5 @@
-import * as survivors from '../src/db/survivors.js'
-import * as settlements from '../src/db/settlements.js'
+import * as survivors from '../src/renderer/survivors.js'
+import * as settlements from '../src/renderer/settlements.js'
 
 describe('Survivors', () => {
   before(function() {

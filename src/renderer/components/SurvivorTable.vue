@@ -8,7 +8,7 @@
       </label>
     </div>
     <div>
-      <button @click=reload()>Reload</button>
+      <button @click=addBaseSurvivor()>Add Base Survivor</button>
     </div>
     <div class="table-scroll">
       <table>
@@ -20,19 +20,16 @@
 
 <script>
 import SurvivorTableRow from './SurvivorTableRow'
-import * as survs from '../../db/survivors'
-import * as smts from '../../db/settlements'
 
 export default {
   name: 'survivor-table',
   components: { SurvivorTableRow },
   methods: {
-    reload: () => {
-      smts.getAll((smts) => {
-        survs.getAll(smts[0]._id, (s) => {
-          console.log(s)
-          console.log(smts)
-          this.survivors = s
+    // special func that happens on start!
+    addBaseSurvivor: function () {
+      this.$settlements.getAll((smts) => {
+        this.$survivors.addBase(smts[0]._id, { name: 'hi vue' }, (s) => {
+          this.survivors.push(s)
         })
       })
     }
@@ -42,6 +39,15 @@ export default {
       collapsedState: true,
       survivors: []
     }
+  },
+  created () {
+    console.log('created')
+    console.log(this)
+    this.$settlements.getAll((smts) => {
+      this.$survivors.getAll(smts[0]._id, (s) => {
+        this.survivors = s
+      })
+    })
   }
 }
 </script>

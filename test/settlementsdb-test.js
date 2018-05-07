@@ -1,4 +1,4 @@
-import * as settlements from '../src/db/settlements.js'
+import * as settlements from '../src/renderer/settlements.js'
 
 describe('Settlements', () => {
   before(function() {
