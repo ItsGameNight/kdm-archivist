@@ -1,8 +1,8 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-import * as survs from '../renderer/survivors'
-import * as smts from '../renderer/settlements'
+// import SurvivorsDatabase from '../renderer/survivors'
+// import SettlementsDatabase from '../renderer/settlements'
 
 /**
  * Set `__static` path to static files in production
@@ -33,13 +33,19 @@ function createWindow () {
     mainWindow = null
   })
 
-  smts.createNew((smt) => {
-    var smtID = smt._id
-    survs.addBase(smtID, { name: 'Alex', sex: 'M' }, (s) => {
-      console.log(s)
-      survs.getAll(smtID, (survs) => console.log(survs))
-    })
-  })
+  // TEST CODE!
+  // console.log(app.getPath('userData'))
+
+  // console.log(smts)
+  // var survs = new SurvivorsDatabase(app.getPath('userData'), smts)
+
+  // smts.createNew((smt) => {
+  //   var smtID = smt._id
+  //   survs.addBase(smtID, { name: 'Alex', sex: 'M' }, (s) => {
+  //     console.log(s)
+  //     survs.getAll(smtID, (survs) => console.log(survs))
+  //   })
+  // })
 }
 
 app.on('ready', createWindow)

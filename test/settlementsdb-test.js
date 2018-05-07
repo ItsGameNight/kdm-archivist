@@ -1,7 +1,8 @@
-import * as settlements from '../src/renderer/settlements.js'
+import SettlementsDatabase from '../src/renderer/settlements.js'
 
 describe('Settlements', () => {
   before(function() {
+    var settlements = new SettlementsDatabase()
     // Clear db before all tests
     settlements.dropAll()
   })

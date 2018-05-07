@@ -5,15 +5,19 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-import * as survivors from './survivors'
-import * as settlements from './settlements'
+import SurvivorsDatabase from './survivors'
+import SettlementsDatabase from './settlements'
+
+import { remote } from 'electron'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
-Vue.prototype.$survivors = survivors
-Vue.prototype.$settlements = settlements
+console.log(remote.app.getPath('userData'))
+var smts = new SettlementsDatabase(remote.app.getPath('userData'))
+Vue.prototype.$settlements = smts
+Vue.prototype.$survivors = new SurvivorsDatabase(remote.app.getPath('userData'), smts)
 
 /* eslint-disable no-new */
 new Vue({
