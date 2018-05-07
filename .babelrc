@@ -1,6 +1,9 @@
 {
   "comments": false,
   "env": {
+    "test": {
+      "presets": ["es2015"]
+    },
     "main": {
       "presets": [
         ["env", {
