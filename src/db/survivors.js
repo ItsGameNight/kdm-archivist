@@ -1,9 +1,8 @@
-import Datastore from 'nedb'
-import path from 'path'
+import Database from './db'
 
-class SurvivorsDatabase {
+class SurvivorsDatabase extends Database {
   constructor (dbpath, smtsdb) {
-    this.db = new Datastore({ filename: path.join(dbpath, 'survivors.db'), autoload: true })
+    super(dbpath, 'survivors.db')
     this.smtsdb = smtsdb
   }
 
@@ -15,15 +14,7 @@ class SurvivorsDatabase {
   // Get survivors that match criteria
   getMatching (smtID, criteria, cb) {
     criteria.settlementID = smtID
-    this.db.find(criteria, (err, docs) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(docs)
-      }
-    })
+    super.getMatching(criteria, cb)
   }
 
   // Get all survivors sorted by field(s)
@@ -135,30 +126,6 @@ class SurvivorsDatabase {
 
       if (cb && typeof cb === 'function') {
         cb(numRemoved)
-      }
-    })
-  }
-
-  // THIS IS ONLY FOR TEST PURPOSES
-  // Delete entire this.db
-  dropAll () {
-    this.db.remove({ }, { multi: true }, (err, numRem) => {
-      if (err) {
-        throw (err)
-      }
-      this.db.loadDatabase((err) => {
-        if (err) {
-          throw (err)
-        }
-      })
-    })
-  }
-
-  // Compact db into one row per object format
-  loadDatabase () {
-    this.db.loadDatabase((err) => {
-      if (err) {
-        throw (err)
       }
     })
   }

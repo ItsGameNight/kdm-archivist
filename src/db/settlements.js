@@ -1,9 +1,8 @@
-import Datastore from 'nedb'
-import path from 'path'
+import Database from './db'
 
-class SettlementsDatabase {
+class SettlementsDatabase extends Database {
   constructor (dbpath) {
-    this.db = new Datastore({ filename: path.join(dbpath, 'settlements.db'), autoload: true })
+    super(dbpath, 'settlements.db')
     this.baseSmt = {
       'name': null,
       'principles': [],
@@ -13,7 +12,7 @@ class SettlementsDatabase {
       'storedGear': [],
       'quaries': [],
       'storyNotes': [],
-      'departedSurvivors': [0, 2],
+      'departedSurvivors': [],
       'lanternYear': 0,
       'baseSurvivor': {
         'settlementID': null,
@@ -43,18 +42,6 @@ class SettlementsDatabase {
         'other': null
       }
     }
-  }
-
-  getMatching (criteria, cb) {
-    this.db.find(criteria, (err, docs) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(docs)
-      }
-    })
   }
 
   // Get all settlements
@@ -118,30 +105,6 @@ class SettlementsDatabase {
 
       if (cb && typeof cb === 'function') {
         cb(numRemoved)
-      }
-    })
-  }
-
-  // THIS IS ONLY FOR TEST PURPOSES
-  // Delete entire db
-  dropAll () {
-    this.db.remove({ }, { multi: true }, (err, numRem) => {
-      if (err) {
-        throw (err)
-      }
-      this.db.loadDatabase((err) => {
-        if (err) {
-          throw (err)
-        }
-      })
-    })
-  }
-
-  // Compact db into one row per object format
-  loadDatabase () {
-    this.db.loadDatabase((err) => {
-      if (err) {
-        throw (err)
       }
     })
   }
