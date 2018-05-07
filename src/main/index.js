@@ -1,6 +1,8 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
+import * as survs from '../db/survivors'
+import * as smts from '../db/settlements'
 
 /**
  * Set `__static` path to static files in production
@@ -29,6 +31,14 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+  })
+
+  smts.createNew((smt) => {
+    var smtID = smt._id
+    survs.addBase(smtID, { name: 'Alex', sex: 'M' }, (s) => {
+      console.log(s)
+      survs.getAll(smtID, (survs) => console.log(survs))
+    })
   })
 }
 

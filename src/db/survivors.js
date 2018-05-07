@@ -1,6 +1,7 @@
 import Datastore from 'nedb'
 import path from 'path'
 import remote from 'electron'
+import { getMatching as getMatchingSettlement } from './settlements'
 
 // Load datastores
 var db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'survivors.db'), autoload: true })
@@ -79,13 +80,24 @@ export function add (smtID, survivor, cb) {
   })
 }
 
-/*
 // Add a base unnamed survivor
-export function addBase (smtID, cb) {
-  // TODO FIX!
-  add(smtID, module.exports.survivors.base, cb)
+export function addBase (smtID, updates, cb) {
+  getMatchingSettlement({ _id: smtID }, (smts) => {
+    if (smts.length === 0) {
+      throw new Error('Tried to add base survivor for non-existant settlement!')
+    }
+    // get base survivor
+    var surv = smts[0].baseSurvivor
+    // update it
+    for (var key in updates) {
+      if (key in surv) {
+        surv[key] = updates[key]
+      }
+    }
+    // add to population
+    add(smtID, surv, cb)
+  })
 }
-*/
 
 // Update a survivor based on id
 export function update (survID, updates, cb) {
@@ -100,9 +112,8 @@ export function update (survID, updates, cb) {
   })
 }
 
-/*
 // Update all survivors in a settlement
-module.exports.survivors.updateSettlement = function (smtID, updates, cb) {
+export function updateSettlement (smtID, updates, cb) {
   db.update({ settlementID: smtID }, { $set: updates }, { multi: true }, (err, numUp) => {
     if (err) {
       throw (err)
@@ -113,7 +124,6 @@ module.exports.survivors.updateSettlement = function (smtID, updates, cb) {
     }
   })
 }
-*/
 
 // Remove survivor by ID
 export function remove (survID, cb) {

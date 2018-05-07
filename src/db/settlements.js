@@ -1,6 +1,7 @@
 import Datastore from 'nedb'
 import path from 'path'
 import remote from 'electron'
+import fs from 'fs'
 
 // Load datastores
 var db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'settlements.db'), autoload: true })
@@ -8,11 +9,14 @@ var db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'se
 // Get the base settlement from static
 var baseSmt = JSON.parse(fs.readFileSync(path.join(__static, '/baseSettlement.json'), 'utf8'))
 
-// Compact db into one row per object format
-export function loadDatabase () {
-  db.loadDatabase((err) => {
+export function getMatching (criteria, cb) {
+  db.find(criteria, (err, docs) => {
     if (err) {
       throw (err)
+    }
+
+    if (cb && typeof cb === 'function') {
+      cb(docs)
     }
   })
 }
@@ -94,5 +98,14 @@ export function dropAll () {
         throw (err)
       }
     })
+  })
+}
+
+// Compact db into one row per object format
+export function loadDatabase () {
+  db.loadDatabase((err) => {
+    if (err) {
+      throw (err)
+    }
   })
 }

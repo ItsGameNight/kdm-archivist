@@ -10,7 +10,7 @@
     "departedSurvivors": [0, 2],
     "lanternYear": 0,
     "baseSurvivor": {
-        "smtID": null,
+        "settlementID": null,
         "name": null,
         "sex": null,
         "survival": 0,
