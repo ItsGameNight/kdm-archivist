@@ -1,9 +1,14 @@
-import * as survivors from '../src/renderer/survivors.js'
-import * as settlements from '../src/renderer/settlements.js'
+import SurvivorsDatabase from '../src/renderer/survivors.js'
+import SettlementsDatabase from '../src/renderer/settlements.js'
 
 describe('Survivors', () => {
+  var settlements
+  var survivors
   before(function() {
-    // Clear db before all tests
+    // Instantiate db
+    settlements = new SettlementsDatabase('test_data')
+    settlements.dropAll()
+    survivors = new SurvivorsDatabase('test_data', settlements)
     survivors.dropAll()
     // Create the test settlement
     settlements.createNew((smt) => {

@@ -5,7 +5,6 @@ class SurvivorsDatabase {
   constructor (dbpath, smtsdb) {
     this.db = new Datastore({ filename: path.join(dbpath, 'survivors.db'), autoload: true })
     this.smtsdb = smtsdb
-    console.log(this.smtsdb)
   }
 
   // Get all survivors in database
