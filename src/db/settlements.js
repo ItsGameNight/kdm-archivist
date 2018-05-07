@@ -31,6 +31,8 @@ class SettlementsDatabase extends Database {
         'boldSkill': null,
         'understanding': 0,
         'insightSkill': null,
+        'weaponProficiency': null,
+        'weaponProficiencyLevel': 0,
         'fightingArts': [],
         'disorders': [],
         'abilities': [],
