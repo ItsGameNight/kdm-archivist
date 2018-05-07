@@ -8,7 +8,7 @@
       </label>
     </div>
     <div>
-      <button @click=addBaseSurvivor()>Add Base Survivor</button>
+      <button @click="addBaseSurvivor()">Add Base Survivor</button>
     </div>
     <div class="table-scroll">
       <table>
