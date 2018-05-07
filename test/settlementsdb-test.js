@@ -1,4 +1,4 @@
-import SettlementsDatabase from '../src/renderer/settlements.js'
+import SettlementsDatabase from '../src/db/settlements.js'
 
 describe('Settlements', () => {
   var settlements

@@ -5,8 +5,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-import SurvivorsDatabase from './survivors'
-import SettlementsDatabase from './settlements'
+import SurvivorsDatabase from '../db/survivors'
+import SettlementsDatabase from '../db/settlements'
 
 import { remote } from 'electron'
 

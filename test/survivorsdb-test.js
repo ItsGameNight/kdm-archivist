@@ -1,5 +1,5 @@
-import SurvivorsDatabase from '../src/renderer/survivors.js'
-import SettlementsDatabase from '../src/renderer/settlements.js'
+import SurvivorsDatabase from '../src/db/survivors.js'
+import SettlementsDatabase from '../src/db/settlements.js'
 
 describe('Survivors', () => {
   var settlements
