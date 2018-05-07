@@ -12,7 +12,7 @@ describe('Survivors', () => {
     survivors.dropAll()
     // Create the test settlement
     settlements.createNew((smt) => {
-      settlements.update(smt._id, { name: 'Test' })
+      settlements.updateOne(smt._id, { name: 'Test' })
     })
   })
 
@@ -24,7 +24,7 @@ describe('Survivors', () => {
   describe('getAll() on empty database', () => {
     it('should return [] since no survivors have been added', (done) => {
       settlements.getAll((smts) => {
-        survivors.getAll(smts[0]._id, (docs) => {
+        survivors.getAllInSettlement(smts[0]._id, (docs) => {
           if (docs.length == 0) done()
           else done(new Error())
         })
@@ -88,11 +88,11 @@ describe('Survivors', () => {
     })
   })
 
-  describe('update()', function() {
+  describe('updateOne()', function() {
     it('should update Testy to have 3 insanity', function(done) {
       settlements.getAll((smts) => {
         survivors.getMatching(smts[0]._id, { name: 'Testy' }, (docs) => {
-          survivors.update(docs[0]._id, { insanity: 3 }, () => {
+          survivors.updateOne(docs[0]._id, { insanity: 3 }, () => {
             survivors.getMatching(smts[0]._id, { name: 'Testy' }, (docs) => {
               if (docs[0].name === 'Testy' && docs[0].insanity === 3) done()
               else done(new Error())

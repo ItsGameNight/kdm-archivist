@@ -48,7 +48,7 @@ export default {
     console.log(this)
     this.$settlements.getAll((smts) => {
       if (smts.length !== 0) {
-        this.$survivors.getAll(smts[0]._id, (s) => {
+        this.$survivors.getAllInSettlement(smts[0]._id, (s) => {
           this.survivors = s
         })
       }

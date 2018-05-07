@@ -44,69 +44,9 @@ class SettlementsDatabase extends Database {
     }
   }
 
-  // Get all settlements
-  getAll (cb) {
-    this.db.find({}, (err, docs) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(docs)
-      }
-    })
-  }
-
-  // Get all settlements sorted by field(s)
-  getAllSortedBy (sortCriteria, cb) {
-    this.db.find({}).sort(sortCriteria).exec((err, docs) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(docs)
-      }
-    })
-  }
-
   // Create a new settlement
   createNew (cb) {
-    this.db.insert(this.baseSmt, (err, newDoc) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(newDoc)
-      }
-    })
-  }
-
-  // Update a settlement
-  update (smtID, updates, cb) {
-    this.db.update({ _id: smtID }, { $set: updates }, {}, (err, numUp) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(numUp)
-      }
-    })
-  }
-
-  // Remove settlement
-  remove (smtID, cb) {
-    this.db.remove({ _id: smtID }, {}, (err, numRemoved) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(numRemoved)
-      }
-    })
+    super.createNew(this.baseSmt, cb)
   }
 }
 

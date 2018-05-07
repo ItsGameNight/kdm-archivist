@@ -31,6 +31,66 @@ class Database {
     })
   }
 
+  remove (id, cb) {
+    this.db.remove({ _id: id }, {}, (err, numRemoved) => {
+      if (err) {
+        throw (err)
+      }
+
+      if (cb && typeof cb === 'function') {
+        cb(numRemoved)
+      }
+    })
+  }
+
+  createNew (obj, cb) {
+    this.db.insert(obj, (err, newDoc) => {
+      if (err) {
+        throw (err)
+      }
+
+      if (cb && typeof cb === 'function') {
+        cb(newDoc)
+      }
+    })
+  }
+
+  update (criteria, updates, options, cb) {
+    this.db.update(criteria, { $set: updates }, options, (err, numUp) => {
+      if (err) {
+        throw (err)
+      }
+
+      if (cb && typeof cb === 'function') {
+        cb(numUp)
+      }
+    })
+  }
+
+  updateOne (id, updates, cb) {
+    this.update({ _id: id }, updates, {}, cb)
+  }
+
+  getAll (cb) {
+    this.getMatching({}, cb)
+  }
+
+  getAllSortedBy (sortCriteria, cb) {
+    this.getMatchingSortedBy({}, sortCriteria, cb)
+  }
+
+  getMatchingSortedBy (criteria, sortCriteria, cb) {
+    this.db.find(criteria).sort(sortCriteria).exec((err, docs) => {
+      if (err) {
+        throw (err)
+      }
+
+      if (cb && typeof cb === 'function') {
+        cb(docs)
+      }
+    })
+  }
+
   // THIS IS ONLY FOR TEST PURPOSES
   // Delete entire this.db
   dropAll () {

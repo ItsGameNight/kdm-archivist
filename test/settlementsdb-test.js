@@ -28,10 +28,10 @@ describe('Settlements', () => {
     })
   })
 
-  describe('update()', function() {
+  describe('updateOne()', function() {
     it('should update settlement to have name Testtlement', function(done) {
       settlements.getAll(function(docs) {
-        settlements.update(docs[0]._id, { name: 'Testtlement' }, function() {
+        settlements.updateOne(docs[0]._id, { name: 'Testtlement' }, function() {
           settlements.getAll(function(newDocs) {
             if (newDocs[0].name === 'Testtlement') done()
             else done(new Error('name is ' + newDocs[0].name))

@@ -7,7 +7,7 @@ class SurvivorsDatabase extends Database {
   }
 
   // Get all survivors in database
-  getAll (smtID, cb) {
+  getAllInSettlement (smtID, cb) {
     this.getMatching(smtID, {}, cb)
   }
 
@@ -25,15 +25,7 @@ class SurvivorsDatabase extends Database {
   // Get survivors that match criteria sorted by sort criteria
   getMatchingSortedBy (smtID, criteria, sortCriteria, cb) {
     criteria.settlementID = smtID
-    this.db.find(criteria).sort(sortCriteria).exec((err, docs) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(docs)
-      }
-    })
+    super.getMatchingSortedBy(criteria, sortCriteria, cb)
   }
 
   // Get count of survivors matching criteria
@@ -55,21 +47,12 @@ class SurvivorsDatabase extends Database {
     this.countMatching(smtID, {}, cb)
   }
 
-  // Add a survivor
   add (smtID, survivor, cb) {
     // Data validation
     // TODO
 
     survivor.settlementID = smtID
-    this.db.insert(survivor, (err, newDoc) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(newDoc)
-      }
-    })
+    super.createNew(survivor, cb)
   }
 
   // Add a base unnamed survivor
@@ -91,43 +74,10 @@ class SurvivorsDatabase extends Database {
     })
   }
 
-  // Update a survivor based on id
-  update (survID, updates, cb) {
-    this.db.update({ _id: survID }, { $set: updates }, {}, (err, numUp) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(numUp)
-      }
-    })
-  }
-
   // Update all survivors in a settlement
   updateSettlement (smtID, updates, cb) {
-    this.db.update({ settlementID: smtID }, { $set: updates }, { multi: true }, (err, numUp) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(numUp)
-      }
-    })
-  }
-
-  // Remove survivor by ID
-  remove (survID, cb) {
-    this.db.remove({ _id: survID }, {}, (err, numRemoved) => {
-      if (err) {
-        throw (err)
-      }
-
-      if (cb && typeof cb === 'function') {
-        cb(numRemoved)
-      }
-    })
+    // note the multi: true to update all that match
+    this.update({ settlementID: smtID }, updates, { multi: true }, cb)
   }
 }
 
