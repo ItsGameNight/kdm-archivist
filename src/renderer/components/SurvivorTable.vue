@@ -8,7 +8,8 @@
       </label>
     </div>
     <div>
-      <button @click="addBaseSurvivor()">Add Base Survivor</button>
+      <button @click="addNewSurvivor()">Add Base Survivor</button>
+      <button @click="dropAllSurvivors()">Drop All</button>
     </div>
     <div class="table-scroll">
       <table>
@@ -24,35 +25,43 @@ import SurvivorTableRow from './SurvivorTableRow'
 export default {
   name: 'survivor-table',
   components: { SurvivorTableRow },
-  methods: {
-    // special func that happens on start!
-    addBaseSurvivor: function () {
-      this.$settlements.getAll((smts) => {
-        var names = ['Totman', 'Herter', 'LSL', 'ISB', 'no more names...']
-        this.$survivors.addBase(smts[0]._id, { name: names[this.nameidx] }, (s) => {
-          this.nameidx += 1
-          this.survivors.push(s)
-        })
-      })
-    }
-  },
   data () {
     return {
       collapsedState: true,
-      nameidx: 0,
-      survivors: []
+      survivors: [],
+      smtID: null
     }
   },
   created () {
-    console.log('created')
-    console.log(this)
-    this.$settlements.getAll((smts) => {
-      if (smts.length !== 0) {
-        this.$survivors.getAllInSettlement(smts[0]._id, (s) => {
-          this.survivors = s
-        })
-      }
-    })
+    this.loadSurvivors()
+  },
+  methods: {
+    loadSurvivors: function () {
+      this.$settlements.getAll((smts) => {
+        if (smts.length !== 0) {
+          this.smtID = smts[0]._id
+          this.$survivors.getAllInSettlement(this.smtID, (s) => {
+            this.survivors = s
+          })
+        } else {
+          this.$settlements.createNew((newSet) => {
+            this.smtID = newSet._id
+            this.$survivors.getAllInSettlement(this.smtID, (s) => {
+              this.survivors = s
+            })
+          })
+        }
+      })
+    },
+    addNewSurvivor: function () {
+      this.$survivors.addBase(this.smtID, { name: 'Test' }, () => {
+        this.loadSurvivors()
+      })
+    },
+    dropAllSurvivors: function () {
+      this.$survivors.dropAll()
+      this.loadSurvivors()
+    }
   }
 }
 </script>
