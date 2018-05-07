@@ -1,4 +1,4 @@
-var db = require(__dirname + '/../js/datastore')
+var db = require(__dirname + '/../src/db/datastore')
 survivors = db.survivors
 settlements = db.settlements
 

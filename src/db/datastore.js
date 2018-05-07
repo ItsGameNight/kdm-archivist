@@ -2,8 +2,8 @@ const datastore = require('nedb')
 
 // Load datastores
 db = {}
-db.survivors = new datastore({ filename: __dirname + '/../test_data/survivors.db', autoload: true })
-db.settlements = new datastore({ filename: __dirname + '/../test_data/settlements.db', autoload: true })
+db.survivors = new datastore({ filename: __dirname + '/../../test_data/survivors.db', autoload: true })
+db.settlements = new datastore({ filename: __dirname + '/../../test_data/settlements.db', autoload: true })
 
 module.exports.survivors = {}
 module.exports.settlements = {}
