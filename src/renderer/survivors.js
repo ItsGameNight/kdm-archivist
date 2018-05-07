@@ -4,13 +4,21 @@ import remote from 'electron'
 import { getMatching as getMatchingSettlement } from './settlements'
 
 // Load datastores
-var db
-if (typeof remote.app !== 'undefined') {
-  db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'survivors.db'), autoload: true })
+var dbloc
+if (process.env.BABEL_ENV === 'test') {
+  // TESTING
+  console.log('WARNING: NOT USING LOCAL STORAGE FOR SURVS')
+  dbloc = 'test_data/survivors.db'
+} else if (remote && typeof remote.app !== 'undefined') {
+  dbloc = path.join(remote.app.getPath('userData'), 'survivors.db')
+} else if (remote && typeof remote.remote.app !== 'undefined') {
+  console.log(remote.remote)
+  dbloc = path.join(remote.remote.app.getPath('userData'), 'survivors.db')
 } else {
-  console.log('WARNING: NOT USING LOCAL STORAGE')
-  db = new Datastore({ filename: '../test_data/survivors.db', autoload: true })
+  throw new Error('Unknown user db location')
 }
+
+var db = new Datastore({ filename: dbloc, autoload: true })
 
 // Get all survivors in database
 export function getAll (smtID, cb) {

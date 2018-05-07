@@ -4,18 +4,25 @@ import remote from 'electron'
 import fs from 'fs'
 
 // Load datastores
-var db
-var baseSmt
-if (typeof remote.app !== 'undefined') {
-  db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'settlements.db'), autoload: true })
-  // Get the base settlement from static
-  baseSmt = JSON.parse(fs.readFileSync(path.join(__static, '/baseSettlement.json'), 'utf8'))
+var dbloc
+var smtloc
+if (process.env.BABEL_ENV === 'test') {
+  console.log('WARNING: NOT USING LOCAL STORAGE FOR SMTS')
+  dbloc = 'test_data/settlements.db'
+  smtloc = 'static/baseSettlement.json'
+} else if (remote && typeof remote.app !== 'undefined') {
+  dbloc = path.join(remote.app.getPath('userData'), 'settlements.db')
+  smtloc = path.join(__static, '/baseSettlement.json')
+} else if (remote && typeof remote.remote.app !== 'undefined') {
+  console.log(remote.remote)
+  dbloc = path.join(remote.remote.app.getPath('userData'), 'settlements.db')
+  smtloc = path.join(__static, '/baseSettlement.json')
 } else {
-  // TESTING
-  console.log('WARNING: NOT USING LOCAL STORAGE')
-  db = new Datastore({ filename: 'test_data/settlements.db', autoload: true })
-  baseSmt = JSON.parse(fs.readFileSync('static/baseSettlement.json'))
+  throw new Error('Unknown user db location')
 }
+
+var db = new Datastore({ filename: dbloc, autoload: true })
+var baseSmt = JSON.parse(fs.readFileSync(smtloc))
 
 export function getMatching (criteria, cb) {
   db.find(criteria, (err, docs) => {

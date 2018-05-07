@@ -28,7 +28,9 @@ export default {
     // special func that happens on start!
     addBaseSurvivor: function () {
       this.$settlements.getAll((smts) => {
-        this.$survivors.addBase(smts[0]._id, { name: 'hi vue' }, (s) => {
+        var names = ['Totman', 'Herter', 'LSL', 'ISB', 'no more names...']
+        this.$survivors.addBase(smts[0]._id, { name: names[this.nameidx] }, (s) => {
+          this.nameidx += 1
           this.survivors.push(s)
         })
       })
@@ -37,6 +39,7 @@ export default {
   data () {
     return {
       collapsedState: true,
+      nameidx: 0,
       survivors: []
     }
   },
