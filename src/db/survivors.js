@@ -4,7 +4,12 @@ import remote from 'electron'
 import { getMatching as getMatchingSettlement } from './settlements'
 
 // Load datastores
-var db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'survivors.db'), autoload: true })
+var db
+if (typeof remote.app !== 'undefined') {
+  db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'survivors.db'), autoload: true })
+} else {
+  db = new Datastore({ filename: '../test_data/survivors.db', autoload: true })
+}
 
 // Get all survivors in database
 export function getAll (smtID, cb) {

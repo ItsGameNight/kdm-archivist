@@ -4,10 +4,17 @@ import remote from 'electron'
 import fs from 'fs'
 
 // Load datastores
-var db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'settlements.db'), autoload: true })
-
-// Get the base settlement from static
-var baseSmt = JSON.parse(fs.readFileSync(path.join(__static, '/baseSettlement.json'), 'utf8'))
+var db
+var baseSmt
+if (typeof remote.app !== 'undefined') {
+  db = new Datastore({ filename: path.join(remote.app.getPath('userData'), 'settlements.db'), autoload: true })
+  // Get the base settlement from static
+  baseSmt = JSON.parse(fs.readFileSync(path.join(__static, '/baseSettlement.json'), 'utf8'))
+} else {
+  // TESTING
+  db = new Datastore({ filename: 'test_data/settlements.db', autoload: true })
+  baseSmt = JSON.parse(fs.readFileSync('static/baseSettlement.json'))
+}
 
 export function getMatching (criteria, cb) {
   db.find(criteria, (err, docs) => {
