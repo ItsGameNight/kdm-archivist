@@ -10,10 +10,10 @@ if (process.env.BABEL_ENV === 'test') {
   console.log('WARNING: NOT USING LOCAL STORAGE FOR SURVS')
   dbloc = 'test_data/survivors.db'
 } else if (remote && typeof remote.app !== 'undefined') {
-  dbloc = path.join(remote.app.getPath('userData'), 'survivors.db')
+  dbloc = path.join(remote.app.getPath('userData'), '/survivors.db')
 } else if (remote && typeof remote.remote.app !== 'undefined') {
   console.log(remote.remote)
-  dbloc = path.join(remote.remote.app.getPath('userData'), 'survivors.db')
+  dbloc = path.join(remote.remote.app.getPath('userData'), '/survivors.db')
 } else {
   throw new Error('Unknown user db location')
 }
