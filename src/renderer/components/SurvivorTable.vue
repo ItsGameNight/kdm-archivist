@@ -13,7 +13,7 @@
     </div>
     <div class="table-scroll">
       <table>
-        <tr v-for="surv in survivors"><survivor-table-row :survivor="surv" :key='surv._id' :collapsed="collapsedState"></survivor-table-row></tr>
+        <tr v-for="surv in survivors"><survivor-table-row :survivor="surv" :key='surv._id' :collapsed="collapsedState" v-on:goodness-update="goodnessUpdate"></survivor-table-row></tr>
       </table>
     </div>
   </div>
@@ -29,6 +29,7 @@ export default {
     return {
       collapsedState: true,
       survivors: [],
+      survGScores: {},
       smtID: null
     }
   },
@@ -36,6 +37,11 @@ export default {
     this.loadSurvivors()
   },
   methods: {
+    goodnessUpdate: function (update) {
+      if (update) {
+        this.survGScores[update._id] = update.score
+      }
+    },
     loadSurvivors: function () {
       this.$settlements.getAll((smts) => {
         if (smts.length !== 0) {

@@ -122,7 +122,11 @@ export default {
     }
   },
   mounted: function () {
-    this.$survivors.computeGoodness(this.survivor._id, (score) => { this.yeeScore = score })
+    this.$survivors.computeGoodness(this.survivor._id, (score) => {
+      this.yeeScore = score
+      var id = this.survivor._id
+      this.$emit('goodness-update', { _id: id, score: score })
+    })
   },
   watch: {
     collapsed: function (newVal, oldVal) {
@@ -131,7 +135,11 @@ export default {
     survivor: {
       handler: function (newSurvivor, oldSurvivor) {
         this.$survivors.updateOne(this.survivor._id, newSurvivor)
-        this.$survivors.computeGoodness(this.survivor._id, (score) => { this.yeeScore = score })
+        this.$survivors.computeGoodness(this.survivor._id, (score) => {
+          this.yeeScore = score
+          var id = this.survivor._id
+          this.$emit('goodness-update', { _id: id, score: score })
+        })
       },
       deep: true
     }
