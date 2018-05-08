@@ -1,5 +1,7 @@
 <template>
   <td @dblclick="collapsedView = !collapsedView">
+    <div :class="['section', 'gscore' + String(yeeScore)]">
+    </div>
     <div :class="['section', collapsedView ? 'basic-info-collapsed' : 'basic-info']">
       <div>
         <span :class="[collapsedView ? 'name-collapsed' : 'name']">{{ survivor.name }}</span>
@@ -110,14 +112,17 @@ export default {
   name: 'survivor-table-row',
   props: {
     survivor: {},
-    collapsed: { default: false }
+    collapsed: { default: false },
+    defaultNormie: { default: 0 }
   },
   data: function () {
     return {
-      collapsedView: this.collapsed
+      collapsedView: this.collapsed,
+      yeeScore: this.defaultNormie
     }
   },
   mounted: function () {
+    this.$survivors.computeGoodness(this.survivor._id, (score) => { this.yeeScore = score })
   },
   watch: {
     collapsed: function (newVal, oldVal) {
@@ -126,6 +131,7 @@ export default {
     survivor: {
       handler: function (newSurvivor, oldSurvivor) {
         this.$survivors.updateOne(this.survivor._id, newSurvivor)
+        this.$survivors.computeGoodness(this.survivor._id, (score) => { this.yeeScore = score })
       },
       deep: true
     }
@@ -364,6 +370,36 @@ td {
 }
 .weapon-prof {
   text-decoration: underline;
+}
+.gscore0 {
+  background: #f4c7c3;
+  width: 8px;
+  margin-right: 5px;
+}
+.gscore1 {
+  background: #fce8b2;
+  width: 8px;
+  margin-right: 5px;
+}
+.gscore2 {
+  background: #b7e1cd;
+  width: 8px;
+  margin-right: 5px;
+}
+.gscore3 {
+  background: #03ff00;
+  width: 8px;
+  margin-right: 5px;
+}
+.gscore4 {
+  background: #00ffff;
+  width: 8px;
+  margin-right: 5px;
+}
+.gscore5 {
+  background: #b380ff;
+  width: 8px;
+  margin-right: 5px;
 }
 @media all and (max-width: 1060px) {
   .courage-under {
