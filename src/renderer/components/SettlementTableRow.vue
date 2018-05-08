@@ -1,7 +1,19 @@
 <template>
   <td @click.stop="setCurrentSmt(settlement._id)" :class="[selected ? 'selected' : '']">
-    <span v-if="settlement.name !== null">settlement.name</span>
-    <span v-else>NAME ME!</span>
+    <div v-if="this.editing">
+      <input v-model="textInput" placeholder="Edit Me!"></input>
+      <button class="editBtn" @click.stop="setSettlementName(settlement._id)">Done</button>
+    </div>
+    <div v-else>
+      <span v-if="settlement.name !== null">
+        {{ settlement.name }}
+        <button v-if="selected" class="editBtn" @click.stop="toggleEdit()">Edit</button>
+      </span>
+      <span v-else>
+        NAME ME!
+        <button v-if="selected" class="editBtn" @click.stop="toggleEdit()">Edit</button>
+      </span>
+    </div>
   </td>
 </template>
 
@@ -12,9 +24,25 @@ export default {
     settlement: {},
     selected: false
   },
+  data: function () {
+    return {
+      textInput: '',
+      editing: false
+    }
+  },
   methods: {
     setCurrentSmt: function (smtID) {
       this.$emit('smt-select', smtID)
+    },
+    setSettlementName: function (smtID) {
+      this.$settlements.updateOne(smtID, { name: this.textInput }, () => {
+        this.settlement.name = this.textInput
+        this.editing = false
+      })
+    },
+    toggleEdit: function () {
+      console.log('toggle')
+      this.editing = !this.editing
     }
   }
 }
@@ -23,5 +51,8 @@ export default {
 <style>
 .selected {
   background: #ADD8E6;
+}
+.editBtn {
+  float: right
 }
 </style>
