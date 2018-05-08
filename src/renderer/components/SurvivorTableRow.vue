@@ -1,6 +1,6 @@
 <template>
   <td @dblclick="collapsedView = !collapsedView">
-    <div :class="['section', 'gscore' + String(yeeScore)]">
+    <div :class="['section', 'gscore', 'gscore' + String(yeeScore)]">
     </div>
     <div :class="['section', collapsedView ? 'basic-info-collapsed' : 'basic-info']">
       <div>
@@ -379,35 +379,27 @@ td {
 .weapon-prof {
   text-decoration: underline;
 }
-.gscore0 {
-  background: #f4c7c3;
+.gscore {
   width: 8px;
   margin-right: 5px;
+}
+.gscore0 {
+  background: #f4c7c3;
 }
 .gscore1 {
   background: #fce8b2;
-  width: 8px;
-  margin-right: 5px;
 }
 .gscore2 {
   background: #b7e1cd;
-  width: 8px;
-  margin-right: 5px;
 }
 .gscore3 {
   background: #03ff00;
-  width: 8px;
-  margin-right: 5px;
 }
 .gscore4 {
   background: #00ffff;
-  width: 8px;
-  margin-right: 5px;
 }
 .gscore5 {
   background: #b380ff;
-  width: 8px;
-  margin-right: 5px;
 }
 @media all and (max-width: 1060px) {
   .courage-under {
