@@ -35,10 +35,12 @@ export default {
       this.$emit('smt-select', smtID)
     },
     setSettlementName: function (smtID) {
-      this.$settlements.updateOne(smtID, { name: this.textInput }, () => {
-        this.settlement.name = this.textInput
-        this.editing = false
-      })
+      if (this.textInput !== '') {
+        this.$settlements.updateOne(smtID, { name: this.textInput }, () => {
+          this.settlement.name = this.textInput
+          this.editing = false
+        })
+      } else { this.editing = false }
     },
     toggleEdit: function () {
       console.log('toggle')
