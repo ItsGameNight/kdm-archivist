@@ -26,7 +26,10 @@ import SurvivorTableRow from './SurvivorTableRow'
 export default {
   name: 'survivor-table',
   components: { SurvivorTableRow },
-  data () {
+  props: {
+    currentSmt: null
+  },
+  data: function () {
     return {
       collapsedState: true,
       survivors: [],
@@ -34,7 +37,10 @@ export default {
       smtID: null
     }
   },
-  created () {
+  created: function () {
+  },
+  mounted: function () {
+    this.smtID = this.currentSmt
     this.loadSurvivors()
   },
   methods: {
@@ -44,21 +50,11 @@ export default {
       }
     },
     loadSurvivors: function () {
-      this.$settlements.getAll((smts) => {
-        if (smts.length !== 0) {
-          this.smtID = smts[0]._id
-          this.$survivors.getAllInSettlement(this.smtID, (s) => {
-            this.survivors = s
-          })
-        } else {
-          this.$settlements.createNew((newSet) => {
-            this.smtID = newSet._id
-            this.$survivors.getAllInSettlement(this.smtID, (s) => {
-              this.survivors = s
-            })
-          })
-        }
-      })
+      if (this.smtID !== null) {
+        this.$survivors.getAllInSettlement(this.smtID, (s) => {
+          this.survivors = s
+        })
+      }
     },
     sortSurvivors: function () {
       // sorts this.survivors by measure

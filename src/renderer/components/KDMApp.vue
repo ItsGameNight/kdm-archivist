@@ -1,25 +1,49 @@
 <template>
-  <div id="kdm-app">
-    <settlement-inspector id="inspector"></settlement-inspector>
-    <div id="content">
-      <span>|NAV| |BAR| |HERE|</span>
-      <survivor-table id="survivor-table"></survivor-table>
+  <div>
+    <div v-if="appState === 0" id="welcome">
+      <welcome-screen @smt-select="setCurrentSmt" @play="play"></welcome-screen>
     </div>
-    <div id="note-panel">
-      <span style="font-weight: bold">Notes:</span>
-      <note-panel></note-panel>
+    <div id="kdm-app" v-if="appState === 1">
+      <settlement-inspector id="inspector"></settlement-inspector>
+      <div id="content">
+        <span>|NAV| |BAR| |HERE|</span>
+        <survivor-table id="survivor-table" :currentSmt="currentSmt"></survivor-table>
+      </div>
+      <div id="note-panel">
+        <span style="font-weight: bold">Notes:</span>
+        <note-panel></note-panel>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import WelcomeScreen from './WelcomeScreen'
 import SurvivorTable from './SurvivorTable'
 import SettlementInspector from './SettlementInspector'
 import NotePanel from './NotePanel'
 
 export default {
   name: 'kdm-app',
-  components: { SurvivorTable, SettlementInspector, NotePanel }
+  components: { WelcomeScreen, SurvivorTable, SettlementInspector, NotePanel },
+  data: function () {
+    return {
+      appState: 0,
+      currentSmt: null
+    }
+  },
+  methods: {
+    setCurrentSmt: function (update) {
+      this.currentSmt = update
+    },
+    play: function () {
+      if (this.currentSmt !== null) {
+        this.appState = 1
+      } else {
+        alert('Please select a settlement.')
+      }
+    }
+  }
 }
 </script>
 
@@ -30,6 +54,9 @@ export default {
   max-height: 600px;
   display: flex;
   flex-direction: row;
+}
+#welcome {
+  width: 100%;
 }
 #inspector {
   width: 15%;
