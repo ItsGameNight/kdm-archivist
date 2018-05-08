@@ -63,7 +63,7 @@ describe('Survivors', () => {
           survival: 1,
           insanity: 0,
           movement: 5,
-          accuracy: 0,
+          accuracy: 1,
           strength: 0,
           evasion: 0,
           luck: 2,
@@ -109,6 +109,32 @@ describe('Survivors', () => {
         survivors.countMatching(smts[0]._id, { luck: 2 }, (count) => {
           if (count == 1) done()
           else done(new Error())
+        })
+      })
+    })
+  })
+
+  describe('computeGoodness()', function() {
+    it('you either die a yee or see yourself live long enough to become a fuq', function(done) {
+      settlements.getAll((smts) => {
+        survivors.getMatching(smts[0]._id, { name: 'Testy' }, function(survs) {
+          survivors.computeGoodness(survs[0]._id, (score) => {
+            if (score === 2) done()
+            else done(new Error('Testys score should be 1, but it was ' + String(score)))
+          })
+        })
+      })
+    })
+  })
+
+  describe('computeGoodness() for base', function() {
+    it('you either die a yee or see yourself live long enough to become a fuq', function(done) {
+      settlements.getAll((smts) => {
+        survivors.getMatching(smts[0]._id, { name: null }, function(survs) {
+          survivors.computeGoodness(survs[0]._id, (score) => {
+            if (score === 1) done()
+            else done(new Error('base score should be 0, but it was ' + String(score)))
+          })
         })
       })
     })

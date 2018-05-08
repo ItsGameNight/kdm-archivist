@@ -17,6 +17,32 @@ class SurvivorsDatabase extends Database {
     super.getMatching(criteria, cb)
   }
 
+  computeGoodness (survID, cb) {
+    super.getMatching({ _id: survID }, (s) => {
+      // compute props
+      s = s[0]
+      var movediff = s.movement - 5
+      var sumstats = movediff + s.strength + s.evasion + s.speed + s.accuracy + s.luck
+
+      // compute goodness -- TODO: allow user tuning
+      var goodness = 0
+      if (movediff < 0 || s.strength < 0 || s.evasion < 0 || s.speed < 0 || s.accuracy < 0 || s.luck < 0) {
+        goodness = 0 // fuq
+      } else if (sumstats < 2) {
+        goodness = 1 // normie 0-1
+      } else if (sumstats < 4) {
+        goodness = 2 // yee 2-3
+      } else if (sumstats < 6) {
+        goodness = 3 // super yee 4 -5
+      } else if (sumstats < 8) {
+        goodness = 4 // yezus 6-7
+      } else {
+        goodness = 5 // god? 8+
+      }
+      cb(goodness) // must call variable, not literal (thanks eslint)
+    })
+  }
+
   // Get all survivors sorted by field(s)
   getAllSortedBy (smtID, sortCriteria, cb) {
     this.getMatchingSortedBy(smtID, {}, sortCriteria, cb)
