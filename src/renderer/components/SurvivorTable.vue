@@ -10,6 +10,7 @@
     <div>
       <button @click="addNewSurvivor()">Add Base Survivor</button>
       <button @click="dropAllSurvivors()">Drop All</button>
+      <button @click="sortSurvivors()">Yee Sort</button>
     </div>
     <div class="table-scroll">
       <table>
@@ -57,6 +58,13 @@ export default {
             })
           })
         }
+      })
+    },
+    sortSurvivors: function () {
+      // sorts this.survivors by measure
+      // TODO: allow more than goodness
+      this.survivors.sort((s1, s2) => {
+        return this.survGScores[s2._id] - this.survGScores[s1._id]
       })
     },
     addNewSurvivor: function () {
