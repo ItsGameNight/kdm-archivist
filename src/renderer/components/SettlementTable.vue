@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="modals">
+      <modal v-if="showNewSettlementModal" @close="showNewSettlementModal = false" :modalWidth="300">
+        <h3 slot="header">New Settlement</h3>
+        <label slot="body">Settlement Name: <input /></label>
+      </modal>
+    </div>
     <div class="table-scroll" @click="setCurrentSmt(null)">
       <table>
         <tr><th>Settlements:</th></tr>
@@ -8,18 +14,24 @@
     </div>
     <div id="controls">
       <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
-      <button @click="createSettlement()">New Settlement</button>
+      <button @click="showNewSettlementModal = true">New Settlement</button>
     </div>
   </div>
 </template>
 
 <script>
 import SettlementTableRow from './SettlementTableRow'
+import Modal from './Modal'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'settlement-table',
-  components: { SettlementTableRow },
+  components: { SettlementTableRow, Modal },
+  data () {
+    return {
+      showNewSettlementModal: false
+    }
+  },
   computed: {
     ...mapState([
       'currentSmt',
