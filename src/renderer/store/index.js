@@ -10,6 +10,8 @@ export default new Vuex.Store({
     currentSmt: null
   },
   getters: {
+  },
+  mutations: {
     SET_SURVIVORS (state, newObj) {
       state.survivors = newObj
     },
@@ -20,9 +22,10 @@ export default new Vuex.Store({
       state.currentSmt = id
     }
   },
-  mutations: {
-  },
   actions: {
+    setCurrentSmt ({ commit }, id) {
+      commit('SET_CURRENTSMT', id)
+    }
   },
   modules: {
   },

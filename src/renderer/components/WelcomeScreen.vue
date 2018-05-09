@@ -5,7 +5,7 @@
       <div id="subtitle">A Kingdom Death Companion App</div>
     </header>
     <div id="settlement-table">
-      <settlement-table @smt-select="setCurrentSmt"></settlement-table>
+      <settlement-table></settlement-table>
     </div>
     <button id="play-button" @click="$emit('play')">Play</button>
   </div>
@@ -15,12 +15,7 @@
 import SettlementTable from './SettlementTable'
 export default {
   name: 'welcome-screen',
-  components: { SettlementTable },
-  methods: {
-    setCurrentSmt: function (update) {
-      this.$emit('smt-select', update)
-    }
-  }
+  components: { SettlementTable }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="table-scroll" @click="currentSmt = null; setCurrentSmt(null)">
+    <div class="table-scroll" @click="setCurrentSmt(null)">
       <table>
         <tr><th>Settlements:</th></tr>
         <tr v-for="smt in settlements"><settlement-table-row :settlement="smt" :key="smt._id" :selected="smt._id === currentSmt" @smt-select="setCurrentSmt"></settlement-table-row></tr>
@@ -15,30 +15,34 @@
 
 <script>
 import SettlementTableRow from './SettlementTableRow'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'settlement-table',
   components: { SettlementTableRow },
   data () {
     return {
-      settlements: [],
-      currentSmt: null
+      settlements: []
     }
+  },
+  computed: {
+    ...mapState([
+      'currentSmt'
+    ])
   },
   created () {
     this.loadSettlements()
   },
   methods: {
+    ...mapActions([
+      'setCurrentSmt'
+    ]),
     loadSettlements: function () {
       this.$settlements.getAll((smts) => {
         if (smts.length !== 0) {
           this.settlements = smts
         }
       })
-    },
-    setCurrentSmt: function (update) {
-      this.currentSmt = update
-      this.$emit('smt-select', update)
     },
     newSettlement: function () {
       this.$settlements.createNew(() => {
@@ -47,7 +51,7 @@ export default {
     },
     deleteSmt: function () {
       this.$settlements.remove(this.currentSmt, () => {
-        this.currentSmt = null
+        this.setCurrentSmt(null)
         this.loadSettlements()
       })
     }

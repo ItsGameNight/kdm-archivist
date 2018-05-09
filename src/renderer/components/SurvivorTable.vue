@@ -22,26 +22,25 @@
 
 <script>
 import SurvivorTableRow from './SurvivorTableRow'
+import { mapState } from 'vuex'
 
 export default {
   name: 'survivor-table',
   components: { SurvivorTableRow },
-  props: {
-    currentSmt: null
-  },
   data: function () {
     return {
       collapsedState: true,
       survivors: [],
-      survGScores: {},
-      smtID: null
+      survGScores: {}
     }
   },
-  created: function () {
-  },
   mounted: function () {
-    this.smtID = this.currentSmt
     this.loadSurvivors()
+  },
+  computed: {
+    ...mapState([
+      'currentSmt'
+    ])
   },
   methods: {
     goodnessUpdate: function (update) {
@@ -50,8 +49,8 @@ export default {
       }
     },
     loadSurvivors: function () {
-      if (this.smtID !== null) {
-        this.$survivors.getAllInSettlement(this.smtID, (s) => {
+      if (this.currentSmt !== null) {
+        this.$survivors.getAllInSettlement(this.currentSmt, (s) => {
           this.survivors = s
         })
       }
@@ -64,7 +63,7 @@ export default {
       })
     },
     addNewSurvivor: function () {
-      this.$survivors.addBase(this.smtID, { name: 'Test' }, () => {
+      this.$survivors.addBase(this.currentSmt, { name: 'Test' }, () => {
         this.loadSurvivors()
       })
     },
