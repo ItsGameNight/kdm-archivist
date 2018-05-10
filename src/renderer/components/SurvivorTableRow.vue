@@ -108,9 +108,12 @@
 </template>
 
 <script>
+import HuntXpBar from './HuntXpBar'
 import { mapActions } from 'vuex'
+
 export default {
   name: 'survivor-table-row',
+  components: { HuntXpBar },
   props: {
     survivor: {},
     collapsed: { default: false },
