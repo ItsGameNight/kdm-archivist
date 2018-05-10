@@ -90,13 +90,11 @@ describe('Survivors', () => {
 
   describe('updateOne()', function() {
     it('should update Testy to have 3 insanity', function(done) {
-      settlements.getAll((smts) => {
-        survivors.getMatching(smts[0]._id, { name: 'Testy' }, (docs) => {
-          survivors.updateOne(docs[0]._id, { insanity: 3 }, () => {
-            survivors.getMatching(smts[0]._id, { name: 'Testy' }, (docs) => {
-              if (docs[0].name === 'Testy' && docs[0].insanity === 3) done()
-              else done(new Error())
-            })
+      survivors.getMatching({ name: 'Testy' }, (docs) => {
+        survivors.updateOne(docs[0]._id, { insanity: 3 }, () => {
+          survivors.getMatching({ name: 'Testy' }, (docs) => {
+            if (docs[0].name === 'Testy' && docs[0].insanity === 3) done()
+            else done(new Error())
           })
         })
       })
@@ -109,32 +107,6 @@ describe('Survivors', () => {
         survivors.countMatching(smts[0]._id, { luck: 2 }, (count) => {
           if (count == 1) done()
           else done(new Error())
-        })
-      })
-    })
-  })
-
-  describe('computeGoodness()', function() {
-    it('you either die a yee or see yourself live long enough to become a fuq', function(done) {
-      settlements.getAll((smts) => {
-        survivors.getMatching(smts[0]._id, { name: 'Testy' }, function(survs) {
-          survivors.computeGoodness(survs[0]._id, (score) => {
-            if (score === 2) done()
-            else done(new Error('Testys score should be 1, but it was ' + String(score)))
-          })
-        })
-      })
-    })
-  })
-
-  describe('computeGoodness() for base', function() {
-    it('you either die a yee or see yourself live long enough to become a fuq', function(done) {
-      settlements.getAll((smts) => {
-        survivors.getMatching(smts[0]._id, { name: null }, function(survs) {
-          survivors.computeGoodness(survs[0]._id, (score) => {
-            if (score === 1) done()
-            else done(new Error('base score should be 0, but it was ' + String(score)))
-          })
         })
       })
     })
@@ -153,12 +125,10 @@ describe('Survivors', () => {
 
   describe('remove()', function() {
     it('should remove one survivor', function (done) {
-      settlements.getAll((smts) => {
-        survivors.getMatching(smts[0]._id, { name: 'Testy' }, (docs) => {
-          survivors.remove(docs[0]._id, (numRemoved) => {
-            if (numRemoved == 1) done()
-            else done(new Error('Expected: 1, Actual: ' + numRemoved))
-          })
+      survivors.getMatching({ name: 'Testy' }, (docs) => {
+        survivors.remove(docs[0]._id, (numRemoved) => {
+          if (numRemoved == 1) done()
+          else done(new Error('Expected: 1, Actual: ' + numRemoved))
         })
       })
     })
