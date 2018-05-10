@@ -17,6 +17,18 @@ export default new Vuex.Store({
     survivorsInSettlementGScores: (state) => {
       var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
       return survs.map((s) => { return goodnessFunction(s) })
+    },
+    currentSettlement: (state) => {
+      var idx = state.settlements.findIndex((s) => { return s._id === state.currentSmt })
+      return state.settlements[idx]
+    },
+    numberAliveInSettlement: (state) => {
+      var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+      return survs.filter((s) => { return s.alive === true }).length
+    },
+    settlementDeathCount: (state) => {
+      var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+      return survs.filter((s) => { return s.alive === false }).length
     }
   },
   mutations: {
