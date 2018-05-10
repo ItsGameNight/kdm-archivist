@@ -15,8 +15,11 @@
           </div>
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-default-button" @click="$emit('close')">
+              <button class="modal-default-button" @click="$emit('okay'); $emit('close')">
                 Okay
+              </button>
+              <button class="modal-default-button" @click="$emit('cancel'); $emit('close')">
+                Cancel
               </button>
             </slot>
           </div>
@@ -53,17 +56,22 @@ export default {
 }
 .modal-container {
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 0px 30px 20px 30px;
   background-color: #fff;
   border-radius: 2px;
+  border: 1px solid black;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
 }
 .modal-header {
   margin-top: 0;
+  padding: 0;
 }
 .modal-body {
   margin: 20px 0;
+}
+.modal-footer {
+  min-height: 10px;
 }
 .modal-default-button {
   float: right;
