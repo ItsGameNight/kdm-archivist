@@ -16,8 +16,13 @@ Vue.config.productionTip = false
 
 console.log(remote.app.getPath('userData'))
 var smts = new SettlementsDatabase(remote.app.getPath('userData'))
+var survs = new SurvivorsDatabase(remote.app.getPath('userData'), smts)
+
 Vue.prototype.$settlements = smts
-Vue.prototype.$survivors = new SurvivorsDatabase(remote.app.getPath('userData'), smts)
+Vue.prototype.$survivors = survs
+
+store.$settlements = smts
+store.$survivors = survs
 
 /* eslint-disable no-new */
 new Vue({

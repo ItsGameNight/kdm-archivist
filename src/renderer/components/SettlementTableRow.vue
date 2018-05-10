@@ -1,12 +1,12 @@
 <template>
-  <td @click.stop="setCurrentSmt(settlement._id)" :class="[selected ? 'selected' : '']">
+  <td @click.stop="setCurrentSmt(smtID)" :class="[selected ? 'selected' : '']">
     <div v-if="this.editing">
-      <input v-model="textInput" placeholder="Edit Me!"></input>
-      <button class="editBtn" @click.stop="setSettlementName(settlement._id)">Done</button>
+      <input v-model="name" placeholder="Edit Me!"></input>
+      <button class="editBtn" @click.stop="toggleEdit()">Done</button>
     </div>
     <div v-else>
-      <span v-if="settlement.name !== null">
-        {{ settlement.name }}
+      <span v-if="name !== null && name !== ''">
+        {{ name }}
         <button v-if="selected" class="editBtn" @click.stop="toggleEdit()">Edit</button>
       </span>
       <span v-else>
@@ -18,32 +18,37 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'settlement-table-row',
   props: {
-    settlement: {},
+    smtID: 0,
+    index: 0,
     selected: false
   },
   data: function () {
     return {
-      textInput: '',
       editing: false
     }
   },
+  computed: {
+    name: {
+      get () {
+        return this.$store.state.settlements[this.index].name
+      },
+      set (value) {
+        this.updateSettlement({ id: this.smtID, update: { name: value } })
+      }
+    }
+  },
   methods: {
+    ...mapActions([
+      'updateSettlement'
+    ]),
     setCurrentSmt: function (smtID) {
       this.$emit('smt-select', smtID)
     },
-    setSettlementName: function (smtID) {
-      if (this.textInput !== '') {
-        this.$settlements.updateOne(smtID, { name: this.textInput }, () => {
-          this.settlement.name = this.textInput
-          this.editing = false
-        })
-      } else { this.editing = false }
-    },
     toggleEdit: function () {
-      console.log('toggle')
       this.editing = !this.editing
     }
   }

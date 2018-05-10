@@ -1,56 +1,37 @@
 <template>
   <div>
-    <div class="table-scroll" @click="currentSmt = null; setCurrentSmt(null)">
+    <div class="table-scroll" @click="setCurrentSmt(null)">
       <table>
         <tr><th>Settlements:</th></tr>
-        <tr v-for="smt in settlements"><settlement-table-row :settlement="smt" :key="smt._id" :selected="smt._id === currentSmt" @smt-select="setCurrentSmt"></settlement-table-row></tr>
+        <tr v-for="(smt, index) in settlements"><settlement-table-row :smtID="smt._id" :index="index" :key="smt._id" :selected="smt._id === currentSmt" @smt-select="setCurrentSmt"></settlement-table-row></tr>
       </table>
     </div>
     <div id="controls">
-      <button v-if="currentSmt !== null" @click="deleteSmt()">Delete Settlement</button>
-      <button @click="newSettlement()">New Settlement</button>
+      <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
+      <button @click="createSettlement()">New Settlement</button>
     </div>
   </div>
 </template>
 
 <script>
 import SettlementTableRow from './SettlementTableRow'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'settlement-table',
   components: { SettlementTableRow },
-  data () {
-    return {
-      settlements: [],
-      currentSmt: null
-    }
-  },
-  created () {
-    this.loadSettlements()
+  computed: {
+    ...mapState([
+      'currentSmt',
+      'settlements'
+    ])
   },
   methods: {
-    loadSettlements: function () {
-      this.$settlements.getAll((smts) => {
-        if (smts.length !== 0) {
-          this.settlements = smts
-        }
-      })
-    },
-    setCurrentSmt: function (update) {
-      this.currentSmt = update
-      this.$emit('smt-select', update)
-    },
-    newSettlement: function () {
-      this.$settlements.createNew(() => {
-        this.loadSettlements()
-      })
-    },
-    deleteSmt: function () {
-      this.$settlements.remove(this.currentSmt, () => {
-        this.currentSmt = null
-        this.loadSettlements()
-      })
-    }
+    ...mapActions([
+      'setCurrentSmt',
+      'createSettlement',
+      'deleteSettlement'
+    ])
   }
 }
 </script>

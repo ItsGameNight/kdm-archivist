@@ -93,7 +93,7 @@ class Database {
 
   // THIS IS ONLY FOR TEST PURPOSES
   // Delete entire this.db
-  dropAll () {
+  dropAll (cb) {
     this.db.remove({ }, { multi: true }, (err, numRem) => {
       if (err) {
         throw (err)
@@ -101,6 +101,9 @@ class Database {
       this.db.loadDatabase((err) => {
         if (err) {
           throw (err)
+        }
+        if (cb && typeof cb === 'function') {
+          cb()
         }
       })
     })
