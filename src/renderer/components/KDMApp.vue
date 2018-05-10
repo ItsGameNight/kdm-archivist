@@ -45,6 +45,10 @@ export default {
         alert('Please select a settlement.')
       }
     }
+  },
+  mounted: function () {
+    this.$store.dispatch('loadSettlements')
+    this.$store.dispatch('loadSurvivors')
   }
 }
 </script>

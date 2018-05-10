@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'settlement-table-row',
   props: {
@@ -31,19 +32,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'updateSettlement'
+    ]),
     setCurrentSmt: function (smtID) {
       this.$emit('smt-select', smtID)
     },
     setSettlementName: function (smtID) {
       if (this.textInput !== '') {
-        this.$settlements.updateOne(smtID, { name: this.textInput }, () => {
-          this.settlement.name = this.textInput
-          this.editing = false
+        this.updateSettlement({
+          id: smtID,
+          update: { name: this.textInput }
         })
-      } else { this.editing = false }
+      }
+      this.editing = false
     },
     toggleEdit: function () {
-      console.log('toggle')
       this.editing = !this.editing
     }
   }

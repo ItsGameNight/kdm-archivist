@@ -7,8 +7,8 @@
       </table>
     </div>
     <div id="controls">
-      <button v-if="currentSmt !== null" @click="deleteSmt()">Delete Settlement</button>
-      <button @click="newSettlement()">New Settlement</button>
+      <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
+      <button @click="createSettlement()">New Settlement</button>
     </div>
   </div>
 </template>
@@ -20,41 +20,18 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'settlement-table',
   components: { SettlementTableRow },
-  data () {
-    return {
-      settlements: []
-    }
-  },
   computed: {
     ...mapState([
-      'currentSmt'
+      'currentSmt',
+      'settlements'
     ])
-  },
-  created () {
-    this.loadSettlements()
   },
   methods: {
     ...mapActions([
-      'setCurrentSmt'
-    ]),
-    loadSettlements: function () {
-      this.$settlements.getAll((smts) => {
-        if (smts.length !== 0) {
-          this.settlements = smts
-        }
-      })
-    },
-    newSettlement: function () {
-      this.$settlements.createNew(() => {
-        this.loadSettlements()
-      })
-    },
-    deleteSmt: function () {
-      this.$settlements.remove(this.currentSmt, () => {
-        this.setCurrentSmt(null)
-        this.loadSettlements()
-      })
-    }
+      'setCurrentSmt',
+      'createSettlement',
+      'deleteSettlement'
+    ])
   }
 }
 </script>
