@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import goodnessFunction from '../../db/goodness.js'
 
 Vue.use(Vuex)
 
@@ -10,6 +11,13 @@ export default new Vuex.Store({
     currentSmt: null
   },
   getters: {
+    survivorsInSettlement: (state) => {
+      return state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+    },
+    survivorsInSettlementGScores: (state) => {
+      var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+      return survs.map((s) => { return goodnessFunction(s) })
+    }
   },
   mutations: {
     SET_SURVIVORS (state, newObj) {
@@ -21,18 +29,15 @@ export default new Vuex.Store({
     SET_CURRENTSMT (state, id) {
       state.currentSmt = id
     },
-    /* trying to be smart about updates -- deprecated bc doesn't cause
-     * reactive updating
-     * IT IS THE UI's JOB TO ORDER
+    // Needs Vue.set --> https://vuejs.org/v2/guide/list.html#Caveats
     SET_SETTLEMENT_BY_ID (state, payload) {
       var idx = state.settlements.findIndex((s) => { return s._id === payload.id })
-      state.settlements[idx] = payload.newObj
+      Vue.set(state.settlements, idx, payload.newObj)
     },
     SET_SURVIVOR_BY_ID (state, payload) {
       var idx = state.survivors.findIndex((s) => { return s._id === payload.id })
-      state.survivors[idx] = payload.newObj
+      Vue.set(state.survivors, idx, payload.newObj)
     }
-    */
   },
   actions: {
     setCurrentSmt ({ commit }, id) {
@@ -49,7 +54,6 @@ export default new Vuex.Store({
       })
     },
     updateSettlement ({ commit }, payload) {
-      console.log(payload)
       var id = payload.id
       var update = payload.update
       // update the smt in db
@@ -57,9 +61,7 @@ export default new Vuex.Store({
         // get the whole new object
         this.$settlements.getMatching({ _id: id }, (s) => {
           // update store
-          this.$settlements.getAll((smts) => {
-            commit('SET_SETTLEMENTS', smts)
-          })
+          commit('SET_SETTLEMENT_BY_ID', { id: s[0]._id, newObj: s[0] })
         })
       })
     },
@@ -75,6 +77,30 @@ export default new Vuex.Store({
         this.$settlements.getAll((smts) => {
           commit('SET_SETTLEMENTS', smts)
           commit('SET_CURRENTSMT', null)
+        })
+      })
+    },
+    dropAllSurvivors ({ commit }) {
+      this.$survivors.dropAll(() => {
+        this.$survivors.getAll((survs) => {
+          commit('SET_SURVIVORS', survs)
+        })
+      })
+    },
+    addNewSurvivor ({ commit }, smtID) {
+      console.log(smtID)
+      this.$survivors.addBase(smtID, { name: 'Test' }, () => {
+        this.$survivors.getAll((survs) => {
+          commit('SET_SURVIVORS', survs)
+        })
+      })
+    },
+    updateSurvivor ({ commit }, payload) {
+      var id = payload.id
+      var update = payload.update
+      this.$survivors.updateOne(id, update, () => {
+        this.$survivors.getMatching({ _id: id }, (s) => {
+          commit('SET_SURVIVOR_BY_ID', { id: s[0]._id, newObj: s[0] })
         })
       })
     }

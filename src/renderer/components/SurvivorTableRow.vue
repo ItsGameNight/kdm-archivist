@@ -17,23 +17,23 @@
         </div>
       </div>
       <div v-if="collapsedView" class="stat xp">
-        <input class="value-no-border" v-model.number="survivor.xp" @dblclick.stop />
+        <input class="value-no-border" :value="survivor.xp" :stat="'xp'" @input="updateNumberValue" @dblclick.stop />
         <div class="title">XP</div>
       </div>
     </div>
     <div :class="['section', collapsedView ? 'stats-collapsed' : 'stats-info']">
       <div v-if="!collapsedView" class="square-row xp-bar">
         <span class="title">Hunt XP ({{ survivor.xp }}): </span>
-        <div v-for="n in 16" :class="huntXpSquareClass(survivor.xp, n)" @click="setHuntXpBar(survivor, n)" @dblclick.stop></div>
+        <div v-for="n in 16" :class="huntXpSquareClass(survivor.xp, n)" @click="setBox" :n="n" :stat="'xp'" @dblclick.stop></div>
       </div>
       <div class="wrapper survival-insanity">
         <div class="stats-display">
           <div class="stat">
-            <input class="value" v-model.number="survivor.survival" @dblclick.stop />
+            <input class="value" :value="survivor.survival" :stat="'survival'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">SUR</div>
           </div>
           <div class="stat">
-            <input class="value" v-model.number="survivor.insanity" @dblclick.stop />
+            <input class="value" :value="survivor.insanity" :stat="'insanity'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">INS</div>
           </div>
         </div>
@@ -41,27 +41,27 @@
       <div class="wrapper">
         <div class="stats-display">
           <div class="stat">
-            <input class="value" v-model.number="survivor.movement" @dblclick.stop />
+            <input class="value" :value="survivor.movement" :stat="'movement'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">MOV</div>
           </div>
           <div class="stat">
-            <input class="value" v-model.number="survivor.strength" @dblclick.stop />
+            <input class="value" :value="survivor.strength" :stat="'strength'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">STR</div>
           </div>
           <div class="stat">
-            <input class="value" v-model.number="survivor.accuracy" @dblclick.stop />
+            <input class="value" :value="survivor.accuracy" :stat="'accuracy'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">ACC</div>
           </div>
           <div class="stat">
-            <input class="value" v-model.number="survivor.evasion" @dblclick.stop />
+            <input class="value" :value="survivor.evasion" :stat="'evasion'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">EVA</div>
           </div>
           <div class="stat">
-            <input class="value" v-model.number="survivor.luck" @dblclick.stop />
+            <input class="value" :value="survivor.luck" :stat="'luck'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">LCK</div>
           </div>
           <div class="stat">
-            <input class="value" v-model.number="survivor.speed" @dblclick.stop />
+            <input class="value" :value="survivor.speed" :stat="'speed'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">SPD</div>
           </div>
         </div>
@@ -69,15 +69,15 @@
       <div v-if="collapsedView" class="wrapper courage-under">
         <div class="stats-display">
           <div class="stat">
-            <input class="value-no-border" v-model.number="survivor.courage" @dblclick.stop />
+            <input class="value-no-border" :value="survivor.courage" :stat="'courage'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">CRG</div>
           </div>
           <div class="stat">
-            <input class="value-no-border" v-model.number="survivor.understanding" @dblclick.stop />
+            <input class="value-no-border" :value="survivor.understanding" :stat="'understanding'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">UND</div>
           </div>
           <div class="stat">
-            <input class="value-no-border" v-model.number="survivor.weaponProficiencyLevel" @dblclick.stop />
+            <input class="value-no-border" :value="survivor.weaponProficiencyLevel" :stat="'weaponProficiencyLevel'" @input="updateNumberValue" @dblclick.stop />
             <div class="title">WPN</div>
           </div>
         </div>
@@ -87,19 +87,19 @@
       <div class="progress-bar">
         <span class="title">Courage ({{ survivor.courage }}): </span>
         <div class="square-row">
-          <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.courage, n)" @click="setCourageBar(survivor, n)" @dblclick.stop></div>
+          <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.courage, n)" @click="setBox" :n="n" :stat="'courage'" @dblclick.stop></div>
         </div>
       </div>
       <div class="progress-bar">
         <span class="title">Understanding ({{ survivor.understanding }}): </span>
         <div class="square-row">
-          <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.understanding, n)" @click="setUnderstandingBar(survivor, n)" @dblclick.stop></div>
+          <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.understanding, n)" @click="setBox" :n="n" :stat="'understanding'" @dblclick.stop></div>
         </div>
       </div>
       <div class="progress-bar">
         <span class="title">Weapon Proficiency ({{ survivor.weaponProficiencyLevel }}): </span>
         <div class="square-row">
-          <div v-for="n in 8" :class="weaponXpSquareClass(survivor.weaponProficiencyLevel, n)" @click="setWeaponProficiencyLevelBar(survivor, n)" @dblclick.stop></div><div class="invisible-square"></div>
+          <div v-for="n in 8" :class="weaponXpSquareClass(survivor.weaponProficiencyLevel, n)" @click="setBox" :n="n" :stat="'weaponProficiencyLevel'" @dblclick.stop></div><div class="invisible-square"></div>
         </div>
         <span class="detail">Weapon Type: <span class="weapon-prof" v-if="survivor.weaponProficiency">{{ survivor.weaponProficiency }}</span><span v-else>______</span></span>
       </div>
@@ -108,43 +108,38 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'survivor-table-row',
   props: {
     survivor: {},
     collapsed: { default: false },
-    defaultNormie: { default: 0 }
+    yeeScore: 0
   },
   data: function () {
     return {
-      collapsedView: this.collapsed,
-      yeeScore: this.defaultNormie
+      collapsedView: this.collapsed
     }
-  },
-  mounted: function () {
-    this.$survivors.computeGoodness(this.survivor._id, (score) => {
-      this.yeeScore = score
-      var id = this.survivor._id
-      this.$emit('goodness-update', { _id: id, score: score })
-    })
   },
   watch: {
     collapsed: function (newVal, oldVal) {
       this.collapsedView = newVal
-    },
-    survivor: {
-      handler: function (newSurvivor, oldSurvivor) {
-        this.$survivors.updateOne(this.survivor._id, newSurvivor)
-        this.$survivors.computeGoodness(this.survivor._id, (score) => {
-          this.yeeScore = score
-          var id = this.survivor._id
-          this.$emit('goodness-update', { _id: id, score: score })
-        })
-      },
-      deep: true
     }
   },
   methods: {
+    ...mapActions([
+      'updateSurvivor'
+    ]),
+    updateNumberValue (e) {
+      var value = e.target.value
+      if (value !== '' && !isNaN(parseFloat(value))) {
+        // unpack the event
+        var update = {}
+        update[e.target.getAttribute('stat')] = Number(value)
+        // update backend
+        this.updateSurvivor({ id: this.survivor._id, update: update })
+      }
+    },
     huntXpSquareClass (xp, n) {
       if (n <= xp) {
         return 'square'
@@ -174,33 +169,19 @@ export default {
         return 'empty-square'
       }
     },
-    setHuntXpBar (survivor, n) {
-      if (survivor.xp === n) {
-        survivor.xp = n - 1
+    setBox (e) {
+      // unpack event
+      var statID = e.target.getAttribute('stat')
+      var n = e.target.getAttribute('n')
+      var update = {}
+
+      if (this.survivor[statID] === Number(n)) {
+        update[statID] = Number(n - 1)
       } else {
-        survivor.xp = n
+        update[statID] = Number(n)
       }
-    },
-    setCourageBar (survivor, n) {
-      if (survivor.courage === n) {
-        survivor.courage = n - 1
-      } else {
-        survivor.courage = n
-      }
-    },
-    setUnderstandingBar (survivor, n) {
-      if (survivor.understanding === n) {
-        survivor.understanding = n - 1
-      } else {
-        survivor.understanding = n
-      }
-    },
-    setWeaponProficiencyLevelBar (survivor, n) {
-      if (survivor.weaponProficiencyLevel === n) {
-        survivor.weaponProficiencyLevel = n - 1
-      } else {
-        survivor.weaponProficiencyLevel = n
-      }
+      // update store
+      this.updateSurvivor({ id: this.survivor._id, update: update })
     }
   }
 }

@@ -3,7 +3,7 @@
     <div class="table-scroll" @click="setCurrentSmt(null)">
       <table>
         <tr><th>Settlements:</th></tr>
-        <tr v-for="smt in settlements"><settlement-table-row :settlement="smt" :key="smt._id" :selected="smt._id === currentSmt" @smt-select="setCurrentSmt"></settlement-table-row></tr>
+        <tr v-for="(smt, index) in settlements"><settlement-table-row :smtID="smt._id" :index="index" :key="smt._id" :selected="smt._id === currentSmt" @smt-select="setCurrentSmt"></settlement-table-row></tr>
       </table>
     </div>
     <div id="controls">

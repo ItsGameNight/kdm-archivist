@@ -8,13 +8,13 @@
       </label>
     </div>
     <div>
-      <button @click="addNewSurvivor()">Add Base Survivor</button>
+      <button @click="addNewSurvivor(currentSmt)">Add Base Survivor</button>
       <button @click="dropAllSurvivors()">Drop All</button>
       <button @click="sortSurvivors()">Yee Sort</button>
     </div>
     <div class="table-scroll">
       <table>
-        <tr v-for="surv in survivors"><survivor-table-row :survivor="surv" :key='surv._id' :collapsed="collapsedState" v-on:goodness-update="goodnessUpdate"></survivor-table-row></tr>
+        <tr v-for="(surv, index) in survivorsInSettlement"><survivor-table-row :yeeScore="survivorsInSettlementGScores[index]" :survivor="surv" :key='surv._id' :collapsed="collapsedState"></survivor-table-row></tr>
       </table>
     </div>
   </div>
@@ -22,54 +22,34 @@
 
 <script>
 import SurvivorTableRow from './SurvivorTableRow'
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'survivor-table',
   components: { SurvivorTableRow },
   data: function () {
     return {
-      collapsedState: true,
-      survivors: [],
-      survGScores: {}
+      collapsedState: true
     }
-  },
-  mounted: function () {
-    this.loadSurvivors()
   },
   computed: {
     ...mapState([
       'currentSmt'
+    ]),
+    ...mapGetters([
+      'survivorsInSettlement',
+      'survivorsInSettlementGScores'
     ])
   },
   methods: {
-    goodnessUpdate: function (update) {
-      if (update) {
-        this.survGScores[update._id] = update.score
-      }
-    },
-    loadSurvivors: function () {
-      if (this.currentSmt !== null) {
-        this.$survivors.getAllInSettlement(this.currentSmt, (s) => {
-          this.survivors = s
-        })
-      }
-    },
+    ...mapActions([
+      'dropAllSurvivors',
+      'addNewSurvivor'
+    ]),
     sortSurvivors: function () {
       // sorts this.survivors by measure
       // TODO: allow more than goodness
-      this.survivors.sort((s1, s2) => {
-        return this.survGScores[s2._id] - this.survGScores[s1._id]
-      })
-    },
-    addNewSurvivor: function () {
-      this.$survivors.addBase(this.currentSmt, { name: 'Test' }, () => {
-        this.loadSurvivors()
-      })
-    },
-    dropAllSurvivors: function () {
-      this.$survivors.dropAll()
-      this.loadSurvivors()
+      console.log('TODO -- sort broken since vuex transition')
     }
   }
 }
