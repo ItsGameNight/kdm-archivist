@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <div id="title">White Speaker</div>
+      <div id="title">Twilight Archivist</div>
       <div id="subtitle">A Kingdom Death Companion App</div>
     </header>
     <div id="settlement-table">
