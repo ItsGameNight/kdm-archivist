@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-y: scroll;">
     <h2>{{ currentSettlement.name }}</h2>
     <p>
       <b>Lantern Year: </b>
