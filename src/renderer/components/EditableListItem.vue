@@ -48,6 +48,7 @@ export default {
       // send to store
       var update = {}
       update[this.propertyName] = listClone
+      this.editing = false
       this.updateSettlement({ id: this.currentSettlement._id, update: update })
     }
   }

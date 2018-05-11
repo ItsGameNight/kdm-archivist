@@ -3,19 +3,19 @@
     <h2>{{ currentSettlement.name }}</h2>
     <p>
     <b>Stats:</b><br>
-      Lantern Year: 
+      Lantern Year:
       <input class="value" :value="currentSettlement.lanternYear" :stat="'lanternYear'" @input="updateNumberValue"/>
     <br>
-      Survivors: 
+      Survivors:
       {{ numberAliveInSettlement }}
     <br>
-     Death Count: 
+     Death Count:
      {{ settlementDeathCount }}
     <br>
-      Survival Limit: 
+      Survival Limit:
       <input class="value" :value="currentSettlement.survivalLimit" :stat="'survivalLimit'" @input="updateNumberValue"/>
     <br>
-      Survival on Depart: 
+      Survival on Depart:
       <input class="value" :value="currentSettlement.survivalOnDepart" :stat="'survivalOnDepart'" @input="updateNumberValue"/>
     </p>
     <p>
