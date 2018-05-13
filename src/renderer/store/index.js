@@ -94,6 +94,15 @@ export default new Vuex.Store({
         })
       })
     },
+    createNamedSettlement ({ commit }, name) {
+      this.$settlements.createNew((newDoc) => {
+        this.$settlements.updateOne(newDoc._id, { name: name }, () => {
+          this.$settlements.getAll((smts) => {
+            commit('SET_SETTLEMENTS', smts)
+          })
+        })
+      })
+    },
     deleteSettlement ({ commit }, id) {
       this.$settlements.remove(id, () => {
         this.$settlements.getAll((smts) => {

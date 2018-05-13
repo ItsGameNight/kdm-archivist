@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modals">
-      <modal v-if="showNewSettlementModal" @close="showNewSettlementModal = false" :modalWidth="300">
+      <modal v-if="showNewSettlementModal" @okay="newSmtModalOkayPressed()" @close="showNewSettlementModal = false" :modalWidth="300">
         <h3 slot="header">New Settlement</h3>
         <label slot="body">Settlement Name: <input v-model="newName" /></label>
       </modal>
@@ -14,7 +14,7 @@
     </div>
     <div id="controls">
       <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
-      <button @click="newButtonPressed()">New Settlement</button>
+      <button @click="newSmtButtonPressed()">New Settlement</button>
     </div>
   </div>
 </template>
@@ -42,12 +42,17 @@ export default {
   methods: {
     ...mapActions([
       'setCurrentSmt',
-      'createSettlement',
+      'createNamedSettlement',
       'deleteSettlement'
     ]),
-    newButtonPressed: function () {
+    newSmtButtonPressed: function () {
       this.newName = null
       this.showNewSettlementModal = true
+    },
+    newSmtModalOkayPressed: function () {
+      if (this.newName !== null) {
+        this.createNamedSettlement(this.newName)
+      }
     }
   }
 }
