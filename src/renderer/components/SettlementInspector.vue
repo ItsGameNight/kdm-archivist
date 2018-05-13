@@ -2,21 +2,25 @@
   <div style="overflow-y: scroll;">
     <h2>{{ currentSettlement.name }}</h2>
     <p>
-    <b>Stats:</b><br>
+    <b>Overview:</b>
+    <br>
       Lantern Year:
       <input class="value" :value="currentSettlement.lanternYear" :stat="'lanternYear'" @input="updateNumberValue"/>
-    <br>
-      Survivors:
-      {{ numberAliveInSettlement }}
-    <br>
-     Death Count:
-     {{ settlementDeathCount }}
     <br>
       Survival Limit:
       <input class="value" :value="currentSettlement.survivalLimit" :stat="'survivalLimit'" @input="updateNumberValue"/>
     <br>
       Survival on Depart:
       <input class="value" :value="currentSettlement.survivalOnDepart" :stat="'survivalOnDepart'" @input="updateNumberValue"/>
+    </p>
+    <p>
+    <b>Stats:</b>
+    <br>
+      Survivors:
+      {{ numberAliveInSettlement }}
+    <br>
+     Death Count:
+     {{ settlementDeathCount }}
     </p>
     <p>
       <b>Principles: </b>
