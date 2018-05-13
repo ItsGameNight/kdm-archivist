@@ -7,11 +7,11 @@
         <span :class="[collapsedView ? 'name-collapsed' : 'name']">{{ survivor.name }}</span>
         <div class="square-row sex">
           <div>
-            <div :class="[survivor.sex === 'm' ? 'square' : 'empty-square']" @click="survivor.sex='m'"></div>
+            <div :class="[survivor.sex === 'm' ? 'square' : 'empty-square']" @click="setSex('m')"></div>
             M
           </div>
           <div>
-            <div :class="[survivor.sex === 'f' ? 'square' : 'empty-square']" @click="survivor.sex='f'"></div>
+            <div :class="[survivor.sex === 'f' ? 'square' : 'empty-square']" @click="setSex('f')"></div>
             F
           </div>
         </div>
@@ -182,6 +182,9 @@ export default {
       }
       // update store
       this.updateSurvivor({ id: this.survivor._id, update: update })
+    },
+    setSex (sex) {
+      this.updateSurvivor({ id: this.survivor._id, update: { sex: sex } })
     }
   }
 }
