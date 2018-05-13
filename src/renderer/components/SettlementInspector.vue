@@ -16,11 +16,11 @@
     <p>
     <b>Stats:</b>
     <br>
-      Survivors:
-      {{ numberAliveInSettlement }}
+      Survivors: {{ numberAliveInSettlement }}
     <br>
-     Death Count:
-     {{ settlementDeathCount }}
+      Death Count: {{ settlementDeathCount }}
+    <br>
+      M/F Ratio: {{ settlementMaleCount }} / {{ settlementFemaleCount }}
     </p>
     <p>
       <b>Principles: </b>
@@ -45,9 +45,11 @@ export default {
   components: { EditableList },
   computed: {
     ...mapGetters([
-      'currentSettlement',
       'numberAliveInSettlement',
-      'settlementDeathCount'
+      'settlementDeathCount',
+      'settlementMaleCount',
+      'settlementFemaleCount',
+      'currentSettlement'
     ])
   },
   methods: {

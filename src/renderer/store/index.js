@@ -4,6 +4,12 @@ import goodnessFunction from '../../db/goodness.js'
 
 Vue.use(Vuex)
 
+// helper for getters
+function countSurvivorsInSmtWPropVal (survs, smtID, prop, val) {
+  var survsInSmt = survs.filter((s) => { return s.settlementID === smtID })
+  return survsInSmt.filter((s) => { return s[prop] === val }).length
+}
+
 export default new Vuex.Store({
   state: {
     survivors: [],
@@ -23,12 +29,16 @@ export default new Vuex.Store({
       return state.settlements[idx]
     },
     numberAliveInSettlement: (state) => {
-      var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
-      return survs.filter((s) => { return s.alive === true }).length
+      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'alive', true)
     },
     settlementDeathCount: (state) => {
-      var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
-      return survs.filter((s) => { return s.alive === false }).length
+      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'alive', false)
+    },
+    settlementMaleCount: (state) => {
+      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'sex', 'm')
+    },
+    settlementFemaleCount: (state) => {
+      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'sex', 'f')
     }
   },
   mutations: {
