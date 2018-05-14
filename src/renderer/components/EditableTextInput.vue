@@ -25,7 +25,7 @@ export default {
           ...this.textStyle,
           backgroundImage: 'url(' + this.bgImgUrl + ')',
           width: '95%',
-          paddingRight: '1em',
+          paddingLeft: '1em',
           fontWeight: 'normal'
         }
       } else if (this.hover) {
@@ -33,7 +33,7 @@ export default {
           ...this.textStyle,
           backgroundImage: 'url(' + this.bgImgUrl + ')',
           width: '95%',
-          paddingRight: '1em'
+          paddingLeft: '1em'
         }
       } else {
         return this.textStyle
@@ -51,7 +51,7 @@ export default {
   background-image: none;
   background-repeat: no-repeat;
   background-size: 0.8em;
-  background-position: right center;
+  background-position: left center;
   user-select: default;
 }
 ::selection {
