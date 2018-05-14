@@ -1,118 +1,120 @@
 <template>
-  <td @dblclick="collapsedView = !collapsedView">
+  <div class="survivor-row">
     <survivor-modal :survivor="survivor" v-if="modalVisible" @close="modalVisible = false"></survivor-modal>
-    <div class="top-right-buttons">
-      <div class="flex-wrapper">
-        <button @click="collapsedView = !collapsedView" @dblclick.stop>min</button>
-        <button @click="modalVisible = true" @dblclick.stop>modal</button>
-        <button @dblclick.stop>del</button>
-      </div>
-    </div>
-    <div :class="['section', 'gscore', 'gscore' + String(yeeScore)]">
-    </div>
-    <div :class="['section', collapsedView ? 'basic-info-collapsed' : 'basic-info']">
-      <div>
-        <span :class="[collapsedView ? 'name-collapsed' : 'name']">{{ survivor.name }}</span>
-        <div class="square-row sex">
-          <div>
-            <div :class="[survivor.sex === 'm' ? 'square' : 'empty-square']" @click="setSex('m')"></div>
-            M
-          </div>
-          <div>
-            <div :class="[survivor.sex === 'f' ? 'square' : 'empty-square']" @click="setSex('f')"></div>
-            F
-          </div>
+    <td @dblclick="collapsedView = !collapsedView">
+      <div class="top-right-buttons">
+        <div class="flex-wrapper">
+          <button @click="collapsedView = !collapsedView" @dblclick.stop>min</button>
+          <button @click="modalVisible = true" @dblclick.stop>modal</button>
+          <button @dblclick.stop>del</button>
         </div>
       </div>
-      <div v-if="collapsedView" class="stat xp">
-        <input class="value-no-border" :value="survivor.xp" :stat="'xp'" @input="updateNumberValue" @dblclick.stop />
-        <div class="title">XP</div>
+      <div :class="['section', 'gscore', 'gscore' + String(yeeScore)]">
       </div>
-      <div :class="['section', collapsedView ? 'stats-collapsed' : 'stats-info']">
-        <div v-if="!collapsedView" class="square-row xp-bar">
-          <span class="title">Hunt XP ({{ survivor.xp }}): </span>
-          <div v-for="n in 16" :class="huntXpSquareClass(survivor.xp, n)" @click="setBox" :n="n" :stat="'xp'" @dblclick.stop></div>
-        </div>
-        <div class="wrapper survival-insanity">
-          <div class="stats-display">
-            <div class="stat">
-              <input class="value" :value="survivor.survival" :stat="'survival'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">SUR</div>
+      <div :class="['section', collapsedView ? 'basic-info-collapsed' : 'basic-info']">
+        <div>
+          <span :class="[collapsedView ? 'name-collapsed' : 'name']">{{ survivor.name }}</span>
+          <div class="square-row sex">
+            <div>
+              <div :class="[survivor.sex === 'm' ? 'square' : 'empty-square']" @click="setSex('m')"></div>
+              M
             </div>
-            <div class="stat">
-              <input class="value" :value="survivor.insanity" :stat="'insanity'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">INS</div>
+            <div>
+              <div :class="[survivor.sex === 'f' ? 'square' : 'empty-square']" @click="setSex('f')"></div>
+              F
             </div>
           </div>
         </div>
-        <div class="wrapper">
-          <div class="stats-display">
-            <div class="stat">
-              <input class="value" :value="survivor.movement" :stat="'movement'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">MOV</div>
+        <div v-if="collapsedView" class="stat xp">
+          <input class="value-no-border" :value="survivor.xp" :stat="'xp'" @input="updateNumberValue" @dblclick.stop />
+          <div class="title">XP</div>
+        </div>
+        <div :class="['section', collapsedView ? 'stats-collapsed' : 'stats-info']">
+          <div v-if="!collapsedView" class="square-row xp-bar">
+            <span class="title">Hunt XP ({{ survivor.xp }}): </span>
+            <div v-for="n in 16" :class="huntXpSquareClass(survivor.xp, n)" @click="setBox" :n="n" :stat="'xp'" @dblclick.stop></div>
+          </div>
+          <div class="wrapper survival-insanity">
+            <div class="stats-display">
+              <div class="stat">
+                <input class="value" :value="survivor.survival" :stat="'survival'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">SUR</div>
+              </div>
+              <div class="stat">
+                <input class="value" :value="survivor.insanity" :stat="'insanity'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">INS</div>
+              </div>
             </div>
-            <div class="stat">
-              <input class="value" :value="survivor.strength" :stat="'strength'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">STR</div>
+          </div>
+          <div class="wrapper">
+            <div class="stats-display">
+              <div class="stat">
+                <input class="value" :value="survivor.movement" :stat="'movement'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">MOV</div>
+              </div>
+              <div class="stat">
+                <input class="value" :value="survivor.strength" :stat="'strength'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">STR</div>
+              </div>
+              <div class="stat">
+                <input class="value" :value="survivor.accuracy" :stat="'accuracy'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">ACC</div>
+              </div>
+              <div class="stat">
+                <input class="value" :value="survivor.evasion" :stat="'evasion'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">EVA</div>
+              </div>
+              <div class="stat">
+                <input class="value" :value="survivor.luck" :stat="'luck'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">LCK</div>
+              </div>
+              <div class="stat">
+                <input class="value" :value="survivor.speed" :stat="'speed'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">SPD</div>
+              </div>
             </div>
-            <div class="stat">
-              <input class="value" :value="survivor.accuracy" :stat="'accuracy'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">ACC</div>
-            </div>
-            <div class="stat">
-              <input class="value" :value="survivor.evasion" :stat="'evasion'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">EVA</div>
-            </div>
-            <div class="stat">
-              <input class="value" :value="survivor.luck" :stat="'luck'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">LCK</div>
-            </div>
-            <div class="stat">
-              <input class="value" :value="survivor.speed" :stat="'speed'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">SPD</div>
+          </div>
+          <div v-if="collapsedView" class="wrapper courage-under">
+            <div class="stats-display">
+              <div class="stat">
+                <input class="value-no-border" :value="survivor.courage" :stat="'courage'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">CRG</div>
+              </div>
+              <div class="stat">
+                <input class="value-no-border" :value="survivor.understanding" :stat="'understanding'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">UND</div>
+              </div>
+              <div class="stat">
+                <input class="value-no-border" :value="survivor.weaponProficiencyLevel" :stat="'weaponProficiencyLevel'" @input="updateNumberValue" @dblclick.stop />
+                <div class="title">WPN</div>
+              </div>
             </div>
           </div>
         </div>
-        <div v-if="collapsedView" class="wrapper courage-under">
-          <div class="stats-display">
-            <div class="stat">
-              <input class="value-no-border" :value="survivor.courage" :stat="'courage'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">CRG</div>
+        <div v-if="!collapsedView" class="section progress">
+          <div class="progress-bar-section">
+            <span class="title">Courage ({{ survivor.courage }}): </span>
+            <div class="square-row">
+              <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.courage, n)" @click="setBox" :n="n" :stat="'courage'" @dblclick.stop></div>
             </div>
-            <div class="stat">
-              <input class="value-no-border" :value="survivor.understanding" :stat="'understanding'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">UND</div>
+          </div>
+          <div class="progress-bar-section">
+            <span class="title">Understanding ({{ survivor.understanding }}): </span>
+            <div class="square-row">
+              <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.understanding, n)" @click="setBox" :n="n" :stat="'understanding'" @dblclick.stop></div>
             </div>
-            <div class="stat">
-              <input class="value-no-border" :value="survivor.weaponProficiencyLevel" :stat="'weaponProficiencyLevel'" @input="updateNumberValue" @dblclick.stop />
-              <div class="title">WPN</div>
+          </div>
+          <div class="progress-bar-section">
+            <span class="title">Weapon Proficiency ({{ survivor.weaponProficiencyLevel }}): </span>
+            <div class="square-row">
+              <div v-for="n in 8" :class="weaponXpSquareClass(survivor.weaponProficiencyLevel, n)" @click="setBox" :n="n" :stat="'weaponProficiencyLevel'" @dblclick.stop></div><div class="invisible-square"></div>
             </div>
+            <span class="detail">Weapon Type: <span class="weapon-prof" v-if="survivor.weaponProficiency">{{ survivor.weaponProficiency }}</span><span v-else>______</span></span>
           </div>
         </div>
       </div>
-      <div v-if="!collapsedView" class="section progress">
-        <div class="progress-bar-section">
-          <span class="title">Courage ({{ survivor.courage }}): </span>
-          <div class="square-row">
-            <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.courage, n)" @click="setBox" :n="n" :stat="'courage'" @dblclick.stop></div>
-          </div>
-        </div>
-        <div class="progress-bar-section">
-          <span class="title">Understanding ({{ survivor.understanding }}): </span>
-          <div class="square-row">
-            <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.understanding, n)" @click="setBox" :n="n" :stat="'understanding'" @dblclick.stop></div>
-          </div>
-        </div>
-        <div class="progress-bar-section">
-          <span class="title">Weapon Proficiency ({{ survivor.weaponProficiencyLevel }}): </span>
-          <div class="square-row">
-            <div v-for="n in 8" :class="weaponXpSquareClass(survivor.weaponProficiencyLevel, n)" @click="setBox" :n="n" :stat="'weaponProficiencyLevel'" @dblclick.stop></div><div class="invisible-square"></div>
-          </div>
-          <span class="detail">Weapon Type: <span class="weapon-prof" v-if="survivor.weaponProficiency">{{ survivor.weaponProficiency }}</span><span v-else>______</span></span>
-        </div>
-      </div>
-    </div>
-  </td>
+    </td>
+  </div>
 </template>
 
 <script>
@@ -204,7 +206,7 @@ export default {
 </script>
 
 <style>
-td {
+.survivor-row {
   user-select: none;
   cursor: default;
 }

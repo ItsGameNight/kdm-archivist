@@ -1,10 +1,15 @@
 <template>
-  <div @dblclick.stop>
+  <div>
     <modal @close="$emit('close')" :modalWidth="600">
       <div slot="header" style="display: none;"></div>
       <div slot="body">
         <span>{{ survivor.name }}</span>
-        <hunt-xp-bar :survivorID="survivor._id" :xp="survivor.xp"></hunt-xp-bar>
+        <br />
+        <hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" />
+        <br />
+        <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
+        <br />
+        <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
         <hr />
       </div>
     </modal>
@@ -14,10 +19,12 @@
 <script>
 import Modal from './Modal'
 import HuntXpBar from './SurvivorComponents/HuntXpBar'
+import CourageBar from './SurvivorComponents/CourageBar'
+import UnderstandingBar from './SurvivorComponents/UnderstandingBar'
 
 export default {
   name: 'survivor-modal',
-  components: { Modal, HuntXpBar },
+  components: { Modal, HuntXpBar, CourageBar, UnderstandingBar },
   props: {
     survivor: { required: true }
   }

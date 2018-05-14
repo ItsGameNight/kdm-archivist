@@ -2,7 +2,7 @@
   <div class="progress-bar">
     <div class="flex-wrapper">
       <span class="title">{{ title }} ({{ level }}): </span>
-      <div v-for="n in maxLevel" :class="squareClass(n)" @click="setLevel(n)"></div>
+      <div v-for="n in maxLevel" :class="squareClass(n)" @click="setLevel(n)" @dblclick.stop></div>
       <div v-for="n in paddingSquares" class="invisible-square"></div>
     </div>
   </div>
@@ -18,7 +18,7 @@ export default {
     initLevel: { required: true },
     maxLevel: { required: true },
     boldLevels: { default: [] },
-    extraBoldLevels: { default: [] },
+    extraBoldLevels: { default: null },
     paddingSquares: { default: 0 },
     survivorID: { required: false, default: null },
     stat: { required: false, default: null }
@@ -45,7 +45,7 @@ export default {
         return 'square'
       } else if (this.boldLevels.includes(n)) {
         return 'empty-square-bold'
-      } else if (this.extraBoldLevels.includes(n)) {
+      } else if (this.extraBoldLevels && this.extraBoldLevels.includes(n)) {
         return 'empty-square-extra-bold'
       } else {
         return 'empty-square'

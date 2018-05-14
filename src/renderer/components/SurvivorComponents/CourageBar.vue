@@ -1,12 +1,12 @@
 <template>
-  <progress-bar :title="'Hunt XP'" :initLevel="level" :maxLevel="16" :boldLevels="[2, 6, 10, 15]" :extraBoldLevels="[16]" :survivorID="survivorID" :stat="'xp'" />
+  <progress-bar :title="'Courage'" :initLevel="level" :maxLevel="9" :boldLevels="[3, 9]" :survivorID="survivorID" :stat="'courage'" />
 </template>
 
 <script>
 import ProgressBar from './ProgressBar'
 
 export default {
-  name: 'hunt-xp-bar',
+  name: 'courage-bar',
   components: { ProgressBar },
   props: {
     survivorID: { required: true },
