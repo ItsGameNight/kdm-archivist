@@ -10,7 +10,7 @@ class SettlementsDatabase extends Database {
       innovations: [],
       resources: [],
       storedGear: [],
-      quaries: [],
+      quarries: [],
       storyNotes: [],
       lanternYear: 0,
       survivalLimit: 0,

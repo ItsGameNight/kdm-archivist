@@ -34,6 +34,10 @@
       <b>Innovations: </b>
       <editable-list :propertyName="'innovations'"></editable-list>
     </p>
+    <p>
+      <b>Quarries: </b>
+      <editable-list :propertyName="'quarries'"></editable-list>
+    </p>
   </div>
 </template>
 
