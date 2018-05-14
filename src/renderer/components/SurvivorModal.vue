@@ -1,18 +1,15 @@
 <template>
   <div>
-    <modal @close="$emit('close')" :modalWidth="600">
+    <modal @close="$emit('close')" :modalWidth="750">
       <div slot="header" style="display: none;"></div>
       <div slot="body">
-        <span>{{ survivor.name }}</span>
-        <br />
-        <hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" />
-        <br />
+        <div class="flex-wrapper">
+          <div class="survivor-name">{{ survivor.name }}</div>
+          <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
+        </div>
         <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
-        <br />
         <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
-        <br />
         <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
-        <hr />
       </div>
     </modal>
   </div>
@@ -35,5 +32,17 @@ export default {
 </script>
 
 <style>
-  
+.survivor-name {
+  font-weight: bold;
+  font-size: 14pt;
+  min-width: 45%;
+  width: 45%;
+  border-bottom: 3px solid black;
+}
+.hunt-xp {
+  margin-left: auto;
+  min-width: 45%;
+  width: 45%;
+  border-bottom: 3px solid black;
+}
 </style>
