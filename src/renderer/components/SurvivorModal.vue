@@ -3,7 +3,8 @@
     <modal @close="$emit('close')" :modalWidth="600">
       <div slot="header" style="display: none;"></div>
       <div slot="body">
-        <h3>{{ survivor.name }}</h3>
+        <span>{{ survivor.name }}</span>
+        <hunt-xp-bar :survivorID="survivor._id" :xp="survivor.xp"></hunt-xp-bar>
         <hr />
       </div>
     </modal>
@@ -12,10 +13,11 @@
 
 <script>
 import Modal from './Modal'
+import HuntXpBar from './SurvivorComponents/HuntXpBar'
 
 export default {
   name: 'survivor-modal',
-  components: { Modal },
+  components: { Modal, HuntXpBar },
   props: {
     survivor: { required: true }
   }

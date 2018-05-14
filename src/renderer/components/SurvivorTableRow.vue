@@ -91,19 +91,19 @@
         </div>
       </div>
       <div v-if="!collapsedView" class="section progress">
-        <div class="progress-bar">
+        <div class="progress-bar-section">
           <span class="title">Courage ({{ survivor.courage }}): </span>
           <div class="square-row">
             <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.courage, n)" @click="setBox" :n="n" :stat="'courage'" @dblclick.stop></div>
           </div>
         </div>
-        <div class="progress-bar">
+        <div class="progress-bar-section">
           <span class="title">Understanding ({{ survivor.understanding }}): </span>
           <div class="square-row">
             <div v-for="n in 9" :class="courageBoldXpSquareClass(survivor.understanding, n)" @click="setBox" :n="n" :stat="'understanding'" @dblclick.stop></div>
           </div>
         </div>
-        <div class="progress-bar">
+        <div class="progress-bar-section">
           <span class="title">Weapon Proficiency ({{ survivor.weaponProficiencyLevel }}): </span>
           <div class="square-row">
             <div v-for="n in 8" :class="weaponXpSquareClass(survivor.weaponProficiencyLevel, n)" @click="setBox" :n="n" :stat="'weaponProficiencyLevel'" @dblclick.stop></div><div class="invisible-square"></div>
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import HuntXpBar from './HuntXpBar'
+import HuntXpBar from './SurvivorComponents/HuntXpBar'
 import SurvivorModal from './SurvivorModal'
 import { mapActions } from 'vuex'
 
@@ -258,7 +258,7 @@ td {
   display: block;
   text-align: left;
 }
-.progress-bar {
+.progress-bar-section {
   float: right;
 }
 .square {
