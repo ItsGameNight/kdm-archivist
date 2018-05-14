@@ -4,7 +4,14 @@
       <div slot="header" style="display: none;"></div>
       <div slot="body">
         <div class="flex-wrapper">
-          <div class="survivor-name"><editable-text-input :textValue="survivor.name" @update="updateName" :textStyle="{fontWeight:'bold', fontSize: '14pt'}" /></div>
+          <div class="flex-wrapper general-info">
+            <div class="survivor-name">
+              <editable-text-input :textValue="survivor.name" @update="updateName" :textStyle="{fontWeight:'bold', fontSize: '14pt'}" />
+            </div>
+            <div class="sex-toggle">
+              <male-female-toggle :initSex="survivor.sex" :survivorID="survivor._id" />
+            </div>
+          </div>
           <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
         </div>
         <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
@@ -22,11 +29,12 @@ import HuntXpBar from './SurvivorComponents/HuntXpBar'
 import CourageBar from './SurvivorComponents/CourageBar'
 import UnderstandingBar from './SurvivorComponents/UnderstandingBar'
 import WeaponProficiencyBar from './SurvivorComponents/WeaponProficiencyBar'
+import MaleFemaleToggle from './SurvivorComponents/MaleFemaleToggle'
 import EditableTextInput from './EditableTextInput'
 
 export default {
   name: 'survivor-modal',
-  components: { Modal, HuntXpBar, CourageBar, UnderstandingBar, WeaponProficiencyBar, EditableTextInput },
+  components: { Modal, HuntXpBar, CourageBar, UnderstandingBar, WeaponProficiencyBar, EditableTextInput, MaleFemaleToggle },
   props: {
     survivor: { required: true }
   },
@@ -43,17 +51,23 @@ export default {
 </script>
 
 <style>
-.survivor-name {
-  font-weight: bold;
-  font-size: 14pt;
+.general-info {
   min-width: 47%;
-  width: 45%;
+  width: 47%;
   border-bottom: 3px solid black;
+}
+.survivor-name {
+  width: 80%;
+}
+.sex-toggle {
+  margin-left: auto;
+  margin-top: auto;
+  padding-bottom: 7px;
 }
 .hunt-xp {
   margin-left: auto;
   min-width: 47%;
-  width: 45%;
+  width: 47%;
   border-bottom: 3px solid black;
 }
 </style>
