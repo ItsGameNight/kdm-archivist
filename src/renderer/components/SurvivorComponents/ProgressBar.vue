@@ -1,6 +1,6 @@
 <template>
   <div class="progress-bar">
-    <span v-if="!inline" class="title above" :style="{minWidth: String(4 + maxLevel / 8) + 'em'}">{{ title }} ({{ level }}): </span>
+    <span v-if="!inline" class="title above">{{ title }} ({{ level }}): </span>
     <div class="flex-wrapper">
       <span v-if="inline" class="title" :style="{minWidth: String(4 + maxLevel / 8) + 'em'}">{{ title }} ({{ level }}): </span>
       <div v-for="n in maxLevel" :class="squareClass(n)" @click="setLevel(n)" @dblclick.stop></div>
@@ -28,11 +28,6 @@ export default {
   data: function () {
     return {
       level: this.initLevel
-    }
-  },
-  watch: {
-    initLevel: function (newVal) {
-      this.level = newVal
     }
   },
   methods: {
