@@ -10,6 +10,8 @@
         <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
         <br />
         <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
+        <br />
+        <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
         <hr />
       </div>
     </modal>
@@ -21,10 +23,11 @@ import Modal from './Modal'
 import HuntXpBar from './SurvivorComponents/HuntXpBar'
 import CourageBar from './SurvivorComponents/CourageBar'
 import UnderstandingBar from './SurvivorComponents/UnderstandingBar'
+import WeaponProficiencyBar from './SurvivorComponents/WeaponProficiencyBar'
 
 export default {
   name: 'survivor-modal',
-  components: { Modal, HuntXpBar, CourageBar, UnderstandingBar },
+  components: { Modal, HuntXpBar, CourageBar, UnderstandingBar, WeaponProficiencyBar },
   props: {
     survivor: { required: true }
   }
