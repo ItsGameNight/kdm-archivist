@@ -1,7 +1,8 @@
 <template>
   <div class="progress-bar">
+    <span v-if="!inline" class="title above" :style="{minWidth: String(4 + maxLevel / 8) + 'em'}">{{ title }} ({{ level }}): </span>
     <div class="flex-wrapper">
-      <span class="title">{{ title }} ({{ level }}): </span>
+      <span v-if="inline" class="title" :style="{minWidth: String(4 + maxLevel / 8) + 'em'}">{{ title }} ({{ level }}): </span>
       <div v-for="n in maxLevel" :class="squareClass(n)" @click="setLevel(n)" @dblclick.stop></div>
       <div v-for="n in paddingSquares" class="invisible-square"></div>
     </div>
@@ -21,7 +22,8 @@ export default {
     extraBoldLevels: { default: null },
     paddingSquares: { default: 0 },
     survivorID: { required: false, default: null },
-    stat: { required: false, default: null }
+    stat: { required: false, default: null },
+    inline: { default: true }
   },
   data: function () {
     return {
@@ -76,7 +78,7 @@ export default {
 <style>
 .progress-bar {
   height: 16px;
-  line-height: 12px;
+  line-height: 8px;
   text-align: right;
   margin-top: 2px;
   display: inline-block;
@@ -87,7 +89,10 @@ export default {
   text-align: left;
   display: block;
   padding-top: 2px;
-  min-width: 6em;
+  min-width: 4em;
+}
+.above {
+  padding-bottom: 6px;
 }
 .flex-wrapper {
   display: flex;

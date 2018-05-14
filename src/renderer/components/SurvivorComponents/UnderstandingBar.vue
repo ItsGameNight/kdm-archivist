@@ -1,5 +1,5 @@
 <template>
-  <progress-bar :title="'Understanding'" :initLevel="level" :maxLevel="9" :boldLevels="[3, 9]" :survivorID="survivorID" :stat="'understanding'" />
+  <progress-bar :title="'Understanding'" :initLevel="level" :maxLevel="9" :boldLevels="[3, 9]" :survivorID="survivorID" :stat="'understanding'" :inline="false" />
 </template>
 
 <script>
