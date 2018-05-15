@@ -13,7 +13,7 @@ class SettlementsDatabase extends Database {
       quarries: [],
       storyNotes: [],
       lanternYear: 0,
-      survivalLimit: 0,
+      survivalLimit: 1,
       survivalOnDepart: 0,
       baseSurvivor: {
         settlementID: null,

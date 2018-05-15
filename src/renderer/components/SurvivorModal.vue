@@ -35,7 +35,7 @@
           <div class="survival-box">
             <div class="row3-title">Survival</div>
             <div class="flex-wrapper">
-              <editable-stat :survivorID="survivor._id" :statName="'survival'" :initValue="survivor.survival" :maxValue="4" />
+              <editable-stat :survivorID="survivor._id" :statName="'survival'" :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" />
               <div class="survival-abilities">
                <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'dodge'" :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" /></div>
                 <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'encourage'" :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" /></div>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Modal from './Modal'
 import HuntXpBar from './SurvivorComponents/HuntXpBar'
 import CourageBar from './SurvivorComponents/CourageBar'
@@ -97,6 +97,11 @@ export default {
   },
   props: {
     survivor: { required: true }
+  },
+  computed: {
+    ...mapGetters([
+      'currentSettlement'
+    ])
   },
   methods: {
     ...mapActions([
