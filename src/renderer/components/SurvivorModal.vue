@@ -76,15 +76,19 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Modal from './Modal'
-import HuntXpBar from './SurvivorComponents/HuntXpBar'
-import CourageBar from './SurvivorComponents/CourageBar'
-import UnderstandingBar from './SurvivorComponents/UnderstandingBar'
-import WeaponProficiencyBar from './SurvivorComponents/WeaponProficiencyBar'
-import MaleFemaleToggle from './SurvivorComponents/MaleFemaleToggle'
-import EditableTextInput from './EditableTextInput'
-import EditableStat from './EditableStat'
-import SquareToggle from './SquareToggle'
-import LockToggle from './LockToggle'
+import {
+  HuntXpBar,
+  CourageBar,
+  UnderstandingBar,
+  WeaponProficiencyBar,
+  MaleFemaleToggle
+} from './SurvivorComponents'
+import {
+  EditableTextInput,
+  EditableStat,
+  SquareToggle,
+  LockToggle
+} from './GUIComponents'
 
 export default {
   name: 'survivor-modal',
@@ -112,9 +116,9 @@ export default {
     ...mapActions([
       'updateSurvivor'
     ]),
-    update: function (e, stat) {
+    update: function (val, stat) {
       var update = {}
-      update[stat] = e.target.value
+      update[stat] = val
       this.updateSurvivor({ id: this.survivor._id, update: update })
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-  <input class="editable-text-input" ref="eIn" :placeholder="placeholder" :style="editableStyle" :value="textValue" @mouseover="hover = true" @mouseleave="hover = false" @focus="focus = true" @blur="focus = false" @keyup.enter="$refs.eIn.blur()" @input="$emit('update', $event)" />
+  <input class="editable-text-input" ref="eIn" :placeholder="placeholder" :style="editableStyle" :value="textValue" @mouseover="hover = true" @mouseleave="hover = false" @focus="focus = true" @blur="focus = false" @keyup.enter="$refs.eIn.blur()" @input="$emit('update', $event.target.value)" />
 </div>
 </template>
 
