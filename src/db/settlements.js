@@ -36,6 +36,7 @@ class SettlementsDatabase extends Database {
         weaponProficiency: null,
         weaponProficiencyLevel: 0,
         fightingArts: [],
+        cannotUseFighting: false,
         disorders: [],
         abilities: [],
         impairments: [],
@@ -44,6 +45,14 @@ class SettlementsDatabase extends Database {
         parent2: null,
         nickname: null,
         surname: null,
+        skipHunt: false,
+        dodge: true,
+        encourage: false,
+        dash: false,
+        surge: false,
+        endure: false,
+        birthYear: 0,
+        deathYear: null,
         other: null
       }
     }
