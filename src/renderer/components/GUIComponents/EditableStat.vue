@@ -1,26 +1,22 @@
 <template>
   <div class="editable-stat">
     <div class="increment-box" @mouseover="hover = true" @mouseleave="hover = false">
-      <div class="chevron" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="adjustStat(1); bounceTop()"></div>
+      <div class="chevron" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="updateStat(statValue + 1); bounceTop()"></div>
       <div :class="{ maxbox : maxValue }">
-        <input type="number" class="statbox" :class="{ borderless : maxValue }" :value="statValue" @input="updateStat" @focus="$event.target.select(); focus = true" @blur="focus = false" @keydown.enter="$event.target.blur()" />
+        <input type="number" class="statbox" :class="{ borderless : maxValue }" :value="statValue" @input="updateStat($event.target.value)" @focus="$event.target.select(); focus = true" @blur="focus = false" @keydown.enter="$event.target.blur()" />
         <span v-if="maxValue" class="limitbox"><div class="limit-label">Limit</div>{{ maxValue }}</span>
       </div>
       <div v-if="statDisplayName" class="stat-display-name" :style="displayNameStyle">{{ statDisplayName }}</div>
-      <div :class="[statDisplayName ? 'chevron bottom withDisplayName' : 'chevron bottom', bottomBounce ? 'animated bounceDown' : '']" :style="chevronStyle" @mousedown="adjustStat(-1); bounceBottom()"></div>
+      <div :class="[statDisplayName ? 'chevron bottom withDisplayName' : 'chevron bottom', bottomBounce ? 'animated bounceDown' : '']" :style="chevronStyle" @mousedown="updateStat(statValue - 1); bounceBottom()"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   name: 'editable-stat',
   props: {
-    statName: { required: true },
     statDisplayName: { required: false },
-    survivorID: { required: true },
     initValue: { required: true },
     maxValue: { required: false, default: null }
   },
@@ -50,22 +46,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'updateSurvivor'
-    ]),
-    update: function (val) {
+    updateStat: function (val) {
       if (this.maxValue === null || val <= this.maxValue) {
         this.statValue = val
-        var update = {}
-        update[this.statName] = this.statValue
-        this.updateSurvivor({ id: this.survivorID, update: update })
+        this.$emit('update', val)
       }
-    },
-    updateStat: function (e) {
-      this.update(Number(e.target.value))
-    },
-    adjustStat: function (delta) {
-      this.update(this.statValue + Number(delta))
     },
     bounceTop: function () {
       this.topBounce = true

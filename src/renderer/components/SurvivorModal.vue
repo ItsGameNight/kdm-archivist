@@ -26,8 +26,8 @@
             </div>
           </div>
           <div class="toggles">
-            <div class="skip-hunt"><square-toggle :survivorID="survivor._id" :statName="'skipHunt'" :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" /></div>
-            <div class="cannot-fight"><square-toggle :survivorID="survivor._id" :statName="'cannotUseFighting'" :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" /></div>
+            <div class="skip-hunt"><square-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update($event, 'skipHunt')"/></div>
+            <div class="cannot-fight"><square-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div>
           </div>
         </div>
         <!-- ROW 3 -->
@@ -35,28 +35,28 @@
           <div class="survival-box">
             <div class="row3-title">Survival</div>
             <div class="flex-wrapper">
-              <editable-stat :survivorID="survivor._id" :statName="'survival'" :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" />
+              <editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" @update="update($event, 'survival')" />
               <div class="survival-abilities">
-               <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'dodge'" :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" /></div>
-                <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'encourage'" :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" /></div>
-                <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'dash'" :statDisplayName="'Dash'" :initValue="survivor.dash" :squareSize="'8'" /></div>
-                <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'surge'" :statDisplayName="'Surge'" :initValue="survivor.surge" :squareSize="'8'" /></div>
-                <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'endure'" :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" /></div>
+               <div class="ability"><square-toggle :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" @update="update($event, 'dodge')"/></div>
+                <div class="ability"><square-toggle :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" @update="update($event, 'encourage')" /></div>
+                <div class="ability"><square-toggle :statDisplayName="'Dash'" :initValue="survivor.dash" :squareSize="'8'" @update="update($event, 'dash')" /></div>
+                <div class="ability"><square-toggle :statDisplayName="'Surge'" :initValue="survivor.surge" :squareSize="'8'" @update="update($event, 'surge')" /></div>
+                <div class="ability"><square-toggle :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" @update="update($event, 'endure')" /></div>
               </div>
             </div>
             <div class="no-survival">
-              <lock-toggle :survivorID="survivor._id" :initValue="true" :statName="'cannotSpendSurvival'" :statDisplayName="'Cannot Spend Survival'" />
+              <lock-toggle :initValue="survivor.cannotSpendSurvival" :statDisplayName="'Cannot Spend Survival'" @update="update($event, 'cannotSpendSurvival')" />
             </div>
           </div>
           <div class="stats-box">
             <div class="row3-title">Showdown Stats</div>
             <div class="stats-group">
-              <editable-stat :survivorID="survivor._id" :statName="'movement'" :statDisplayName="'MOV'" :initValue="survivor.movement" />
-              <editable-stat :survivorID="survivor._id" :statName="'accuracy'" :statDisplayName="'ACC'" :initValue="survivor.accuracy" />
-              <editable-stat :survivorID="survivor._id" :statName="'strength'" :statDisplayName="'STR'" :initValue="survivor.strength" />
-              <editable-stat :survivorID="survivor._id" :statName="'evasion'" :statDisplayName="'EVA'" :initValue="survivor.evasion" />
-              <editable-stat :survivorID="survivor._id" :statName="'luck'" :statDisplayName="'LCK'" :initValue="survivor.luck" />
-              <editable-stat :survivorID="survivor._id" :statName="'speed'" :statDisplayName="'SPD'" :initValue="survivor.speed" />
+              <editable-stat :statDisplayName="'MOV'" :initValue="survivor.movement" @update="update($event, 'movement')" />
+              <editable-stat :statDisplayName="'ACC'" :initValue="survivor.accuracy" @update="update($event, 'accuracy')" />
+              <editable-stat :statDisplayName="'STR'" :initValue="survivor.strength" @update="update($event, 'strength')" />
+              <editable-stat :statDisplayName="'EVA'" :initValue="survivor.evasion" @update="update($event, 'evasion')" />
+              <editable-stat :statDisplayName="'LCK'" :initValue="survivor.luck" @update="update($event, 'luck')" />
+              <editable-stat :statDisplayName="'SPD'" :initValue="survivor.speed" @update="update($event, 'speed')" />
             </div>
           </div>
           <div class="progress-box">

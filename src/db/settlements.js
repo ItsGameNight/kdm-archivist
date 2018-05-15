@@ -21,6 +21,7 @@ class SettlementsDatabase extends Database {
         sex: null,
         alive: true,
         survival: 0,
+        cannotSpendSurvival: false,
         movement: 5,
         accuracy: 0,
         strength: 0,

@@ -1,21 +1,17 @@
 <template>
-  <div class="square-toggle" :style="titleSize">
+  <div class="square-toggle" :style="titleSize" @click="toggle()">
     <div class="flex-wrapper">
-      <div :class="[checkValue ? 'square' : 'empty-square']" :style="toggleSize" @click="toggle()"></div><div class="toggle-title">{{ statDisplayName }}</div>
+      <div :class="[checkValue ? 'square' : 'empty-square']" :style="toggleSize"></div><div class="toggle-title">{{ statDisplayName }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   name: 'square-toggle',
   props: {
     initValue: { required: true },
-    statName: { required: true },
     statDisplayName: { required: true },
-    survivorID: { required: true },
     squareSize: { required: false, default: '10' }
   },
   data: function () {
@@ -40,14 +36,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'updateSurvivor'
-    ]),
     toggle: function () {
       this.checkValue = !this.checkValue
-      var update = {}
-      update[this.statName] = this.checkValue
-      this.updateSurvivor({ id: this.survivorID, update: update })
+      this.$emit('update', this.checkValue)
     }
   }
 }

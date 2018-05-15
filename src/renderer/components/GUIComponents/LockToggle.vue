@@ -1,5 +1,5 @@
 <template>
-  <div @click="toggleState = !toggleState">
+  <div @click="toggleState = !toggleState; $emit('update', toggleState)">
     <div class="flex-wrapper">
       <div><div class="lock" :class="lockClass"><font-awesome-icon :icon="icon" /></div></div>
       <div class="lock-toggle-text">{{ statDisplayName }}</div>
@@ -16,13 +16,11 @@ export default {
   components: { FontAwesomeIcon },
   props: {
     initValue: { required: true },
-    statName: { required: true },
-    statDisplayName: { required: true },
-    survivorID: { required: true }
+    statDisplayName: { required: true }
   },
   data: function () {
     return {
-      toggleState: false
+      toggleState: this.initValue
     }
   },
   computed: {
