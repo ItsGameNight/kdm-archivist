@@ -70,7 +70,7 @@ export default {
 
 <style>
 .editable-stat {
-  padding: 0 0 0 0.5em;
+  padding: 0 0.2em 0 0.5em;
   display: inline-block;
 }
 .increment-box {

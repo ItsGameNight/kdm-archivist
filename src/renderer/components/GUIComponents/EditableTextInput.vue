@@ -1,6 +1,6 @@
 <template>
   <div>
-  <input class="editable-text-input" ref="eIn" :placeholder="placeholder" :style="editableStyle" :value="textValue" @mouseover="hover = true" @mouseleave="hover = false" @focus="focus = true" @blur="focus = false" @keyup.enter="$refs.eIn.blur()" @input="$emit('update', $event.target.value)" />
+  <input class="editable-text-input" ref="eIn" :placeholder="placeholder" :type="inputType" :style="editableStyle" :value="textValue" @mouseover="hover = true" @mouseleave="hover = false" @focus="focus = true" @blur="focus = false" @keyup.enter="$refs.eIn.blur()" @input="$emit('update', $event.target.value)" />
 </div>
 </template>
 
@@ -10,7 +10,8 @@ export default {
   props: {
     placeholder: { required: false, default: 'Text...' },
     textValue: { required: true },
-    textStyle: { default: {} }
+    textStyle: { default: null },
+    inputType: { default: 'text' }
   },
   data: function () {
     return {
@@ -25,7 +26,6 @@ export default {
         return {
           ...this.textStyle,
           backgroundImage: 'url(' + this.bgImgUrl + ')',
-          width: '95%',
           paddingLeft: '1em',
           fontWeight: 'normal'
         }
@@ -33,7 +33,6 @@ export default {
         return {
           ...this.textStyle,
           backgroundImage: 'url(' + this.bgImgUrl + ')',
-          width: '95%',
           paddingLeft: '1em'
         }
       } else {
@@ -58,5 +57,10 @@ export default {
 }
 ::selection {
   background: #d8d8d8;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>

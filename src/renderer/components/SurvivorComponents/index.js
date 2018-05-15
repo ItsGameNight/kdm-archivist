@@ -16,6 +16,7 @@ import MaleFemaleToggle from './MaleFemaleToggle'
 import ProgressBar from './ProgressBar'
 import UnderstandingBar from './UnderstandingBar'
 import WeaponProficiencyBar from './WeaponProficiencyBar'
+import AliveToggle from './AliveToggle'
 
 export {
   CourageBar,
@@ -23,5 +24,6 @@ export {
   MaleFemaleToggle,
   ProgressBar,
   UnderstandingBar,
-  WeaponProficiencyBar
+  WeaponProficiencyBar,
+  AliveToggle
 }

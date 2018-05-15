@@ -25,32 +25,35 @@
               <editable-text-input :placeholder="'Surname'" :textValue="survivor.surname" @update="update($event, 'surname')" :textStyle="{fontSize: '10pt'}" />
             </div>
           </div>
-          <div class="toggles">
-            <div class="skip-hunt"><square-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update($event, 'skipHunt')"/></div>
-            <div class="cannot-fight"><square-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div>
+          <div class="flex-wrapper alive-box">
+            <div class="birth-label">Born LY:</div><div class="birth-year"><editable-text-input :inputType="'number'" :textValue="survivor.birthYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'birthYear')" /></div>
+            <div class="dead-or-alive"><alive-toggle :initValue="survivor.alive" :survivorID="survivor._id" /></div>
+            <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'deathYear'); update(false, 'alive')" /></div>
           </div>
         </div>
         <!-- ROW 3 -->
         <div class="flex-wrapper row3">
           <div class="survival-box">
-            <div class="row3-title">Survival</div>
-            <div class="flex-wrapper">
-              <editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" @update="update($event, 'survival')" />
-              <div class="survival-abilities">
-               <div class="ability"><square-toggle :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" @update="update($event, 'dodge')"/></div>
-                <div class="ability"><square-toggle :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" @update="update($event, 'encourage')" /></div>
-                <div class="ability"><square-toggle :statDisplayName="'Dash'" :initValue="survivor.dash" :squareSize="'8'" @update="update($event, 'dash')" /></div>
-                <div class="ability"><square-toggle :statDisplayName="'Surge'" :initValue="survivor.surge" :squareSize="'8'" @update="update($event, 'surge')" /></div>
-                <div class="ability"><square-toggle :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" @update="update($event, 'endure')" /></div>
-              </div>
-            </div>
-            <div class="no-survival">
-              <lock-toggle :initValue="survivor.cannotSpendSurvival" :statDisplayName="'Cannot Spend Survival'" @update="update($event, 'cannotSpendSurvival')" />
-            </div>
+            <div :class="[survivor.cannotSpendSurvival ? 'no-survival' : '']">
+              <div class="row3-title">Survival</div>
+              <div class="flex-wrapper">
+                <editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" @update="update($event, 'survival')" />
+                <div class="survival-abilities">
+                 <div class="ability"><square-toggle :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" @update="update($event, 'dodge')"/></div>
+                 <div class="ability"><square-toggle :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" @update="update($event, 'encourage')" /></div>
+                 <div class="ability"><square-toggle :statDisplayName="'Dash'" :initValue="survivor.dash" :squareSize="'8'" @update="update($event, 'dash')" /></div>
+                 <div class="ability"><square-toggle :statDisplayName="'Surge'" :initValue="survivor.surge" :squareSize="'8'" @update="update($event, 'surge')" /></div>
+                 <div class="ability"><square-toggle :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" @update="update($event, 'endure')" /></div>
+               </div>
+             </div>
+           </div>
+           <div class="cannot-spend-survival">
+            <lock-toggle :initValue="survivor.cannotSpendSurvival" :statDisplayName="'Cannot Spend Survival'" @update="update($event, 'cannotSpendSurvival')" />
+          </div>
           </div>
           <div class="stats-box">
             <div class="row3-title">Showdown Stats</div>
-            <div class="stats-group">
+            <div class="flex-wrapper stats-group">
               <editable-stat :statDisplayName="'MOV'" :initValue="survivor.movement" @update="update($event, 'movement')" />
               <editable-stat :statDisplayName="'ACC'" :initValue="survivor.accuracy" @update="update($event, 'accuracy')" />
               <editable-stat :statDisplayName="'STR'" :initValue="survivor.strength" @update="update($event, 'strength')" />
@@ -58,6 +61,7 @@
               <editable-stat :statDisplayName="'LCK'" :initValue="survivor.luck" @update="update($event, 'luck')" />
               <editable-stat :statDisplayName="'SPD'" :initValue="survivor.speed" @update="update($event, 'speed')" />
             </div>
+            <div class="skip-hunt"><lock-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update($event, 'skipHunt')"/></div>
           </div>
           <div class="progress-box">
             <div class="row3-title">Development Stats</div>
@@ -68,6 +72,7 @@
             </div>
           </div>
         </div>
+        <!-- <div class="cannot-fight"><square-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div> -->
       </div>
     </modal>
   </div>
@@ -81,7 +86,8 @@ import {
   CourageBar,
   UnderstandingBar,
   WeaponProficiencyBar,
-  MaleFemaleToggle
+  MaleFemaleToggle,
+  AliveToggle
 } from './SurvivorComponents'
 import {
   EditableTextInput,
@@ -102,7 +108,8 @@ export default {
     MaleFemaleToggle,
     EditableStat,
     SquareToggle,
-    LockToggle
+    LockToggle,
+    AliveToggle
   },
   props: {
     survivor: { required: true }
@@ -164,12 +171,37 @@ export default {
   width: 32%;
   border-bottom: 1px solid black;
 }
-.toggles {
+.alive-box {
   width: 47%;
   margin-left: auto;
-  padding-top: 5px;
-  display: flex;
-  flex-direction: row;
+}
+.birth-label {
+  font-size: 10pt;
+  padding-right: 4px;
+  padding-left: 2px;
+  padding-top: 2px;
+  line-height: 15pt;
+}
+.death-label {
+  font-size: 10pt;
+  padding-right: 4px;
+  padding-left: 12px;
+  padding-top: 2px;
+  line-height: 15pt;
+}
+.birth-year {
+  width: 1.8em;
+  margin-right: 14px;
+  margin-top: 1px;
+}
+.death-year {
+  width: 1.8em;
+  margin-top: 1px;
+  margin-right: 6px;
+}
+.dead-or-alive {
+  width: 58px;
+  padding-top: 1px;
 }
 .cannot-fight {
   padding-left: 15px;
@@ -181,6 +213,9 @@ export default {
   width: 20%;
   min-width: 20%;
   border: 2px solid black;
+}
+.no-survival {
+  text-decoration: line-through;
 }
 .row3-title {
   padding-left: 0.4em;
@@ -195,10 +230,10 @@ export default {
 .ability {
   padding-top: 2px;
 }
-.no-survival {
+.cannot-spend-survival {
   width: 96%;
   margin: auto;
-  padding-top: 6px;
+  padding-top: 8px;
 }
 .stats-box {
   width: 35%;
@@ -208,7 +243,12 @@ export default {
 }
 .stats-group {
   width: 97%;
-  margin: auto;
+  margin: 0 auto;
+}
+.skip-hunt {
+  width: 40%;
+  margin: 0 auto;
+  padding-top: 8px;
 }
 .progress-box {
   width: 40%;
