@@ -14,6 +14,9 @@
           </div>
           <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
         </div>
+        <div>
+          <editable-stat :survivorID="survivor._id" :statName="'survival'" :initValue="survivor.survival" :maxValue="4" />
+        </div>
         <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
         <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
         <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
@@ -31,10 +34,20 @@ import UnderstandingBar from './SurvivorComponents/UnderstandingBar'
 import WeaponProficiencyBar from './SurvivorComponents/WeaponProficiencyBar'
 import MaleFemaleToggle from './SurvivorComponents/MaleFemaleToggle'
 import EditableTextInput from './EditableTextInput'
+import EditableStat from './EditableStat'
 
 export default {
   name: 'survivor-modal',
-  components: { Modal, HuntXpBar, CourageBar, UnderstandingBar, WeaponProficiencyBar, EditableTextInput, MaleFemaleToggle },
+  components: {
+    Modal,
+    HuntXpBar,
+    CourageBar,
+    UnderstandingBar,
+    WeaponProficiencyBar,
+    EditableTextInput,
+    MaleFemaleToggle,
+    EditableStat
+  },
   props: {
     survivor: { required: true }
   },
