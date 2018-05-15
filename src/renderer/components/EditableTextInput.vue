@@ -1,6 +1,6 @@
 <template>
   <div>
-  <input class="editable-text-input" ref="eIn" :style="editableStyle" :value="textValue" @mouseover="hover = true" @mouseleave="hover = false" @focus="focus = true" @blur="focus = false" @keyup.enter="$refs.eIn.blur()" @input="$emit('update', $event)" />
+  <input class="editable-text-input" ref="eIn" :placeholder="placeholder" :style="editableStyle" :value="textValue" @mouseover="hover = true" @mouseleave="hover = false" @focus="focus = true" @blur="focus = false" @keyup.enter="$refs.eIn.blur()" @input="$emit('update', $event)" />
 </div>
 </template>
 
@@ -8,6 +8,7 @@
 export default {
   name: 'editable-text-input',
   props: {
+    placeholder: { required: false, default: 'Text...' },
     textValue: { required: true },
     textStyle: { default: {} }
   },
@@ -53,6 +54,7 @@ export default {
   background-size: 0.8em;
   background-position: left center;
   user-select: default;
+  cursor: text;
 }
 ::selection {
   background: #d8d8d8;

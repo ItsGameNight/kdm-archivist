@@ -85,7 +85,7 @@ export default {
 
 <style>
 .editable-stat {
-  padding: 0 0.4em 0.4em 0.4em;
+  padding: 0 0 0 0.5em;
   display: inline-block;
 }
 .increment-box {
