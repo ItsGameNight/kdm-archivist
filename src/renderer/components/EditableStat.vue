@@ -85,7 +85,7 @@ export default {
 
 <style>
 .editable-stat {
-  padding: 0.4em;
+  padding: 0 0.4em 0.4em 0.4em;
   display: inline-block;
 }
 .increment-box {
@@ -131,8 +131,10 @@ export default {
 }
 .stat-display-name {
   font-size: 9pt;
+  text-transform: uppercase;
   text-align: center;
   padding-top: 2px;
+  padding-left: 3px;
 }
 .limit-label {
   font-size: 7pt;

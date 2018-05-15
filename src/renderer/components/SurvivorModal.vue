@@ -3,7 +3,7 @@
     <modal @close="$emit('close')" :modalWidth="750">
       <div slot="header" style="display: none;"></div>
       <div slot="body">
-        <div class="flex-wrapper">
+        <div class="flex-wrapper row1">
           <div class="flex-wrapper general-info">
             <div class="survivor-name">
               <editable-text-input :textValue="survivor.name" @update="updateName" :textStyle="{fontWeight:'bold', fontSize: '14pt'}" />
@@ -14,12 +14,31 @@
           </div>
           <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
         </div>
-        <div>
-          <editable-stat :survivorID="survivor._id" :statName="'survival'" :initValue="survivor.survival" :maxValue="4" />
+        <div class="flex-wrapper row2">
+          <div class="survival-box">
+            <div class="row2-title">Survival</div>
+            <editable-stat :survivorID="survivor._id" :statName="'survival'" :initValue="survivor.survival" :maxValue="4" />
+          </div>
+          <div class="stats-box">
+            <div class="row2-title">Showdown Stats</div>
+            <div class="stats-group">
+              <editable-stat :survivorID="survivor._id" :statName="'movement'" :statDisplayName="'MOV'" :initValue="survivor.movement" />
+              <editable-stat :survivorID="survivor._id" :statName="'accuracy'" :statDisplayName="'ACC'" :initValue="survivor.accuracy" />
+              <editable-stat :survivorID="survivor._id" :statName="'strength'" :statDisplayName="'STR'" :initValue="survivor.strength" />
+              <editable-stat :survivorID="survivor._id" :statName="'evasion'" :statDisplayName="'EVA'" :initValue="survivor.evasion" />
+              <editable-stat :survivorID="survivor._id" :statName="'luck'" :statDisplayName="'LCK'" :initValue="survivor.luck" />
+              <editable-stat :survivorID="survivor._id" :statName="'speed'" :statDisplayName="'SPD'" :initValue="survivor.speed" />
+            </div>
+          </div>
+          <div class="progress-box">
+            <div class="row2-title">Development Stats</div>
+            <div class="progress-group">
+              <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
+              <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
+              <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
+            </div>
+          </div>
         </div>
-        <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
-        <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
-        <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
       </div>
     </modal>
   </div>
@@ -82,5 +101,37 @@ export default {
   min-width: 47%;
   width: 47%;
   border-bottom: 3px solid black;
+}
+.row2 {
+  margin-top: 10px;
+}
+.survival-box {
+  width: 20%;
+  min-width: 20%;
+  border: 2px solid black;
+}
+.row2-title {
+  padding-left: 0.4em;
+  font-size: 12pt;
+  border-bottom: 1px solid black;
+}
+.stats-box {
+  width: 40%;
+  min-width: 40%;
+  margin-left: auto;
+  border: 2px solid black;
+}
+.stats-group {
+  width: 91%;
+  margin: auto;
+}
+.progress-box {
+  width: 35%;
+  min-width: 35%;
+  margin-left: auto;
+  border: 2px solid black;
+}
+.progress-group {
+  padding: 4px;
 }
 </style>
