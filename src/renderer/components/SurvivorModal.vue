@@ -35,7 +35,7 @@
         <div class="flex-wrapper row3">
           <div class="survival-box">
             <div :class="[survivor.cannotSpendSurvival ? 'no-survival' : '']">
-              <div class="row3-title">Survival</div>
+              <div class="row3-title"><span>Survival</span></div>
               <div class="flex-wrapper">
                 <editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" @update="update($event, 'survival')" />
                 <div class="survival-abilities">
@@ -52,7 +52,7 @@
           </div>
           </div>
           <div class="stats-box">
-            <div class="row3-title">Showdown Stats</div>
+            <div class="row3-title"><span>Showdown Stats</span><div class="skip-hunt"><lock-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update($event, 'skipHunt')"/></div></div>
             <div class="flex-wrapper stats-group">
               <editable-stat :statDisplayName="'MOV'" :initValue="survivor.movement" @update="update($event, 'movement')" />
               <editable-stat :statDisplayName="'ACC'" :initValue="survivor.accuracy" @update="update($event, 'accuracy')" />
@@ -61,10 +61,9 @@
               <editable-stat :statDisplayName="'LCK'" :initValue="survivor.luck" @update="update($event, 'luck')" />
               <editable-stat :statDisplayName="'SPD'" :initValue="survivor.speed" @update="update($event, 'speed')" />
             </div>
-            <div class="skip-hunt"><lock-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update($event, 'skipHunt')"/></div>
           </div>
           <div class="progress-box">
-            <div class="row3-title">Development Stats</div>
+            <div class="row3-title"><span>Development Stats</span></div>
             <div class="progress-group">
               <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
               <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
@@ -219,9 +218,12 @@ export default {
 }
 .row3-title {
   padding-left: 0.4em;
+  padding-bottom: 1px;
+  border-bottom: 1px solid black;
+}
+.row3-title span {
   font-size: 12pt;
   font-variant-caps: small-caps;
-  border-bottom: 1px solid black;
 }
 .survival-abilities {
   margin-top: 14px;
@@ -246,9 +248,9 @@ export default {
   margin: 0 auto;
 }
 .skip-hunt {
-  width: 40%;
-  margin: 0 auto;
-  padding-top: 8px;
+  float: right;
+  padding-top: 1px;
+  padding-right: 4px;
 }
 .progress-box {
   width: 40%;
