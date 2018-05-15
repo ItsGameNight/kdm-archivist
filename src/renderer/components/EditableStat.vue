@@ -156,11 +156,11 @@ export default {
   vertical-align: top;
   width: 0.45em;
 }
-.chevron.bottom::before {
+.chevron.bottom:before {
   top: 0;
   transform: rotate(135deg);
 }
-.chevron.bottom.withDisplayName::before {
+.chevron.bottom.withDisplayName:before {
   top: -0.72em;
 }
 input::-webkit-outer-spin-button,

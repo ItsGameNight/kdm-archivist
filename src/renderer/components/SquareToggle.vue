@@ -64,10 +64,12 @@ export default {
   border: 1px solid black;
   margin: 0px 2px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .empty-square {
   border: 1px solid black;
   margin: 0px 2px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 </style>

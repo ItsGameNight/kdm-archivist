@@ -44,6 +44,9 @@
                 <div class="ability"><square-toggle :survivorID="survivor._id" :statName="'endure'" :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" /></div>
               </div>
             </div>
+            <div class="no-survival">
+              <lock-toggle :survivorID="survivor._id" :initValue="true" :statName="'cannotSpendSurvival'" :statDisplayName="'Cannot Spend Survival'" />
+            </div>
           </div>
           <div class="stats-box">
             <div class="row3-title">Showdown Stats</div>
@@ -81,6 +84,7 @@ import MaleFemaleToggle from './SurvivorComponents/MaleFemaleToggle'
 import EditableTextInput from './EditableTextInput'
 import EditableStat from './EditableStat'
 import SquareToggle from './SquareToggle'
+import LockToggle from './LockToggle'
 
 export default {
   name: 'survivor-modal',
@@ -93,7 +97,8 @@ export default {
     EditableTextInput,
     MaleFemaleToggle,
     EditableStat,
-    SquareToggle
+    SquareToggle,
+    LockToggle
   },
   props: {
     survivor: { required: true }
@@ -186,18 +191,23 @@ export default {
 .ability {
   padding-top: 2px;
 }
+.no-survival {
+  width: 96%;
+  margin: auto;
+  padding-top: 6px;
+}
 .stats-box {
-  width: 40%;
-  min-width: 40%;
+  width: 35%;
+  min-width: 35%;
   margin-left: auto;
   border: 2px solid black;
 }
 .stats-group {
-  width: 91%;
+  width: 97%;
   margin: auto;
 }
 .progress-box {
-  width: 35%;
+  width: 40%;
   min-width: 35%;
   margin-left: auto;
   border: 2px solid black;

@@ -102,6 +102,7 @@ export default {
   border: 1px solid black;
   margin: 0px 2px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .empty-square {
   width: 10px;
@@ -111,6 +112,7 @@ export default {
   border: 1px solid black;
   margin: 0px 2px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .empty-square-bold {
   width: 8px;
@@ -120,6 +122,7 @@ export default {
   border: 2px solid black;
   margin: 0px 2px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .empty-square-extra-bold {
   width: 4px;
@@ -129,6 +132,7 @@ export default {
   border: 4px solid black;
   margin: 0px 2px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 .invisible-square {
   width: 10px;
