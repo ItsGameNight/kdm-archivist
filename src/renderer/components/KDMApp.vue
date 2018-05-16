@@ -47,8 +47,10 @@ export default {
     }
   },
   mounted: function () {
+    // load all db's
     this.$store.dispatch('loadSettlements')
     this.$store.dispatch('loadSurvivors')
+    this.$store.dispatch('loadSnapshots')
   }
 }
 </script>

@@ -14,7 +14,9 @@ export default new Vuex.Store({
   state: {
     survivors: [],
     settlements: [],
-    currentSmt: null
+    snapshots: [],
+    currentSmt: null,
+    currentSnap: null
   },
   getters: {
     survivorsInSettlement: (state) => {
@@ -39,6 +41,9 @@ export default new Vuex.Store({
     },
     settlementFemaleCount: (state) => {
       return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'sex', 'f')
+    },
+    snapshotsForCurrentSettlement: (state) => {
+      return state.snapshots.filter((s) => { return s.settlement._id === state.currentSmt })
     }
   },
   mutations: {
@@ -48,8 +53,14 @@ export default new Vuex.Store({
     SET_SETTLEMENTS (state, newObj) {
       state.settlements = newObj
     },
+    SET_SNAPSHOTS (state, newObj) {
+      state.snapshots = newObj
+    },
     SET_CURRENTSMT (state, id) {
       state.currentSmt = id
+    },
+    SET_CURRENTSNAP (state, id) {
+      state.currentSnap = id
     },
     // Needs Vue.set --> https://vuejs.org/v2/guide/list.html#Caveats
     SET_SETTLEMENT_BY_ID (state, payload) {
@@ -65,16 +76,25 @@ export default new Vuex.Store({
     setCurrentSmt ({ commit }, id) {
       commit('SET_CURRENTSMT', id)
     },
+
     loadSettlements ({ commit }) {
       this.$settlements.getAll((smts) => {
         commit('SET_SETTLEMENTS', smts)
       })
     },
+
     loadSurvivors ({ commit }) {
       this.$survivors.getAll((survs) => {
         commit('SET_SURVIVORS', survs)
       })
     },
+
+    loadSnapshots ({ commit }) {
+      this.$snapshots.getAll((snaps) => {
+        commit('SET_SNAPSHOTS', snaps)
+      })
+    },
+
     updateSettlement ({ commit }, payload) {
       var id = payload.id
       var update = payload.update
@@ -87,6 +107,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     createSettlement ({ commit }) {
       this.$settlements.createNew(() => {
         this.$settlements.getAll((smts) => {
@@ -94,6 +115,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     deleteSettlement ({ commit }, id) {
       this.$settlements.remove(id, () => {
         this.$settlements.getAll((smts) => {
@@ -102,6 +124,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     dropAllSurvivors ({ commit }) {
       this.$survivors.dropAll(() => {
         this.$survivors.getAll((survs) => {
@@ -109,6 +132,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     addNewSurvivor ({ commit }, smtID) {
       console.log(smtID)
       this.$survivors.addBase(smtID, { name: 'Test' }, () => {
@@ -117,6 +141,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     updateSurvivor ({ commit }, payload) {
       var id = payload.id
       var update = payload.update
@@ -125,6 +150,18 @@ export default new Vuex.Store({
           commit('SET_SURVIVOR_BY_ID', { id: s[0]._id, newObj: s[0] })
         })
       })
+    },
+
+    createSnapshot ({ commit }, smtID) {
+      this.$snapshots.createNew(smtID, () => {
+        this.$snapshots.getAll((snaps) => {
+          commit('SET_SNAPSHOTS', snaps)
+        })
+      })
+    },
+
+    setCurrentSnap ({ commit }, id) {
+      commit('SET_CURRENTSNAP', id)
     }
   },
   strict: process.env.NODE_ENV !== 'production'
