@@ -4,12 +4,6 @@ import goodnessFunction from '../../db/goodness.js'
 
 Vue.use(Vuex)
 
-// helper for getters
-function countSurvivorsInSmtWPropVal (survs, smtID, prop, val) {
-  var survsInSmt = survs.filter((s) => { return s.settlementID === smtID })
-  return survsInSmt.filter((s) => { return s[prop] === val }).length
-}
-
 export default new Vuex.Store({
   state: {
     survivors: [],
@@ -19,29 +13,57 @@ export default new Vuex.Store({
     currentSnap: null
   },
   getters: {
-    survivorsInSettlement: (state) => {
-      return state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+    snapshotSurvivors: (state) => {
+      if (state.currentSnap == null) { return [] }
+      var snap = state.snapshots.find((s) => { return s._id === state.currentSnap })
+      return snap.survivors
     },
-    survivorsInSettlementGScores: (state) => {
-      var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+
+    // OUTWARD FACING -- takes into account snapshot (which overrides currentSmt)
+    survivorsInSettlement: (state, getters) => {
+      if (state.currentSnap == null) {
+        return state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+      } else {
+        return getters.snapshotSurvivors
+      }
+    },
+
+    survivorsInSettlementGScores: (state, getters) => {
+      var survs = getters.survivorsInSettlement
       return survs.map((s) => { return goodnessFunction(s) })
     },
-    currentSettlement: (state) => {
-      var idx = state.settlements.findIndex((s) => { return s._id === state.currentSmt })
-      return state.settlements[idx]
+
+    snapshotSettlement: (state) => {
+      if (state.currentSnap == null) { return {} }
+      var snap = state.snapshots.find((s) => { return s._id === state.currentSnap })
+      return snap.settlement
     },
-    numberAliveInSettlement: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'alive', true)
+
+    // OUTWARD FACING -- takes into account snapshot (which overrides currentSmt)
+    currentSettlement: (state, getters) => {
+      if (state.currentSnap == null) {
+        return state.settlements.find((s) => { return s._id === state.currentSmt })
+      } else {
+        return getters.snapshotSettlement
+      }
     },
-    settlementDeathCount: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'alive', false)
+
+    numberAliveInSettlement: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.alive === true }).length
     },
-    settlementMaleCount: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'sex', 'm')
+
+    settlementDeathCount: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.alive === false }).length
     },
-    settlementFemaleCount: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'sex', 'f')
+
+    settlementMaleCount: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.sex === 'm' }).length
     },
+
+    settlementFemaleCount: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.sex === 'f' }).length
+    },
+
     snapshotsForCurrentSettlement: (state) => {
       return state.snapshots.filter((s) => { return s.settlement._id === state.currentSmt })
     }
