@@ -2,7 +2,7 @@
   <div>
     <li class="editable-list-item" @mouseover="hover = true" @mouseleave="hover = false">
       <div class="item-input-wrapper" :class="{'input-on-hover' : (hover && !editing)}">
-        <editable-text-input :textValue="initTextValue" :textStyle="{textOverflow: 'ellipsis'}" @update="$emit('update', $event)" @focus="editing = true" @blur="editing = false" />
+        <editable-text-input :textValue="initTextValue" :textStyle="{textOverflow: 'ellipsis'}" :placeholder="placeholder" @update="$emit('update', $event)" @focus="editing = true" @blur="editing = false" />
       </div>
       <font-awesome-icon v-if="hover && !editing" :icon="deleteIcon" class="delete-icon" @click="$emit('delete')" @mousedown="mouseDownOnDelete = true" @mouseup="mouseDownOnDelete = false" @mouseleave="mouseDownOnDelete = false" />
     </li>
@@ -19,7 +19,8 @@ export default {
   name: 'editable-list-item',
   components: { EditableTextInput, FontAwesomeIcon },
   props: {
-    initTextValue: { required: true }
+    initTextValue: { required: true },
+    placeholder: { required: true }
   },
   data: function () {
     return {

@@ -3,7 +3,9 @@
     <modal @close="$emit('close')" :modalWidth="750">
       <div slot="header" style="display: none;"></div>
       <div slot="body">
-        <!-- ROW 1 -->
+        <!----------------------------------------------------------------------------------->
+        <!-------------------------------------- ROW 1 -------------------------------------->
+        <!----------------------------------------------------------------------------------->
         <div class="flex-wrapper row1">
           <div class="flex-wrapper general-info">
             <div class="survivor-name">
@@ -15,7 +17,9 @@
           </div>
           <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
         </div>
-        <!-- ROW 2 -->
+        <!----------------------------------------------------------------------------------->
+        <!-------------------------------------- ROW 2 -------------------------------------->
+        <!----------------------------------------------------------------------------------->
         <div class="flex-wrapper row2">
           <div class="flex-wrapper extra-names">
             <div class="nickname">
@@ -31,7 +35,9 @@
             <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'deathYear'); update(false, 'alive')" /></div>
           </div>
         </div>
-        <!-- ROW 3 -->
+        <!----------------------------------------------------------------------------------->
+        <!-------------------------------------- ROW 3 -------------------------------------->
+        <!----------------------------------------------------------------------------------->
         <div class="flex-wrapper row3">
           <div class="survival-box">
             <div :class="[survivor.cannotSpendSurvival ? 'no-survival' : '']">
@@ -91,7 +97,9 @@
             </div>
           </div>
         </div>
-        <!-- ROW 4 -->
+        <!----------------------------------------------------------------------------------->
+        <!-------------------------------------- ROW 4 -------------------------------------->
+        <!----------------------------------------------------------------------------------->
         <div class="row4">
           <div class="row4-box armor-points">
             <div class="row4-title"><span>Hit Locations</span></div>
@@ -129,7 +137,48 @@
             </div>
           </div>
         </div>
-        <!-- <div class="cannot-fight"><square-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div> -->
+        <!----------------------------------------------------------------------------------->
+        <!-------------------------------------- ROW 5 -------------------------------------->
+        <!----------------------------------------------------------------------------------->
+        <div class="flex-wrapper row5">
+          <div class="fighting-arts row5box">
+            <div :class="{ 'no-fighting' : survivor.cannotUseFighting }">
+              <div class="row5title">
+                <span class="title">Fighting Arts</span>
+                <span class="subtitle">Max 3.</span>
+              </div>
+              <editable-list :listItems="survivor.fightingArts" :min="3" :max="3" :placeholder="'Fighting Art'" @update="update($event, 'fightingArts')" />
+            </div>
+            <div class="cannot-fight"><lock-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div>
+          </div>
+          <div class="disorders row5box">
+            <div class="row5title">
+              <span class="title">Disorders</span>
+              <span class="subtitle">Max 3.</span>
+            </div>
+            <editable-list :listItems="survivor.disorders" :min="3" :max="3" :placeholder="'Disorder'" @update="update($event, 'disorders')" />
+          </div>
+          <div class="abilities row5box">
+            <div class="row5title">
+              <span class="title">Abilities</span>
+            </div>
+            <div class="row5scrollbox">
+              <div class="row5scroll-wrapper">
+                <editable-list :listItems="survivor.abilities" :placeholder="'Ability'" @update="update($event, 'abilities')" />
+              </div>
+            </div>
+          </div>
+          <div class="impairments row5box">
+            <div class="row5title">
+              <span class="title">Impairments</span>
+            </div>
+            <div class="row5scrollbox">
+              <div class="row5scroll-wrapper">
+                <editable-list :listItems="survivor.impairments" :placeholder="'Impairment'" @update="update($event, 'impairments')" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div slot="footer" style="display: none;"></div>
     </modal>
@@ -152,7 +201,8 @@ import {
   EditableTextInput,
   EditableStat,
   SquareToggle,
-  LockToggle
+  LockToggle,
+  EditableList
 } from './GUIComponents'
 
 export default {
@@ -169,7 +219,8 @@ export default {
     SquareToggle,
     LockToggle,
     AliveToggle,
-    ProgressBar
+    ProgressBar,
+    EditableList
   },
   props: {
     survivor: { required: true }
@@ -276,9 +327,6 @@ export default {
   width: 58px;
   padding-top: 1px;
 }
-.cannot-fight {
-  padding-left: 15px;
-}
 .row3 {
   margin-top: 10px;
 }
@@ -379,9 +427,6 @@ export default {
   font-variant-caps: small-caps;
   padding-right: 10px;
 }
-.row4-title span .info-text {
-  font-size: 10pt;
-}
 .armor-points {
   width: 100%;
 }
@@ -406,7 +451,56 @@ export default {
 .notes-box {
   margin-left: 10px;
 }
+.row5 {
+  margin-top: 10px;
+}
+.row5title {
+  padding-left: 4px;
+  padding-bottom: 2px;
+  position: relative;
+}
+.row5title span.title {
+  font-size: 12pt;
+  font-variant-caps: small-caps;
+}
+.row5title span.subtitle {
+  font-size: 9pt;
+  font-variant-caps: none;
+  font-style: oblique;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+.row5box {
+  margin-right: 1%;
+}
+.row5scrollbox {
+  min-height: 86px;
+  max-height: 86px;
+  overflow-y: scroll;
+}
+.row5scroll-wrapper {
+  width: 95%;
+}
 .fighting-arts {
-
+  width: 25%;
+}
+.no-fighting {
+  text-decoration: line-through;
+}
+.cannot-fight {
+  font-size: 8pt;
+  padding-top: 4px;
+  padding-left: 12px;
+}
+.disorders {
+  width: 20%;
+}
+.abilities {
+  width: 30%;
+}
+.impairments {
+  width: 22%;
+  margin-right: 0;
 }
 </style>
