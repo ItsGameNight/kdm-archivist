@@ -1,24 +1,29 @@
 <template>
   <div class="editable-stat">
     <div class="increment-box" @mouseover="hover = true" @mouseleave="hover = false">
-      <div class="chevron" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="updateStat(statValue + 1); bounceTop()"></div>
+      <div class="chevron top"><font-awesome-icon :icon="chevronUp" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="updateStat(statValue + 1); bounceTop()" /></div>
       <div :class="{ maxbox : maxValue }">
         <input type="number" class="statbox" :class="{ borderless : maxValue }" :value="statValue" @input="updateStat($event.target.value)" @focus="$event.target.select(); focus = true" @blur="focus = false" @keydown.enter="$event.target.blur()" />
         <span v-if="maxValue" class="limitbox"><div class="limit-label">Limit</div>{{ maxValue }}</span>
       </div>
       <div v-if="statDisplayName" class="stat-display-name" :style="displayNameStyle">{{ statDisplayName }}</div>
-      <div :class="[statDisplayName ? 'chevron bottom withDisplayName' : 'chevron bottom', bottomBounce ? 'animated bounceDown' : '']" :style="chevronStyle" @mousedown="updateStat(statValue - 1); bounceBottom()"></div>
+      <div :class="[statDisplayName ? 'chevron bottom withDisplayName' : 'chevron bottom']"><font-awesome-icon :icon="chevronDown" :class="[bottomBounce ? 'animated bounceDown' : '']" :style="chevronStyle" @mousedown="updateStat(statValue - 1); bounceBottom()" /></div>
     </div>
   </div>
 </template>
 
 <script>
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import { faChevronUp, faChevronDown } from '@fortawesome/fontawesome-free-solid'
+
 export default {
   name: 'editable-stat',
+  components: { FontAwesomeIcon },
   props: {
     statDisplayName: { required: false },
     initValue: { required: true },
-    maxValue: { required: false, default: null }
+    maxValue: { required: false, default: null },
+    minValue: { required: false, default: null }
   },
   data: function () {
     return {
@@ -30,6 +35,12 @@ export default {
     }
   },
   computed: {
+    chevronUp: function () {
+      return faChevronUp
+    },
+    chevronDown: function () {
+      return faChevronDown
+    },
     chevronStyle: function () {
       if (this.hover || this.focus) {
         return { visibility: 'visible' }
@@ -47,7 +58,8 @@ export default {
   },
   methods: {
     updateStat: function (val) {
-      if (this.maxValue === null || val <= this.maxValue) {
+      if ((this.maxValue === null || val <= this.maxValue) &&
+        (this.minValue === null || val >= this.minValue)) {
         this.statValue = val
         this.$emit('update', val)
       }
@@ -70,30 +82,24 @@ export default {
 
 <style>
 .editable-stat {
-  padding: 0 0.2em 0 0.5em;
+  padding: 0 0.2em;
   display: block;
+  /*border: 1px solid red;*/
 }
 .increment-box {
-  width: 1.2em;
-  min-width: 1.2em;
-  height: 3.15em;
-  min-height: 3.15em;
   text-align: center;
   font-size: 18pt;
-  overflow: visible;
+  /*border: 1px solid blue;*/
 }
 .maxbox {
   display: flex;
   flex-direction: row;
-  width: 2.6em;
   border: 1px solid black;
   border-radius: 2px;
 }
 .statbox {
   width: 1.2em;
   min-width: 1.2em;
-  height: 1.2em;
-  min-height: 1.2em;
   text-align: center;
   font-size: 18pt;
   border: 1px solid black;
@@ -115,11 +121,11 @@ export default {
   border: none;
 }
 .stat-display-name {
+  height: 0;
   font-size: 9pt;
   text-transform: uppercase;
   text-align: center;
   padding-top: 2px;
-  padding-left: 3px;
 }
 .limit-label {
   font-size: 7pt;
@@ -128,25 +134,21 @@ export default {
   text-align: center;
   border-bottom: 1px solid black;
 }
-.chevron::before {
-  border-style: solid;
-  border-width: 0.2em 0.2em 0 0;
-  content: '';
-  display: inline-block;
-  height: 0.45em;
-  left: 0.1em;
+.chevron {
   position: relative;
-  top: 0.5em;
-  transform: rotate(-45deg);
-  vertical-align: top;
-  width: 0.45em;
+  text-align: left;
+  padding-left: 6px;
+  /*border: 1px solid green;*/
 }
-.chevron.bottom:before {
-  top: 0;
-  transform: rotate(135deg);
+.top {
+  height: 0.9em;
 }
-.chevron.bottom.withDisplayName:before {
-  top: -0.72em;
+.bottom {
+  height: 0.9em;
+  top: -0.1em;
+}
+.withDisplayName {
+  top: -0.2em;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

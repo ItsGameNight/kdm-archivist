@@ -76,23 +76,23 @@
           <div class="row4-box armor-points">
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="brainImg" />
-              <editable-stat :initValue="survivor.insanity" @update="" />
+              <editable-stat :statDisplayName="'INS'" :minValue="0" :initValue="survivor.insanity" @update="" />
             </div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="headImg" />
-              <editable-stat :initValue="survivor.insanity" @update="" />
+              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
             </div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="armsImg" />
-              <editable-stat :initValue="survivor.insanity" @update="" />
+              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
             </div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="bodyImg" />
-              <editable-stat :initValue="survivor.insanity" @update="" />
+              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
             </div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="legsImg" />
-              <editable-stat :initValue="survivor.insanity" @update="" />
+              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
             </div>
           </div>
         </div>
@@ -261,8 +261,8 @@ export default {
   font-variant-caps: small-caps;
 }
 .survival-abilities {
-  margin-top: 14px;
-  margin-left: 45px;
+  margin-top: 8px;
+  margin-left: 10px;
 }
 .ability {
   padding-top: 2px;
@@ -270,7 +270,6 @@ export default {
 .cannot-spend-survival {
   width: 96%;
   margin: auto;
-  padding-top: 8px;
 }
 .stats-box {
   width: 35%;
@@ -301,11 +300,13 @@ export default {
 }
 .row4-box {
   border: 2px solid black;
+  padding: 0 6px 4px 2px;
 }
 .armor-point-box {
 }
 .armor-img {
   width: 20px;
   height: 20px;
+  margin: auto 0;
 }
 </style>
