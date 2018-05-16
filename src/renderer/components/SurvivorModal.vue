@@ -37,7 +37,7 @@
             <div :class="[survivor.cannotSpendSurvival ? 'no-survival' : '']">
               <div class="row3-title"><span>Survival</span></div>
               <div class="flex-wrapper">
-                <editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" @update="update($event, 'survival')" />
+                <div class="survival-input"><editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" :minValue="0" @update="update($event, 'survival')" /></div>
                 <div class="survival-abilities">
                  <div class="ability"><square-toggle :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" @update="update($event, 'dodge')"/></div>
                  <div class="ability"><square-toggle :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" @update="update($event, 'encourage')" /></div>
@@ -286,6 +286,9 @@ export default {
   width: 20%;
   min-width: 20%;
   border: 2px solid black;
+}
+.survival-input {
+  padding-left: 4px;
 }
 .no-survival {
   text-decoration: line-through;
