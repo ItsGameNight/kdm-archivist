@@ -71,7 +71,7 @@ export default {
 <style>
 .editable-stat {
   padding: 0 0.2em 0 0.5em;
-  display: inline-block;
+  display: block;
 }
 .increment-box {
   width: 1.2em;

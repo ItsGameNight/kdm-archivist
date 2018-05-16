@@ -71,6 +71,31 @@
             </div>
           </div>
         </div>
+        <!-- ROW 4 -->
+        <div class="flex-wrapper row4">
+          <div class="row4-box armor-points">
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="brainImg" />
+              <editable-stat :initValue="survivor.insanity" @update="" />
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="headImg" />
+              <editable-stat :initValue="survivor.insanity" @update="" />
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="armsImg" />
+              <editable-stat :initValue="survivor.insanity" @update="" />
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="bodyImg" />
+              <editable-stat :initValue="survivor.insanity" @update="" />
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="legsImg" />
+              <editable-stat :initValue="survivor.insanity" @update="" />
+            </div>
+          </div>
+        </div>
         <!-- <div class="cannot-fight"><square-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div> -->
       </div>
     </modal>
@@ -112,6 +137,16 @@ export default {
   },
   props: {
     survivor: { required: true }
+  },
+  data: function () {
+    return {
+      brainImg: 'static/brain.png',
+      headImg: 'static/head.png',
+      bodyImg: 'static/body.png',
+      armsImg: 'static/arms.png',
+      waistImg: 'static/waist.png',
+      legsImg: 'static/legs.png'
+    }
   },
   computed: {
     ...mapGetters([
@@ -260,5 +295,17 @@ export default {
 }
 .progress-group {
   padding: 4px;
+}
+.row4 {
+  margin-top: 10px;
+}
+.row4-box {
+  border: 2px solid black;
+}
+.armor-point-box {
+}
+.armor-img {
+  width: 20px;
+  height: 20px;
 }
 </style>
