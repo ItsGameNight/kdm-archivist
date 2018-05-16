@@ -99,7 +99,7 @@
               <div class="flex-wrapper armor-point-box">
                 <img class="armor-img" :src="brainImg" />
                 <editable-stat :minValue="0" :initValue="survivor.insanity" @update="update($event, 'insanity')" />
-                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.brainHP" :maxLevel="1" :boldLevels="[]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
+                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.brainHP" :maxLevel="1" :boldLevels="[1]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
               </div>
               <div class="flex-wrapper armor-point-box">
                 <img class="armor-img" :src="headImg" />

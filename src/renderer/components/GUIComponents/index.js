@@ -17,7 +17,8 @@ import EditableStat from './EditableStat'
 import EditableTextInput from './EditableTextInput'
 import LockToggle from './LockToggle'
 import SquareToggle from './SquareToggle'
+import EditableList from './EditableList'
 
 export {
-  EditableStat, EditableTextInput, LockToggle, SquareToggle
+  EditableStat, EditableTextInput, LockToggle, SquareToggle, EditableList
 }
