@@ -117,7 +117,10 @@ export default new Vuex.Store({
       })
     },
 
-    updateSettlement ({ commit }, payload) {
+    updateSettlement ({ state, commit }, payload) {
+      // ignore if in snapshot mode!
+      // TODO: decide if wanna handle this way!
+      if (state.currentSnap != null) { return }
       var id = payload.id
       var update = payload.update
       // update the smt in db
@@ -164,7 +167,8 @@ export default new Vuex.Store({
       })
     },
 
-    updateSurvivor ({ commit }, payload) {
+    updateSurvivor ({ state, commit }, payload) {
+      if (state.currentSnap != null) { return }
       var id = payload.id
       var update = payload.update
       this.$survivors.updateOne(id, update, () => {
