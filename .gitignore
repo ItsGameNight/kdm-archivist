@@ -16,6 +16,9 @@ npm-debug.log.*
 # vim swap files
 *.swp
 
+# ctags file
+tags
+
 # file system junk
 .DS_Store
 thumbs.db
