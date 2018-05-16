@@ -54,6 +54,17 @@ class SettlementsDatabase extends Database {
         endure: false,
         birthYear: 0,
         deathYear: null,
+        brainHP: 0,
+        headHP: 0,
+        armsHP: 0,
+        bodyHP: 0,
+        waistHP: 0,
+        legsHP: 0,
+        headArmor: 0,
+        armsArmor: 0,
+        bodyArmor: 0,
+        waistArmor: 0,
+        legsArmor: 0,
         other: null
       }
     }

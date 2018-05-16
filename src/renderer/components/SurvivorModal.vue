@@ -65,45 +65,73 @@
           <div class="progress-box">
             <div class="row3-title"><span>Development Stats</span></div>
             <div class="progress-group">
-              <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
-              <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
-              <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
+              <div class="flex-wrapper weapon-prof-group">
+                <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
+                <div class="weapon-type">
+                  <div class="weapon-type-text">
+                    Weapon Type:
+                  </div>
+                  <div class="weapon-type-input"><editable-text-input :textValue="survivor.weaponProficiency" @update="update($event, 'weaponProficiency')" :textStyle="{fontSize: '9pt', fontStyle: 'oblique'}" /></div>
+                </div>
+              </div>
+              <div class="crg-und-group">
+                <div class="flex-wrapper">
+                  <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
+                  <div class="left"><understanding-bar :survivorID="survivor._id" :level="survivor.understanding" /></div>
+                </div>
+                <div class="flex-wrapper">
+                  <div class="skill-input-wrapper">
+                    <div class="skill-input"><editable-text-input :textValue="survivor.boldSkill" @update="update($event, 'boldSkill')" :placeholder="'Bold Skill'" :textStyle="{fontSize: '9pt'}" /></div>
+                  </div>
+                  <div class="skill-input-wrapper right">
+                    <div class="skill-input"><editable-text-input :textValue="survivor.insightSkill" @update="update($event, 'insightSkill')" :placeholder="'Insight Skill'" :textStyle="{fontSize: '9pt'}" /></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <!-- ROW 4 -->
-        <div class="flex-wrapper row4">
+        <div class="row4">
           <div class="row4-box armor-points">
             <div class="row4-title"><span>Hit Locations</span></div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="brainImg" />
-              <editable-stat :minValue="0" :initValue="survivor.insanity" @update="" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="1" :boldLevels="[]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
-            </div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="headImg" />
-              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'headHP'" /></div>
-            </div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="armsImg" />
-              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'armHP'" /></div>
-            </div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="bodyImg" />
-              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'bodyHP'" /></div>
-            </div>
-            <div class="flex-wrapper armor-point-box last">
-              <img class="armor-img" :src="legsImg" />
-              <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'legHP'" /></div>
+            <div class="flex-wrapper">
+              <div class="flex-wrapper armor-point-box">
+                <img class="armor-img" :src="brainImg" />
+                <editable-stat :minValue="0" :initValue="survivor.insanity" @update="update($event, 'insanity')" />
+                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.brainHP" :maxLevel="1" :boldLevels="[]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
+              </div>
+              <div class="flex-wrapper armor-point-box">
+                <img class="armor-img" :src="headImg" />
+                <editable-stat :initValue="survivor.headArmor" :minValue="0" @update="update($event, 'headArmor')" />
+                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.headHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'headHP'" /></div>
+              </div>
+              <div class="flex-wrapper armor-point-box">
+                <img class="armor-img" :src="armsImg" />
+                <editable-stat :initValue="survivor.armsArmor" :minValue="0" @update="update($event, 'armsArmor')" />
+                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.armsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'armsHP'" /></div>
+              </div>
+              <div class="flex-wrapper armor-point-box">
+                <img class="armor-img" :src="bodyImg" />
+                <editable-stat :initValue="survivor.bodyArmor" :minValue="0" @update="update($event, 'bodyArmor')" />
+                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.bodyHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'bodyHP'" /></div>
+              </div>
+              <div class="flex-wrapper armor-point-box">
+                <img class="armor-img" :src="waistImg" />
+                <editable-stat :initValue="survivor.waistArmor" :minValue="0" @update="update($event, 'waistArmor')" />
+                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.waistHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'waistHP'" /></div>
+              </div>
+              <div class="flex-wrapper armor-point-box last">
+                <img class="armor-img" :src="legsImg" />
+                <editable-stat :initValue="survivor.legsArmor" :minValue="0" @update="update($event, 'legsArmor')" />
+                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.legsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'legsHP'" /></div>
+              </div>
             </div>
           </div>
         </div>
         <!-- <div class="cannot-fight"><square-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div> -->
       </div>
+      <div slot="footer" style="display: none;"></div>
     </modal>
   </div>
 </template>
@@ -175,6 +203,9 @@ export default {
 </script>
 
 <style>
+.left {
+  margin-left: auto;
+}
 .general-info {
   min-width: 47%;
   width: 47%;
@@ -261,7 +292,7 @@ export default {
 }
 .row3-title {
   padding-left: 0.4em;
-  padding-bottom: 1px;
+  padding-top: 1px;
   border-bottom: 1px solid black;
 }
 .row3-title span {
@@ -280,8 +311,8 @@ export default {
   margin: auto;
 }
 .stats-box {
-  width: 35%;
-  min-width: 35%;
+  width: 33%;
+  min-width: 33%;
   margin-left: auto;
   border: 2px solid black;
 }
@@ -291,17 +322,43 @@ export default {
 }
 .skip-hunt {
   float: right;
-  padding-top: 1px;
+  padding-bottom: 1px;
   padding-right: 4px;
 }
 .progress-box {
-  width: 40%;
-  min-width: 35%;
+  width: 42%;
+  min-width: 42%;
   margin-left: auto;
   border: 2px solid black;
 }
 .progress-group {
   padding: 4px;
+}
+.weapon-prof-group {
+  margin-bottom: 6px;
+  width: 100%;
+}
+.weapon-type {
+  width: 100%;
+  border-bottom: 1px dotted black;
+  margin-left: 18px;
+}
+.weapon-type-text {
+  font-size: 10pt;
+  font-variant-caps: small-caps;
+}
+.weapon-type-input {
+  width: 85%;
+}
+.skill-input-wrapper {
+  width: 46%;
+  border-bottom: 1px solid black;
+}
+.skill-input-wrapper.right {
+  margin-left: auto;
+}
+.skill-input {
+  width: 80%;
 }
 .row4 {
   margin-top: 10px;
@@ -312,25 +369,41 @@ export default {
 .row4-title {
   padding-left: 0.2em;
   border-bottom: 1px solid black;
+  padding-right: 2px;
 }
 .row4-title span {
   font-size: 10pt;
   font-variant-caps: small-caps;
+  padding-right: 10px;
+}
+.row4-title span .info-text {
+  font-size: 10pt;
+}
+.armor-points {
+  width: 100%;
 }
 .armor-point-box {
-  margin: 0 6px 0 6px;
-  border-bottom: 1px solid black;
+  width: 20%;
+  padding-left: 12px;
+  padding-right: 6px;
+  border-right: 1px solid black;
 }
 .armor-point-box.last {
-  border-bottom: none;
+  border-right: none;
 }
 .armor-img {
   width: 20px;
   height: 20px;
-  margin: auto 4px auto 0;
+  margin: auto 6px auto 0;
 }
 .hp-bar {
   height: 18px;
   margin: auto 0;
+}
+.notes-box {
+  margin-left: 10px;
+}
+.fighting-arts {
+
 }
 </style>

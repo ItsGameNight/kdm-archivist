@@ -27,7 +27,8 @@ export default {
           ...this.textStyle,
           backgroundImage: 'url(' + this.bgImgUrl + ')',
           paddingLeft: '1em',
-          fontWeight: 'normal'
+          fontWeight: 'normal',
+          fontStyle: 'normal'
         }
       } else if (this.hover) {
         return {

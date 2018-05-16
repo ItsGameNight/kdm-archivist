@@ -1,8 +1,8 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask">
+    <div class="modal-mask" @click="$emit('close')">
       <div class="modal-wrapper">
-        <div class="modal-container" :style="{ width: modalWidth + 'px'}">
+        <div class="modal-container" :style="{ width: modalWidth + 'px'}" @click.stop>
           <div class="modal-header">
             <slot name="header">
               Default header.
@@ -71,7 +71,6 @@ export default {
   margin: 20px 0;
 }
 .modal-footer {
-  min-height: 10px;
 }
 .modal-default-button {
   float: right;
