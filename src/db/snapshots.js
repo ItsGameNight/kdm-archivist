@@ -29,3 +29,4 @@ class SnapshotsDatabase extends Database {
     })
   }
 }
+export default SnapshotsDatabase

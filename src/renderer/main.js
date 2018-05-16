@@ -7,6 +7,7 @@ import store from './store'
 
 import SurvivorsDatabase from '../db/survivors'
 import SettlementsDatabase from '../db/settlements'
+import SnapshotsDatabase from '../db/snapshots'
 
 import { remote } from 'electron'
 
@@ -17,12 +18,15 @@ Vue.config.productionTip = false
 console.log(remote.app.getPath('userData'))
 var smts = new SettlementsDatabase(remote.app.getPath('userData'))
 var survs = new SurvivorsDatabase(remote.app.getPath('userData'), smts)
+var snaps = new SnapshotsDatabase(remote.app.getPath('userData'), smts, survs)
 
 Vue.prototype.$settlements = smts
 Vue.prototype.$survivors = survs
+Vue.prototype.$snapshots = snaps
 
 store.$settlements = smts
 store.$survivors = survs
+store.$snapshots = snaps
 
 /* eslint-disable no-new */
 new Vue({
