@@ -58,11 +58,11 @@ export default {
   },
   methods: {
     updateStat: function (val) {
-      if (val === null || isNaN(val)) {
-        this.statValue = 0
-        this.$emit('update', this.statValue)
-      } else if ((this.maxValue === null || val <= this.maxValue) &&
+      if ((this.maxValue === null || val <= this.maxValue) &&
         (this.minValue === null || val >= this.minValue)) {
+        if (val === '' || val === null || isNaN(val)) {
+          val = 0
+        }
         this.statValue = val
         this.$emit('update', val)
       }
