@@ -74,25 +74,31 @@
         <!-- ROW 4 -->
         <div class="flex-wrapper row4">
           <div class="row4-box armor-points">
+            <div class="row4-title"><span>Hit Locations</span></div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="brainImg" />
-              <editable-stat :statDisplayName="'INS'" :minValue="0" :initValue="survivor.insanity" @update="" />
+              <editable-stat :minValue="0" :initValue="survivor.insanity" @update="" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="1" :boldLevels="[]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
             </div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="headImg" />
               <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'headHP'" /></div>
             </div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="armsImg" />
               <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'armHP'" /></div>
             </div>
             <div class="flex-wrapper armor-point-box">
               <img class="armor-img" :src="bodyImg" />
               <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'bodyHP'" /></div>
             </div>
-            <div class="flex-wrapper armor-point-box">
+            <div class="flex-wrapper armor-point-box last">
               <img class="armor-img" :src="legsImg" />
               <editable-stat :initValue="survivor.insanity" :minValue="0" @update="" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="0" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'legHP'" /></div>
             </div>
           </div>
         </div>
@@ -111,7 +117,8 @@ import {
   UnderstandingBar,
   WeaponProficiencyBar,
   MaleFemaleToggle,
-  AliveToggle
+  AliveToggle,
+  ProgressBar
 } from './SurvivorComponents'
 import {
   EditableTextInput,
@@ -133,7 +140,8 @@ export default {
     EditableStat,
     SquareToggle,
     LockToggle,
-    AliveToggle
+    AliveToggle,
+    ProgressBar
   },
   props: {
     survivor: { required: true }
@@ -300,13 +308,29 @@ export default {
 }
 .row4-box {
   border: 2px solid black;
-  padding: 0 6px 4px 2px;
+}
+.row4-title {
+  padding-left: 0.2em;
+  border-bottom: 1px solid black;
+}
+.row4-title span {
+  font-size: 10pt;
+  font-variant-caps: small-caps;
 }
 .armor-point-box {
+  margin: 0 6px 0 6px;
+  border-bottom: 1px solid black;
+}
+.armor-point-box.last {
+  border-bottom: none;
 }
 .armor-img {
   width: 20px;
   height: 20px;
+  margin: auto 4px auto 0;
+}
+.hp-bar {
+  height: 18px;
   margin: auto 0;
 }
 </style>
