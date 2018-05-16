@@ -9,6 +9,7 @@
         <span>|NAV| |BAR| |HERE|</span>
         <survivor-table id="survivor-table"></survivor-table>
         <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
+        <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
         <br>
         <button v-for="snap in snapshotsForCurrentSettlement" @click="setCurrentSnap(snap._id)">
           {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
@@ -42,7 +43,10 @@ export default {
     ...mapGetters(['snapshotsForCurrentSettlement'])
   },
   methods: {
-    ...mapActions(['createSnapshot', 'setCurrentSnap']),
+    ...mapActions([
+      'createSnapshot',
+      'setCurrentSnap'
+    ]),
     play: function () {
       if (this.currentSmt !== null) {
         this.appState = 1
