@@ -17,7 +17,8 @@ describe('Survivors', () => {
   })
 
   after(function() {
-    // Compact db
+    // Compact dbs
+    settlements.loadDatabase()
     survivors.loadDatabase()
   })
 
