@@ -1,7 +1,7 @@
 <template>
   <div class="welcome-main">
     <header>
-      <div class="logo-wrapper"><img class="logo" :src="headerImg" /></div>
+      <h1 id="title">Twilight Archivist</h1>
       <h4 id="subtitle">A Kingdom Death: Monster Companion App</h4>
     </header>
     <div id="settlement-table">
@@ -15,12 +15,7 @@
 import SettlementTable from './SettlementTable'
 export default {
   name: 'welcome-screen',
-  components: { SettlementTable },
-  data: function () {
-    return {
-      headerImg: 'static/logo-animated.png'
-    }
-  }
+  components: { SettlementTable }
 }
 </script>
 
@@ -31,15 +26,6 @@ export default {
 header {
   padding-top: 20px;
   padding-bottom: 15px;
-}
-.logo-wrapper {
-  height: 75px;
-}
-img.logo {
-  width: 500px;
-  display: block;
-  margin: auto;
-  -webkit-user-drag: none;
 }
 #title {
   text-align: center;
