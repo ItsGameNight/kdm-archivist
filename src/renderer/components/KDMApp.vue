@@ -8,6 +8,12 @@
       <div id="content">
         <span>|NAV| |BAR| |HERE|</span>
         <survivor-table id="survivor-table"></survivor-table>
+        <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
+        <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
+        <br>
+        <button v-for="snap in snapshotsForCurrentSettlement" @click="setCurrentSnap(snap._id)">
+          {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
+        </button>
       </div>
       <div id="note-panel">
         <span style="font-weight: bold">Notes:</span>
@@ -22,7 +28,7 @@ import WelcomeScreen from './WelcomeScreen'
 import SurvivorTable from './SurvivorTable'
 import SettlementInspector from './SettlementInspector'
 import NotePanel from './NotePanel'
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'kdm-app',
@@ -33,11 +39,14 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'currentSmt'
-    ])
+    ...mapState(['currentSmt']),
+    ...mapGetters(['snapshotsForCurrentSettlement'])
   },
   methods: {
+    ...mapActions([
+      'createSnapshot',
+      'setCurrentSnap'
+    ]),
     play: function () {
       if (this.currentSmt !== null) {
         this.appState = 1
@@ -47,8 +56,10 @@ export default {
     }
   },
   mounted: function () {
+    // load all db's
     this.$store.dispatch('loadSettlements')
     this.$store.dispatch('loadSurvivors')
+    this.$store.dispatch('loadSnapshots')
   }
 }
 </script>

@@ -4,41 +4,68 @@ import goodnessFunction from '../../db/goodness.js'
 
 Vue.use(Vuex)
 
-// helper for getters
-function countSurvivorsInSmtWPropVal (survs, smtID, prop, val) {
-  var survsInSmt = survs.filter((s) => { return s.settlementID === smtID })
-  return survsInSmt.filter((s) => { return s[prop] === val }).length
-}
-
 export default new Vuex.Store({
   state: {
     survivors: [],
     settlements: [],
-    currentSmt: null
+    snapshots: [],
+    currentSmt: null,
+    currentSnap: null
   },
   getters: {
-    survivorsInSettlement: (state) => {
-      return state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+    snapshotSurvivors: (state) => {
+      if (state.currentSnap == null) { return [] }
+      var snap = state.snapshots.find((s) => { return s._id === state.currentSnap })
+      return snap.survivors
     },
-    survivorsInSettlementGScores: (state) => {
-      var survs = state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+
+    // OUTWARD FACING -- takes into account snapshot (which overrides currentSmt)
+    survivorsInSettlement: (state, getters) => {
+      if (state.currentSnap == null) {
+        return state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
+      } else {
+        return getters.snapshotSurvivors
+      }
+    },
+
+    survivorsInSettlementGScores: (state, getters) => {
+      var survs = getters.survivorsInSettlement
       return survs.map((s) => { return goodnessFunction(s) })
     },
-    currentSettlement: (state) => {
-      var idx = state.settlements.findIndex((s) => { return s._id === state.currentSmt })
-      return state.settlements[idx]
+
+    snapshotSettlement: (state) => {
+      if (state.currentSnap == null) { return {} }
+      var snap = state.snapshots.find((s) => { return s._id === state.currentSnap })
+      return snap.settlement
     },
-    numberAliveInSettlement: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'alive', true)
+
+    // OUTWARD FACING -- takes into account snapshot (which overrides currentSmt)
+    currentSettlement: (state, getters) => {
+      if (state.currentSnap == null) {
+        return state.settlements.find((s) => { return s._id === state.currentSmt })
+      } else {
+        return getters.snapshotSettlement
+      }
     },
-    settlementDeathCount: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'alive', false)
+
+    numberAliveInSettlement: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.alive === true }).length
     },
-    settlementMaleCount: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'sex', 'm')
+
+    settlementDeathCount: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.alive === false }).length
     },
-    settlementFemaleCount: (state) => {
-      return countSurvivorsInSmtWPropVal(state.survivors, state.currentSmt, 'sex', 'f')
+
+    settlementMaleCount: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.sex === 'm' }).length
+    },
+
+    settlementFemaleCount: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.sex === 'f' }).length
+    },
+
+    snapshotsForCurrentSettlement: (state) => {
+      return state.snapshots.filter((s) => { return s.settlement._id === state.currentSmt })
     }
   },
   mutations: {
@@ -48,8 +75,14 @@ export default new Vuex.Store({
     SET_SETTLEMENTS (state, newObj) {
       state.settlements = newObj
     },
+    SET_SNAPSHOTS (state, newObj) {
+      state.snapshots = newObj
+    },
     SET_CURRENTSMT (state, id) {
       state.currentSmt = id
+    },
+    SET_CURRENTSNAP (state, id) {
+      state.currentSnap = id
     },
     // Needs Vue.set --> https://vuejs.org/v2/guide/list.html#Caveats
     SET_SETTLEMENT_BY_ID (state, payload) {
@@ -65,17 +98,29 @@ export default new Vuex.Store({
     setCurrentSmt ({ commit }, id) {
       commit('SET_CURRENTSMT', id)
     },
+
     loadSettlements ({ commit }) {
       this.$settlements.getAll((smts) => {
         commit('SET_SETTLEMENTS', smts)
       })
     },
+
     loadSurvivors ({ commit }) {
       this.$survivors.getAll((survs) => {
         commit('SET_SURVIVORS', survs)
       })
     },
-    updateSettlement ({ commit }, payload) {
+
+    loadSnapshots ({ commit }) {
+      this.$snapshots.getAll((snaps) => {
+        commit('SET_SNAPSHOTS', snaps)
+      })
+    },
+
+    updateSettlement ({ state, commit }, payload) {
+      // ignore if in snapshot mode!
+      // TODO: decide if wanna handle this way!
+      if (state.currentSnap != null) { return }
       var id = payload.id
       var update = payload.update
       // update the smt in db
@@ -87,6 +132,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     createSettlement ({ commit }) {
       this.$settlements.createNew(() => {
         this.$settlements.getAll((smts) => {
@@ -94,6 +140,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     deleteSettlement ({ commit }, id) {
       this.$settlements.remove(id, () => {
         this.$settlements.getAll((smts) => {
@@ -102,6 +149,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     dropAllSurvivors ({ commit }) {
       this.$survivors.dropAll(() => {
         this.$survivors.getAll((survs) => {
@@ -109,6 +157,7 @@ export default new Vuex.Store({
         })
       })
     },
+
     addNewSurvivor ({ commit }, smtID) {
       console.log(smtID)
       this.$survivors.addBase(smtID, { name: 'Test' }, () => {
@@ -117,7 +166,9 @@ export default new Vuex.Store({
         })
       })
     },
-    updateSurvivor ({ commit }, payload) {
+
+    updateSurvivor ({ state, commit }, payload) {
+      if (state.currentSnap != null) { return }
       var id = payload.id
       var update = payload.update
       this.$survivors.updateOne(id, update, () => {
@@ -125,6 +176,18 @@ export default new Vuex.Store({
           commit('SET_SURVIVOR_BY_ID', { id: s[0]._id, newObj: s[0] })
         })
       })
+    },
+
+    createSnapshot ({ commit }, smtID) {
+      this.$snapshots.createNew(smtID, () => {
+        this.$snapshots.getAll((snaps) => {
+          commit('SET_SNAPSHOTS', snaps)
+        })
+      })
+    },
+
+    setCurrentSnap ({ commit }, id) {
+      commit('SET_CURRENTSNAP', id)
     }
   },
   strict: process.env.NODE_ENV !== 'production'
