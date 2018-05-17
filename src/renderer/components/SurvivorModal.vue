@@ -183,6 +183,34 @@
             </div>
           </div>
         </div>
+        <!----------------------------------------------------------------------------------->
+        <!-------------------------------------- ROW 6 -------------------------------------->
+        <!----------------------------------------------------------------------------------->
+        <div class="flex-wrapper row6">
+          <div class="family-info row6box">
+            <div class="row6title family">
+              <span>Family information:</span>
+            </div>
+            <div class="flex-wrapper family-info-box">
+              <div class="parents">
+                <div class="parents-title">
+                  Parents:
+                </div>
+              </div>
+              <div class="children">
+                <div class="children-title">
+                  Children:
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="other-box row6box">
+            <div class="row6title">
+              <span>Other information:</span>
+            </div>
+            <textarea :value="survivor.other" @input="update($event.target.value, 'other')"></textarea>
+          </div>
+        </div>
       </div>
       <div slot="footer" style="display: none;"></div>
     </modal>
@@ -464,7 +492,8 @@ img.depart {
   padding-right: 10px;
 }
 .armor-points {
-  width: 100%;
+  width: 99%;
+  margin: 0 auto;
 }
 .armor-point-box {
   width: 20%;
@@ -538,5 +567,62 @@ img.depart {
 .impairments {
   width: 22%;
   margin-right: 0;
+}
+.row6 {
+  margin-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 3px solid black;
+}
+.row6box {
+}
+.row6title {
+  padding-bottom: 2px;
+  border: 2px solid black;
+}
+.row6title span {
+  font-size: 10pt;
+  font-style: oblique;
+  padding-left: 4px;
+}
+.row6title.family {
+  width: 90%;
+}
+.family-info {
+  width: 40%;
+}
+.family-info-box {
+  width: 90%;
+  height: 99px;
+  border: 2px solid gray;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+.parents-title,
+.children-title {
+  font-size: 10pt;
+  text-align: center;
+  padding-top: 4px;
+}
+.parents {
+  width: 50%;
+}
+.children {
+  width: 50%;
+  border-left: 1px dashed gray;
+}
+.other-box {
+  width: 60%;
+}
+.other-box textarea {
+  width: 100%;
+  height: 100px;
+  padding: 6px 6px;
+  box-sizing: border-box;
+  border: 2px solid gray;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  background-color: #f8f8f8;
+  resize: none;
+  outline: none;
 }
 </style>
