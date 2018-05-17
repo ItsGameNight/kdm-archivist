@@ -70,7 +70,6 @@ td {
 }
 .table-scroll {
   height: 300px;
-  border: 1px solid black;
   overflow-y: scroll;
 }
 #controls {
