@@ -24,7 +24,12 @@
         :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
         @mouseover="filteredIdx = index"
         @mouseleave="filteredIdx = -1" >
-        {{ item }}
+        <div v-if="textValue != null">
+        <b>{{ item.substring(0, textValue.length) }}</b>{{ item.substring(textValue.length) }}
+        </div>
+        <div v-else>
+          {{ item }}
+        </div>
       </div>
     </div>
   </div>
