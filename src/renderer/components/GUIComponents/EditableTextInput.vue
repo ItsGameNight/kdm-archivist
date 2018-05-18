@@ -18,7 +18,7 @@
       @keydown.tab.prevent
       @keyup.tab.prevent="selectCompletion()" />
 
-    <div v-if="filteredList.length > 0 && focus" class="autocomplete-list">
+    <div v-if="okayToShowAutocomplete" class="autocomplete-list">
       <div
         v-for="(item, index) in filteredList"
         :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
@@ -72,6 +72,17 @@ export default {
       } else {
         return this.textStyle
       }
+    },
+
+    okayToShowAutocomplete: function () {
+      // check that >= 1 character in text
+      if (this.textValue !== null && this.textValue.length > 0) {
+        // check filtered list has stuff + focus on
+        if (this.focus && this.filteredList.length > 0) {
+          return true
+        }
+      }
+      return false
     },
 
     filteredList: function () {
