@@ -22,7 +22,8 @@
       <div
         v-for="(item, index) in filteredList"
         :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
-        @mouseover="filteredIdx = index">
+        @mouseover="filteredIdx = index"
+        @mouseleave="filteredIdx = -1" >
         {{ item }}
       </div>
     </div>
@@ -93,7 +94,6 @@ export default {
     },
 
     selectCompletion: function () {
-      console.log('sC')
       if (this.filteredIdx > -1 && this.filteredIdx < this.filteredList.length) {
         // update!
         this.$emit('update', this.filteredList[this.filteredIdx])
@@ -104,7 +104,6 @@ export default {
     },
 
     selectCompletionAndExit: function () {
-      console.log('sC&E')
       this.selectCompletion()
       this.$refs.eIn.blur()
     }
