@@ -6,7 +6,7 @@
         :initTextValue="item"
         :placeholder="placeholder + ' ' + (index + 1)"
         :key="index"
-        :autocompleteList="['abc', 'abcd', 'abcdefg', 'bde', 'bdefg', 'b']"
+        :autocompleteList="autocompleteList"
         @update="updateItem(index, $event)"
         @delete="deleteItem(index)" >
       </editable-list-item>
@@ -25,7 +25,8 @@ export default {
     listItems: { required: true },
     max: { required: false, default: null },
     min: { required: false, default: null },
-    placeholder: { required: false, default: 'Item' }
+    placeholder: { required: false, default: 'Item' },
+    autocompleteList: { default: () => [] }
   },
   created: function () {
     // Deal with case where min is specified but
