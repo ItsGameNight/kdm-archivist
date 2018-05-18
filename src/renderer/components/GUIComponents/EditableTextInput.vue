@@ -138,6 +138,8 @@ input::-webkit-inner-spin-button {
   border-style: solid;
   border-width: 2px;
   z-index: 99;
+  max-height: 120px;
+  overflow-y: scroll;
 }
 
 .autocomplete-item {
