@@ -368,6 +368,8 @@ export default {
 div.survivor-table-row-wrapper {
   user-select: none;
   cursor: default;
+  display: table;
+  margin: 0 auto;
 }
 td.survivor-table-row {
   padding: 0;
