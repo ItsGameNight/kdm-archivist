@@ -75,8 +75,8 @@ export default {
     },
 
     okayToShowAutocomplete: function () {
-      // check that >= 1 character in text
-      if (this.textValue !== null && this.textValue.length > 0) {
+      // check that >= 1 character in text (or already in list -- allows down arrow)
+      if (this.filteredIdx > -1 || (this.textValue !== null && this.textValue.length > 0)) {
         // check filtered list has stuff + focus on
         if (this.focus && this.filteredList.length > 0) {
           return true
