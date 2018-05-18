@@ -1,7 +1,15 @@
 <template>
   <div class="editable-list-wrapper">
     <ul class="editable-list">
-      <editable-list-item v-for="(item, index) in listItems" :initTextValue="item" :placeholder="placeholder + ' ' + (index + 1)" :key="index" @update="updateItem(index, $event)" @delete="deleteItem(index)"></editable-list-item>
+      <editable-list-item
+        v-for="(item, index) in listItems"
+        :initTextValue="item"
+        :placeholder="placeholder + ' ' + (index + 1)"
+        :key="index"
+        :autocompleteList="['abc', 'abcd', 'abcdefg', 'bde', 'bdefg', 'b']"
+        @update="updateItem(index, $event)"
+        @delete="deleteItem(index)" >
+      </editable-list-item>
     </ul>
     <button v-if="!max || listItems.length < max" class="add-item" @click="addNew">+</button>
   </div>
