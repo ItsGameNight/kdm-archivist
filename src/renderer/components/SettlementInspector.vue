@@ -24,19 +24,35 @@
     </p>
     <p>
       <b>Principles: </b>
-      <editable-list :listItems="currentSettlement.principles" :max="4" @update="update('principles', $event)"></editable-list>
+      <editable-list
+        :listItems="currentSettlement.principles"
+        :max="4"
+        :autocompleteList="principleNames"
+        @update="update('principles', $event)"
+        ></editable-list>
     </p>
     <p>
       <b>Locations: </b>
-      <editable-list :listItems="currentSettlement.locations" @update="update('locations', $event)"></editable-list>
+      <editable-list
+        :listItems="currentSettlement.locations"
+        :autocompleteList="['Lantern Hoard', 'Stone Circle', 'Weapon Crafter']"
+        @update="update('locations', $event)"
+        ></editable-list>
     </p>
     <p>
       <b>Innovations: </b>
-      <editable-list :listItems="currentSettlement.innovations" @update="update('innovations', $event)"></editable-list>
+      <editable-list
+        :listItems="currentSettlement.innovations"
+        :autocompleteList="innovationNames"
+        @update="update('innovations', $event)"
+        ></editable-list>
     </p>
     <p>
       <b>Quarries: </b>
-      <editable-list :listItems="currentSettlement.quarries" @update="update('quarries', $event)"></editable-list>
+      <editable-list
+        :listItems="currentSettlement.quarries"
+        :autocompleteList="['White Lion', 'Screaming Antelope', 'Pheonix']"
+        @update="update('quarries', $event)"></editable-list>
     </p>
   </div>
 </template>
@@ -44,6 +60,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { EditableList } from './GUIComponents'
+import { Innovations, Principles } from '../assets/StaticGameData'
+
+function getNames (obj) {
+  return Object.values(obj).map((o) => { return o.name })
+}
 
 export default {
   name: 'settlement-inspector',
@@ -55,7 +76,14 @@ export default {
       'settlementMaleCount',
       'settlementFemaleCount',
       'currentSettlement'
-    ])
+    ]),
+    principleNames: function () {
+      return getNames(Principles)
+    },
+    innovationNames: function () {
+      return getNames(Innovations)
+    }
+
   },
   methods: {
     ...mapActions([

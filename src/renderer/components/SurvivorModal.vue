@@ -151,7 +151,14 @@
                 <span class="title">Fighting Arts</span>
                 <span class="subtitle">Max 3.</span>
               </div>
-              <editable-list :listItems="survivor.fightingArts" :min="3" :max="3" :placeholder="'Fighting Art'" @update="update($event, 'fightingArts')" />
+              <editable-list
+                :listItems="survivor.fightingArts"
+                :min="3"
+                :max="3"
+                :placeholder="'Fighting Art'"
+                :autocompleteList="fightingArtNames"
+                @update="update($event, 'fightingArts')"
+                />
             </div>
             <div class="cannot-fight"><lock-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div>
           </div>
@@ -160,7 +167,14 @@
               <span class="title">Disorders</span>
               <span class="subtitle">Max 3.</span>
             </div>
-            <editable-list :listItems="survivor.disorders" :min="3" :max="3" :placeholder="'Disorder'" @update="update($event, 'disorders')" />
+            <editable-list
+              :listItems="survivor.disorders"
+              :min="3"
+              :max="3"
+              :placeholder="'Disorder'"
+              :autocompleteList="disorderNames"
+              @update="update($event, 'disorders')"
+              />
           </div>
           <div class="abilities row5box">
             <div class="row5title">
@@ -236,6 +250,7 @@ import {
   LockToggle,
   EditableList
 } from './GUIComponents'
+import { Disorders, FightingArts } from '../assets/StaticGameData'
 
 export default {
   name: 'survivor-modal',
@@ -286,6 +301,12 @@ export default {
       } else {
         return 'Survivor is currently resting in the settlement.'
       }
+    },
+    fightingArtNames: function () {
+      return Object.values(FightingArts).map((o) => { return o.name })
+    },
+    disorderNames: function () {
+      return Object.values(Disorders).map((o) => { return o.name })
     }
   },
   methods: {

@@ -1,7 +1,15 @@
 <template>
   <div class="editable-list-wrapper">
     <ul class="editable-list">
-      <editable-list-item v-for="(item, index) in listItems" :initTextValue="item" :placeholder="placeholder + ' ' + (index + 1)" :key="index" @update="updateItem(index, $event)" @delete="deleteItem(index)"></editable-list-item>
+      <editable-list-item
+        v-for="(item, index) in listItems"
+        :initTextValue="item"
+        :placeholder="placeholder + ' ' + (index + 1)"
+        :key="index"
+        :autocompleteList="autocompleteList"
+        @update="updateItem(index, $event)"
+        @delete="deleteItem(index)" >
+      </editable-list-item>
     </ul>
     <button v-if="!max || listItems.length < max" class="add-item" @click="addNew">+</button>
   </div>
@@ -17,7 +25,8 @@ export default {
     listItems: { required: true },
     max: { required: false, default: null },
     min: { required: false, default: null },
-    placeholder: { required: false, default: 'Item' }
+    placeholder: { required: false, default: 'Item' },
+    autocompleteList: { default: () => [] }
   },
   created: function () {
     // Deal with case where min is specified but
