@@ -141,6 +141,16 @@ export default new Vuex.Store({
       })
     },
 
+    createNamedSettlement ({ commit }, name) {
+      this.$settlements.createNew((newDoc) => {
+        this.$settlements.updateOne(newDoc._id, { name: name }, () => {
+          this.$settlements.getAll((smts) => {
+            commit('SET_SETTLEMENTS', smts)
+          })
+        })
+      })
+    },
+
     deleteSettlement ({ commit }, id) {
       this.$settlements.remove(id, () => {
         this.$settlements.getAll((smts) => {
@@ -160,7 +170,7 @@ export default new Vuex.Store({
 
     addNewSurvivor ({ commit }, smtID) {
       console.log(smtID)
-      this.$survivors.addBase(smtID, { name: 'Test' }, () => {
+      this.$survivors.addBase(smtID, { }, () => {
         this.$survivors.getAll((survs) => {
           commit('SET_SURVIVORS', survs)
         })
@@ -188,6 +198,15 @@ export default new Vuex.Store({
 
     setCurrentSnap ({ commit }, id) {
       commit('SET_CURRENTSNAP', id)
+    },
+
+    deleteSurvivor ({ commit }, payload) {
+      var id = payload.id
+      this.$survivors.remove(id, () => {
+        this.$survivors.getAll((survs) => {
+          commit('SET_SURVIVORS', survs)
+        })
+      })
     }
   },
   strict: process.env.NODE_ENV !== 'production'

@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="welcome-main">
     <header>
-      <div id="title">White Speaker</div>
-      <div id="subtitle">A Kingdom Death Companion App</div>
+      <h1 id="title">Twilight Archivist</h1>
+      <h4 id="subtitle">A Kingdom Death: Monster Companion App</h4>
     </header>
     <div id="settlement-table">
       <settlement-table></settlement-table>
@@ -20,8 +20,12 @@ export default {
 </script>
 
 <style>
+.welcome-main {
+
+}
 header {
-  padding-bottom: 25px;
+  padding-top: 20px;
+  padding-bottom: 15px;
 }
 #title {
   text-align: center;

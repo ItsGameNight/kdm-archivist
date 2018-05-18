@@ -65,12 +65,18 @@ export default {
 </script>
 
 <style>
+.flex-wrapper {
+  display: flex;
+  flex-direction: row;
+}
 #kdm-app {
   height: 600px;
   min-height: 600px;
   max-height: 600px;
   display: flex;
   flex-direction: row;
+  background: rgb(255,255,255);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(214,214,214,1) 44%, rgba(255,255,255,1) 100%);
 }
 #welcome {
   width: 100%;
@@ -80,14 +86,16 @@ export default {
   height: auto;
   padding: 1.5%;
   margin-right: 2%;
-  border: 1px solid black;
+  border-right: 1px solid black;
+  background-color: white;
 }
 #content {
-  width: 60%;
+  width: 80%;
 }
 #note-panel {
   width: 15%;
   margin-left: 2%;
-  border: 1px solid black;
+  border-left: 1px solid black;
+  background-color: white;
 }
 </style>

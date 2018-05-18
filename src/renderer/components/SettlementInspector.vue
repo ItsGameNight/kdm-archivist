@@ -24,26 +24,27 @@
     </p>
     <p>
       <b>Principles: </b>
-      <editable-list :propertyName="'principles'"></editable-list>
+      <editable-list :listItems="currentSettlement.principles" :max="4" @update="update('principles', $event)"></editable-list>
     </p>
     <p>
       <b>Locations: </b>
-      <editable-list :propertyName="'locations'"></editable-list>
+      <editable-list :listItems="currentSettlement.locations" @update="update('locations', $event)"></editable-list>
     </p>
     <p>
       <b>Innovations: </b>
-      <editable-list :propertyName="'innovations'"></editable-list>
+      <editable-list :listItems="currentSettlement.innovations" @update="update('innovations', $event)"></editable-list>
     </p>
     <p>
       <b>Quarries: </b>
-      <editable-list :propertyName="'quarries'"></editable-list>
+      <editable-list :listItems="currentSettlement.quarries" @update="update('quarries', $event)"></editable-list>
     </p>
   </div>
 </template>
 
 <script>
-import EditableList from './EditableList'
 import { mapGetters, mapActions } from 'vuex'
+import { EditableList } from './GUIComponents'
+
 export default {
   name: 'settlement-inspector',
   components: { EditableList },
@@ -60,6 +61,11 @@ export default {
     ...mapActions([
       'updateSettlement'
     ]),
+    update: function (stat, val) {
+      var update = {}
+      update[stat] = val
+      this.updateSettlement({ id: this.currentSettlement._id, update: update })
+    },
     updateNumberValue (e) {
       var value = e.target.value
       if (value !== '' && !isNaN(parseFloat(value))) {

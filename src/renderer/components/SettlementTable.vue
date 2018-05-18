@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="modals">
+      <modal v-if="showNewSettlementModal" @okay="newSmtModalOkayPressed()" @close="showNewSettlementModal = false" :modalWidth="300">
+        <h3 slot="header">New Settlement</h3>
+        <label slot="body">Settlement Name: <input v-model="newName" /></label>
+      </modal>
+    </div>
     <div class="table-scroll" @click="setCurrentSmt(null)">
       <table>
         <tr><th>Settlements:</th></tr>
@@ -8,18 +14,25 @@
     </div>
     <div id="controls">
       <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
-      <button @click="createSettlement()">New Settlement</button>
+      <button @click="newSmtButtonPressed()">New Settlement</button>
     </div>
   </div>
 </template>
 
 <script>
 import SettlementTableRow from './SettlementTableRow'
+import Modal from './Modal'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'settlement-table',
-  components: { SettlementTableRow },
+  components: { SettlementTableRow, Modal },
+  data () {
+    return {
+      showNewSettlementModal: false,
+      newName: null
+    }
+  },
   computed: {
     ...mapState([
       'currentSmt',
@@ -29,14 +42,23 @@ export default {
   methods: {
     ...mapActions([
       'setCurrentSmt',
-      'createSettlement',
+      'createNamedSettlement',
       'deleteSettlement'
-    ])
+    ]),
+    newSmtButtonPressed: function () {
+      this.newName = null
+      this.showNewSettlementModal = true
+    },
+    newSmtModalOkayPressed: function () {
+      if (this.newName !== null) {
+        this.createNamedSettlement(this.newName)
+      }
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 table {
   width: 98%;
   border-spacing: 0em 0.5em;
@@ -48,7 +70,6 @@ td {
 }
 .table-scroll {
   height: 300px;
-  border: 1px solid black;
   overflow-y: scroll;
 }
 #controls {
