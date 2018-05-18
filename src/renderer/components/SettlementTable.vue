@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 table {
   width: 98%;
   border-spacing: 0em 0.5em;

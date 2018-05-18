@@ -120,7 +120,7 @@ export default new Vuex.Store({
     },
     addNewSurvivor ({ commit }, smtID) {
       console.log(smtID)
-      this.$survivors.addBase(smtID, { name: 'Test' }, () => {
+      this.$survivors.addBase(smtID, { }, () => {
         this.$survivors.getAll((survs) => {
           commit('SET_SURVIVORS', survs)
         })
@@ -132,6 +132,14 @@ export default new Vuex.Store({
       this.$survivors.updateOne(id, update, () => {
         this.$survivors.getMatching({ _id: id }, (s) => {
           commit('SET_SURVIVOR_BY_ID', { id: s[0]._id, newObj: s[0] })
+        })
+      })
+    },
+    deleteSurvivor ({ commit }, payload) {
+      var id = payload.id
+      this.$survivors.remove(id, () => {
+        this.$survivors.getAll((survs) => {
+          commit('SET_SURVIVORS', survs)
         })
       })
     }

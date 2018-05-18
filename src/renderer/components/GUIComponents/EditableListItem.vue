@@ -41,9 +41,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 li.editable-list-item {
   padding-left: 2px;
+  border-top: 2px solid black;
 }
 .item-input-wrapper {
   width: 80%;

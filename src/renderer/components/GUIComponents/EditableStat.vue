@@ -2,9 +2,9 @@
   <div class="editable-stat">
     <div class="increment-box" @mouseover="hover = true" @mouseleave="hover = false">
       <div class="chevron top"><font-awesome-icon :icon="chevronUp" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="updateStat(statValue + 1); bounceTop()" /></div>
-      <div :class="{ maxbox : maxValue }">
-        <input type="number" class="statbox" :class="{ borderless : maxValue }" :value="statValue" @input="updateStat($event.target.value)" @focus="$event.target.select(); focus = true" @blur="focus = false" @keydown.enter="$event.target.blur()" />
-        <span v-if="maxValue" class="limitbox"><div class="limit-label">Limit</div>{{ maxValue }}</span>
+      <div :class="{ maxbox : limitBox }">
+        <input type="number" class="statbox" :class="{ borderless : limitBox, 'no-border': noBorder }" :value="statValue" @input="updateStat($event.target.value)" @focus="$event.target.select(); focus = true" @blur="focus = false" @keydown.enter="$event.target.blur()" />
+        <span v-if="limitBox" class="limitbox"><div class="limit-label">Limit</div>{{ maxValue }}</span>
       </div>
       <div v-if="statDisplayName" class="stat-display-name" :style="displayNameStyle">{{ statDisplayName }}</div>
       <div :class="[statDisplayName ? 'chevron bottom withDisplayName' : 'chevron bottom']"><font-awesome-icon :icon="chevronDown" :class="[bottomBounce ? 'animated bounceDown' : '']" :style="chevronStyle" @mousedown="updateStat(statValue - 1); bounceBottom()" /></div>
@@ -23,7 +23,9 @@ export default {
     statDisplayName: { required: false },
     initValue: { required: true },
     maxValue: { required: false, default: null },
-    minValue: { required: false, default: null }
+    minValue: { required: false, default: null },
+    noBorder: { required: false, default: false, type: Boolean },
+    limitBox: { required: false, default: false, type: Boolean }
   },
   data: function () {
     return {
@@ -32,6 +34,11 @@ export default {
       focus: false,
       topBounce: false,
       bottomBounce: false
+    }
+  },
+  watch: {
+    initValue: function (newVal) {
+      this.statValue = Number(newVal)
     }
   },
   computed: {
@@ -63,7 +70,7 @@ export default {
         if (val === '' || val === null || isNaN(val)) {
           val = 0
         }
-        this.statValue = val
+        this.statValue = Number(val)
         this.$emit('update', val)
       }
     },
@@ -83,7 +90,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .editable-stat {
   padding: 0 0.2em;
   display: block;
@@ -122,6 +129,9 @@ export default {
 }
 .borderless {
   border: none;
+}
+.no-border {
+  border: 1px solid white;
 }
 .stat-display-name {
   height: 0;

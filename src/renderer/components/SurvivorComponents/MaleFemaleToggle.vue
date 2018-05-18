@@ -19,6 +19,11 @@ export default {
       sex: this.initSex
     }
   },
+  watch: {
+    initSex: function (newVal) {
+      this.sex = newVal
+    }
+  },
   methods: {
     ...mapActions([
       'updateSurvivor'

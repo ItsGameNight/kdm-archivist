@@ -74,7 +74,7 @@ export default {
   font-size: 12pt;
 }
 .alive {
-  color: red;
+  color: #8a0707;
 }
 .alive-toggle-text {
   font-size: 10pt;

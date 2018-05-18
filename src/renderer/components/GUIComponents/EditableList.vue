@@ -57,7 +57,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 ul.editable-list {
   list-style-type: none;
   margin: 0;
@@ -65,9 +65,6 @@ ul.editable-list {
   border: 2px solid black;
   border-top: none;
   border-radius: 2px 2px 0 2px;
-}
-li {
-  border-top: 2px solid black;
 }
 button.add-item {
   float: right;
