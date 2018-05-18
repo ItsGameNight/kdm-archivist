@@ -60,7 +60,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { EditableList } from './GUIComponents'
-import { Innovations, BaseInnovations, Principles } from '../assets/StaticGameData'
+import { Innovations, Principles } from '../assets/StaticGameData'
 
 function getNames (obj) {
   return Object.values(obj).map((o) => { return o.name })
@@ -81,7 +81,7 @@ export default {
       return getNames(Principles)
     },
     innovationNames: function () {
-      return getNames(Innovations).concat(getNames(BaseInnovations))
+      return getNames(Innovations)
     }
 
   },
