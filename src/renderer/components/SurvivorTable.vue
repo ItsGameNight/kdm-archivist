@@ -58,15 +58,12 @@ export default {
 <style>
 table {
   width: 98%;
-  border-spacing: 0em 0.5em;
-}
-td {
-  border: 1px solid black;
-  padding: 5px;
+  border-spacing: 0em 0.15em;
 }
 .table-scroll {
   height: 580px;
   overflow-y: scroll;
+  padding-left: 8px;
 }
 .switch {
   position: relative;
