@@ -1,24 +1,51 @@
 <template>
   <div>
     <div v-if="appState === 0" id="welcome">
-      <welcome-screen @play="play"></welcome-screen>
+      <welcome-screen @play="play" />
     </div>
     <div id="kdm-app" v-if="appState === 1">
-      <settlement-inspector id="inspector"></settlement-inspector>
+      <settlement-inspector id="inspector" />
       <div id="content">
-        <span>|NAV| |BAR| |HERE|</span>
-        <survivor-table id="survivor-table"></survivor-table>
-        <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
-        <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
+        <div class="tabbar">
+          <button
+            class="tab-button"
+            :class="{'tab-selected' : currentTab === 'timeline'}"
+            @click="currentTab = 'timeline'">
+              Timeline
+          </button>
+          <button
+            class="tab-button"
+            :class="{'tab-selected' : currentTab === 'survivors'}"
+            @click="currentTab = 'survivors'">
+              Survivors
+          </button>
+          <button
+            class="tab-button"
+            :class="{'tab-selected' : currentTab === 'storage'}"
+            @click="currentTab = 'storage'">
+              Storage
+          </button>
+        </div>
+        <div v-if="currentTab === 'timelime'" class="tab-timeline">
+        </div>
+        <div v-if="currentTab === 'survivors'" class="tab-survivors">
+          <survivor-table id="survivor-table" />
+          <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
+          <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
+        </div>
+        <div v-if="currentTab === 'storage'" class="tab-storage">
+        </div>
         <br>
-        <button v-for="snap in snapshotsForCurrentSettlement" @click="setCurrentSnap(snap._id)">
+        <button
+          v-for="snap in snapshotsForCurrentSettlement"
+          @click="setCurrentSnap(snap._id)">
           {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
         </button>
       </div>
-      <div id="note-panel">
+      <!-- <div id="note-panel">
         <span style="font-weight: bold">Notes:</span>
-        <note-panel></note-panel>
-      </div>
+        <note-panel />
+      </div> -->
     </div>
   </div>
 </template>
@@ -35,7 +62,8 @@ export default {
   components: { WelcomeScreen, SurvivorTable, SettlementInspector, NotePanel },
   data: function () {
     return {
-      appState: 0
+      appState: 0,
+      currentTab: 'survivors'
     }
   },
   computed: {
@@ -82,7 +110,7 @@ export default {
   width: 100%;
 }
 #inspector {
-  width: 15%;
+  width: 20%;
   height: auto;
   padding: 1.5%;
   margin-right: 2%;
@@ -90,12 +118,35 @@ export default {
   background-color: white;
 }
 #content {
-  width: 80%;
+  width: 70%;
 }
 #note-panel {
-  width: 15%;
+  width: 5%;
   margin-left: 2%;
   border-left: 1px solid black;
   background-color: white;
+}
+div.tabbar {
+  border-bottom: 2px solid black;
+  margin: 4px 0 10px 0;
+}
+button.tab-button {
+  outline: none;
+  background-color: white;
+  border: 2px solid black;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  font-size: 12pt;
+}
+button.tab-button:hover {
+  background-color: #ccc;
+}
+button.tab-button:active {
+  background-color: black;
+  color: white;
+}
+button.tab-button.tab-selected {
+  background-color: black;
+  color: white;
 }
 </style>
