@@ -35,7 +35,7 @@
       <b>Locations: </b>
       <editable-list
         :listItems="currentSettlement.locations"
-        :autocompleteList="['Lantern Hoard', 'Stone Circle', 'Weapon Crafter']"
+        :autocompleteList="settlementLocationNames"
         @update="update('locations', $event)"
         ></editable-list>
     </p>
@@ -51,7 +51,7 @@
       <b>Quarries: </b>
       <editable-list
         :listItems="currentSettlement.quarries"
-        :autocompleteList="['White Lion', 'Screaming Antelope', 'Pheonix']"
+        :autocompleteList="quarryNames"
         @update="update('quarries', $event)"></editable-list>
     </p>
   </div>
@@ -60,7 +60,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { EditableList } from './GUIComponents'
-import { Innovations, Principles } from '../assets/StaticGameData'
+import {
+  Innovations,
+  Principles,
+  SettlementLocations,
+  Quarries
+} from '../assets/StaticGameData'
 
 function getNames (obj) {
   return Object.values(obj).map((o) => { return o.name })
@@ -82,8 +87,13 @@ export default {
     },
     innovationNames: function () {
       return getNames(Innovations)
+    },
+    settlementLocationNames: function () {
+      return getNames(SettlementLocations)
+    },
+    quarryNames: function () {
+      return getNames(Quarries)
     }
-
   },
   methods: {
     ...mapActions([

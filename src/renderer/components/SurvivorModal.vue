@@ -192,7 +192,11 @@
             </div>
             <div class="row5scrollbox">
               <div class="row5scroll-wrapper">
-                <editable-list :listItems="survivor.impairments" :placeholder="'Impairment'" @update="update($event, 'impairments')" />
+                <editable-list
+                  :listItems="survivor.impairments"
+                  :placeholder="'Impairment'"
+                  :autocompleteList="impairmentsNames"
+                  @update="update($event, 'impairments')" />
               </div>
             </div>
           </div>
@@ -250,7 +254,7 @@ import {
   LockToggle,
   EditableList
 } from './GUIComponents'
-import { Disorders, FightingArts } from '../assets/StaticGameData'
+import { Disorders, FightingArts, Impairments } from '../assets/StaticGameData'
 
 export default {
   name: 'survivor-modal',
@@ -307,6 +311,9 @@ export default {
     },
     disorderNames: function () {
       return Object.values(Disorders).map((o) => { return o.name })
+    },
+    impairmentsNames: function () {
+      return Object.values(Impairments).map((o) => { return o.name })
     }
   },
   methods: {
