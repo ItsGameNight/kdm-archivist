@@ -254,13 +254,13 @@ export default {
         }
 
         let comp = 0
-        if (varB === null || varA < varB) {
+        if (varA === null || varA > varB) {
           comp = 1
-        } else if (varA === null || varA > varB) {
+        } else if (varB === null || varA < varB) {
           comp = -1
         }
 
-        return (asc ? comp * -1 : comp)
+        return (asc ? comp : comp * -1)
       }
     },
     yeeScore: function (surv) {
