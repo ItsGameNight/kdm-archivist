@@ -206,8 +206,8 @@ export default {
   data: function () {
     return {
       collapsedState: true,
-      sort: null,
-      sortAscending: true
+      sort: 'yeeScore',
+      sortAscending: false
     }
   },
   computed: {
@@ -298,10 +298,12 @@ div.sort-controls {
   background-color: white;
   padding: 0 4px;
   margin-top: 6px;
-  box-shadow: 2px 2px 2px gray;
+  box-shadow: 2px 2px 2px rgba(47, 47, 47, 0.67);
   font-size: 11pt;
   height: 1.5em;
   overflow-x: scroll;
+  z-index: 99;
+  position: relative;
 }
 div.sort-title {
   margin: auto 0;
