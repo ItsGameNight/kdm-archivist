@@ -1,9 +1,12 @@
 <template>
   <div>
     <li class="editable-list-item" @mouseover="hover = true" @mouseleave="hover = false">
-      <div v-if="numbered" class="item-count-wrapper">
-        2
-      </div>
+      <input v-if="numbered"
+        class="item-count-wrapper"
+        :value="count"
+        type="number"
+        @input="$emit('updateCount', $event.target.value)">
+      </input>
       <div class="item-input-wrapper" :class="{'input-on-hover' : (hover && !editing)}">
         <editable-text-input
           :textValue="initTextValue"

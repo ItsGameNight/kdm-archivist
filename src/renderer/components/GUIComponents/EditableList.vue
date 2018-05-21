@@ -10,6 +10,7 @@
         :autocompleteList="autocompleteList"
         :numbered="numbered"
         @update="updateItem(index, $event)"
+        @updateCount="updateCount(index, $event)"
         @delete="deleteItem(index)" >
       </editable-list-item>
     </ul>
@@ -50,12 +51,30 @@ export default {
       listClone.push(null)
       this.$emit('update', listClone)
     },
+    updateCount: function (idx, val) {
+      var listClone = JSON.parse(JSON.stringify(this.listItems))
+      if (this.numbered) {
+        // init as object if not yet
+        if (listClone[idx] == null) {
+          listClone[idx] = {}
+          listClone[idx].name = null
+          listClone[idx].count = 1
+        }
+        listClone[idx].count = val
+      } else {
+        // should never happen if not numbered!
+        return
+      }
+      this.$emit('update', listClone)
+    },
     updateItem: function (idx, val) {
       var listClone = JSON.parse(JSON.stringify(this.listItems))
       if (this.numbered) {
         // init as object if not yet
         if (listClone[idx] == null) {
           listClone[idx] = {}
+          listClone[idx].name = null
+          listClone[idx].count = 1
         }
         listClone[idx].name = val
       } else {
