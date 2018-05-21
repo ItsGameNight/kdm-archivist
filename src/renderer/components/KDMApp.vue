@@ -37,16 +37,16 @@
           <survivor-table id="survivor-table" />
           <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
           <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
+          <br>
+          <button
+            v-for="snap in snapshotsForCurrentSettlement"
+            @click="setCurrentSnap(snap._id)">
+            {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
+          </button>
         </div>
         <div v-if="currentTab === 'storage'" class="tab-storage">
           <settlement-storage></settlement-storage>
         </div>
-        <br>
-        <button
-          v-for="snap in snapshotsForCurrentSettlement"
-          @click="setCurrentSnap(snap._id)">
-          {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
-        </button>
       </div>
       <!-- <div id="note-panel">
         <span style="font-weight: bold">Notes:</span>
