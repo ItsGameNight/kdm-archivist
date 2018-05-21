@@ -9,6 +9,11 @@
         <div class="tabbar">
           <button
             class="tab-button"
+            @click="appState = 0">
+            <font-awesome-icon :icon="homeIcon" />
+          </button>
+          <button
+            class="tab-button"
             :class="{'tab-selected' : currentTab === 'timeline'}"
             @click="currentTab = 'timeline'">
               Timeline
@@ -57,9 +62,18 @@ import SettlementInspector from './SettlementInspector'
 import NotePanel from './NotePanel'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import { faHome } from '@fortawesome/fontawesome-free-solid'
+
 export default {
   name: 'kdm-app',
-  components: { WelcomeScreen, SurvivorTable, SettlementInspector, NotePanel },
+  components: {
+    WelcomeScreen,
+    SurvivorTable,
+    SettlementInspector,
+    NotePanel,
+    FontAwesomeIcon
+  },
   data: function () {
     return {
       appState: 0,
@@ -68,7 +82,10 @@ export default {
   },
   computed: {
     ...mapState(['currentSmt']),
-    ...mapGetters(['snapshotsForCurrentSettlement'])
+    ...mapGetters(['snapshotsForCurrentSettlement']),
+    homeIcon: function () {
+      return faHome
+    }
   },
   methods: {
     ...mapActions([

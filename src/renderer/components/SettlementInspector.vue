@@ -1,5 +1,8 @@
 <template>
   <div style="overflow-y: scroll;">
+    <button class="home-button"
+      @click="">
+    </button>
     <h2>{{ currentSettlement.name }}</h2>
     <p>
     <b>Overview:</b>
