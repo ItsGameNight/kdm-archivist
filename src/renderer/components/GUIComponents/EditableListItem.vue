@@ -1,6 +1,9 @@
 <template>
   <div>
     <li class="editable-list-item" @mouseover="hover = true" @mouseleave="hover = false">
+      <div v-if="numbered" class="item-count-wrapper">
+        2
+      </div>
       <div class="item-input-wrapper" :class="{'input-on-hover' : (hover && !editing)}">
         <editable-text-input
           :textValue="initTextValue"
@@ -30,7 +33,8 @@ export default {
     initTextValue: { required: true },
     count: { required: true },
     autocompleteList: { default: () => [] },
-    placeholder: { required: true }
+    placeholder: { required: true },
+    numbered: { default: false }
   },
   data: function () {
     return {
@@ -58,9 +62,17 @@ li.editable-list-item {
 }
 .item-input-wrapper {
   width: 80%;
+  background: white;
+  display: inline-block;
+}
+.item-count-wrapper {
+  width: 15px;
+  padding-left: 5px;
+  background: white;
   display: inline-block;
 }
 .input-on-hover {
+  background: white;
   width: 70%;
 }
 .delete-icon {

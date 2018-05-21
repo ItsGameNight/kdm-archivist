@@ -8,6 +8,7 @@
         :placeholder="placeholder + ' ' + (index + 1)"
         :key="index"
         :autocompleteList="autocompleteList"
+        :numbered="numbered"
         @update="updateItem(index, $event)"
         @delete="deleteItem(index)" >
       </editable-list-item>
@@ -103,5 +104,8 @@ button.add-item:hover {
 button.add-item:active {
   background: black;
   color: white;
+}
+.editable-list-wrapper {
+  background: white;
 }
 </style>
