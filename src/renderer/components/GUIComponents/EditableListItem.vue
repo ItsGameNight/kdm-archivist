@@ -70,7 +70,8 @@ li.editable-list-item {
 }
 .item-count-wrapper {
   width: 15px;
-  padding-left: 5px;
+  text-align: center;
+  border: none;
   background: white;
   display: inline-block;
 }

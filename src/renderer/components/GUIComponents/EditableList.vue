@@ -3,8 +3,8 @@
     <ul class="editable-list">
       <editable-list-item
         v-for="(item, index) in listItems"
-        :initTextValue="numbered && item != null ? item.name : item"
-        :count="numbered && item != null ? item.count : null"
+        :initTextValue="numbered ? item.name : item"
+        :count="numbered ? item.count : null"
         :placeholder="placeholder + ' ' + (index + 1)"
         :key="index"
         :autocompleteList="autocompleteList"
@@ -39,8 +39,15 @@ export default {
     if (this.min && this.listItems.length < this.min) {
       var listClone = JSON.parse(JSON.stringify(this.listItems))
       for (var i = 0; i < this.min - this.listItems.length; i++) {
-        listClone.push(null)
+        if (this.numbered) {
+          var obj = {}
+          obj.name = null
+          obj.count = 1
+        } else {
+          obj = null
+        }
       }
+      listClone.push(obj)
       this.$emit('update', listClone)
     }
   },
@@ -48,18 +55,19 @@ export default {
     addNew: function () {
       // NOTE: slice() doesn't work with objects + Vuex!
       var listClone = JSON.parse(JSON.stringify(this.listItems))
-      listClone.push(null)
+      if (this.numbered) {
+        var obj = {}
+        obj.name = null
+        obj.count = 1
+      } else {
+        obj = null
+      }
+      listClone.push(obj)
       this.$emit('update', listClone)
     },
     updateCount: function (idx, val) {
       var listClone = JSON.parse(JSON.stringify(this.listItems))
       if (this.numbered) {
-        // init as object if not yet
-        if (listClone[idx] == null) {
-          listClone[idx] = {}
-          listClone[idx].name = null
-          listClone[idx].count = 1
-        }
         listClone[idx].count = val
       } else {
         // should never happen if not numbered!
@@ -70,12 +78,6 @@ export default {
     updateItem: function (idx, val) {
       var listClone = JSON.parse(JSON.stringify(this.listItems))
       if (this.numbered) {
-        // init as object if not yet
-        if (listClone[idx] == null) {
-          listClone[idx] = {}
-          listClone[idx].name = null
-          listClone[idx].count = 1
-        }
         listClone[idx].name = val
       } else {
         listClone[idx] = val
