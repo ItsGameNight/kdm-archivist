@@ -1,11 +1,22 @@
 <template>
-  <div style="overflow-y: scroll;">
-    <editable-list
-      :listItems="currentSettlement.resources"
-      :autocompleteList="resourceNames"
-      :numbered="true"
-      @update="update('resources', $event)"
-      ></editable-list>
+  <div class="storage-container">
+    <div class="storage-column">
+      <h3>Resources</h3>
+      <editable-list
+        :listItems="currentSettlement.resources"
+        :autocompleteList="resourceNames"
+        :numbered="true"
+        @update="update('resources', $event)"
+        ></editable-list>
+    </div>
+    <div class="storage-column">
+      <h3>Gear</h3>
+      <editable-list
+        :listItems="currentSettlement.storedGear"
+        :numbered="true"
+        @update="update('storedGear', $event)"
+        ></editable-list>
+    </div>
   </div>
 </template>
 
@@ -39,4 +50,12 @@ export default {
 </script>
 
 <style>
+.storage-container {
+  display: flex;
+  flex-direction: row;
+}
+.storage-column {
+  width: 50%;
+  padding: 5px;
+}
 </style>
