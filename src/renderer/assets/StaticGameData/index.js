@@ -15,6 +15,7 @@ import BaseStrangeResources from './Resources/BaseStrangeResources'
 import BaseSettlementLocations from './SettlementLocations/BaseSettlementLocations'
 import GormSettlementLocations from './SettlementLocations/GormSettlementLocations'
 import SunstalkerSettlementLocations from './SettlementLocations/SunstalkerSettlementLocations'
+import BaseTimeline from './Timelines/BaseTimeline'
 import BaseWeaponProficiencies from './WeaponProficiencies/BaseWeaponProficiencies'
 import BaseVermin from './Vermin/BaseVermin'
 
@@ -90,6 +91,8 @@ export {
   // Settlement Locations
   SettlementLocations, BaseSettlementLocations,
   GormSettlementLocations, SunstalkerSettlementLocations,
+  // Timelines
+  BaseTimeline,
   // Weapon Proficiencies
   WeaponProficiencies, BaseWeaponProficiencies,
   // Vermin
