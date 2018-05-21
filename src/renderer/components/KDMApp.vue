@@ -39,6 +39,7 @@
           <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
         </div>
         <div v-if="currentTab === 'storage'" class="tab-storage">
+          <settlement-storage></settlement-storage>
         </div>
         <br>
         <button
@@ -60,6 +61,7 @@ import WelcomeScreen from './WelcomeScreen'
 import SurvivorTable from './SurvivorTable'
 import SettlementInspector from './SettlementInspector'
 import NotePanel from './NotePanel'
+import SettlementStorage from './Storage'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
@@ -72,7 +74,8 @@ export default {
     SurvivorTable,
     SettlementInspector,
     NotePanel,
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    SettlementStorage
   },
   data: function () {
     return {

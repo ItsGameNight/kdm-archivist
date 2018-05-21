@@ -28,6 +28,7 @@ export default {
   components: { EditableTextInput, FontAwesomeIcon },
   props: {
     initTextValue: { required: true },
+    count: { required: true },
     autocompleteList: { default: () => [] },
     placeholder: { required: true }
   },
