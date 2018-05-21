@@ -10,7 +10,7 @@
       <div class="item-input-wrapper" :class="{'input-on-hover' : (hover && !editing)}">
         <editable-text-input
           :textValue="initTextValue"
-          :textStyle="{textOverflow: 'ellipsis'}"
+          :textStyle="listTextStyle"
           :placeholder="placeholder"
           :autocompleteList="autocompleteList"
           @update="$emit('update', $event)"
@@ -18,7 +18,17 @@
           @blur="editing = false"
           />
       </div>
-      <font-awesome-icon v-if="hover && !editing" :icon="deleteIcon" class="delete-icon" @click="$emit('delete')" @mousedown="mouseDownOnDelete = true" @mouseup="mouseDownOnDelete = false" @mouseleave="mouseDownOnDelete = false" />
+      <div class="delete-icon-wrapper">
+        <font-awesome-icon
+          v-if="hover && !editing"
+          :icon="deleteIcon"
+          class="delete-icon"
+          :style="deleteIconPadding"
+          @click="$emit('delete')"
+          @mousedown="mouseDownOnDelete = true"
+          @mouseup="mouseDownOnDelete = false"
+          @mouseleave="mouseDownOnDelete = false" />
+      </div>
     </li>
   </div>
 </template>
@@ -35,9 +45,10 @@ export default {
   props: {
     initTextValue: { required: true },
     count: { required: true },
-    autocompleteList: { default: () => [] },
+    autocompleteList: { required: false, default: () => [] },
     placeholder: { required: true },
-    numbered: { default: false }
+    numbered: { required: false, default: false },
+    textStyle: { required: false, default: null }
   },
   data: function () {
     return {
@@ -53,6 +64,17 @@ export default {
       } else {
         return farTimesCircle
       }
+    },
+    listTextStyle: function () {
+      return {
+        ...this.textStyle,
+        textOverflow: 'ellipsis'
+      }
+    },
+    deleteIconPadding: function () {
+      return {
+        paddingTop: Number(this.textStyle.fontSize.slice(0, -2)) - 11 + 'px'
+      }
     }
   }
 }
@@ -62,6 +84,7 @@ export default {
 li.editable-list-item {
   padding-left: 2px;
   border-top: 2px solid black;
+  position: relative;
 }
 .item-input-wrapper {
   width: 80%;
@@ -79,8 +102,11 @@ li.editable-list-item {
   background: white;
   width: 70%;
 }
+.delete-icon-wrapper {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+}
 .delete-icon {
-  float: right;
-  padding: 1px 1px 0 0;
 }
 </style>

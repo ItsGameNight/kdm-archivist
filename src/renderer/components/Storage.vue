@@ -6,6 +6,7 @@
         :listItems="currentSettlement.resources"
         :autocompleteList="resourceNames"
         :numbered="true"
+        :textStyle="{fontSize:'12pt'}"
         @update="update('resources', $event)"
         ></editable-list>
     </div>

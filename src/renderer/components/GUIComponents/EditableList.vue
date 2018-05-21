@@ -9,6 +9,7 @@
         :key="index"
         :autocompleteList="autocompleteList"
         :numbered="numbered"
+        :textStyle="textStyle"
         @update="updateItem(index, $event)"
         @updateCount="updateCount(index, $event)"
         @delete="deleteItem(index)" >
@@ -29,8 +30,9 @@ export default {
     max: { required: false, default: null },
     min: { required: false, default: null },
     placeholder: { required: false, default: 'Item' },
-    autocompleteList: { default: () => [] },
-    numbered: { default: false }
+    autocompleteList: { required: false, default: () => [] },
+    numbered: { required: false, default: false },
+    textStyle: { required: false, default: () => { return { fontSize: '10pt' } } }
   },
   created: function () {
     // Deal with case where min is specified but
