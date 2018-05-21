@@ -9,6 +9,11 @@
         <div class="tabbar">
           <button
             class="tab-button"
+            @click="appState = 0">
+            <font-awesome-icon :icon="homeIcon" />
+          </button>
+          <button
+            class="tab-button"
             :class="{'tab-selected' : currentTab === 'timeline'}"
             @click="currentTab = 'timeline'">
               Timeline
@@ -32,15 +37,16 @@
           <survivor-table id="survivor-table" />
           <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
           <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
+          <br>
+          <button
+            v-for="snap in snapshotsForCurrentSettlement"
+            @click="setCurrentSnap(snap._id)">
+            {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
+          </button>
         </div>
         <div v-if="currentTab === 'storage'" class="tab-storage">
+          <settlement-storage></settlement-storage>
         </div>
-        <br>
-        <button
-          v-for="snap in snapshotsForCurrentSettlement"
-          @click="setCurrentSnap(snap._id)">
-          {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
-        </button>
       </div>
       <!-- <div id="note-panel">
         <span style="font-weight: bold">Notes:</span>
@@ -55,11 +61,22 @@ import WelcomeScreen from './WelcomeScreen'
 import SurvivorTable from './SurvivorTable'
 import SettlementInspector from './SettlementInspector'
 import NotePanel from './NotePanel'
+import SettlementStorage from './Storage'
 import { mapState, mapGetters, mapActions } from 'vuex'
+
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import { faHome } from '@fortawesome/fontawesome-free-solid'
 
 export default {
   name: 'kdm-app',
-  components: { WelcomeScreen, SurvivorTable, SettlementInspector, NotePanel },
+  components: {
+    WelcomeScreen,
+    SurvivorTable,
+    SettlementInspector,
+    NotePanel,
+    FontAwesomeIcon,
+    SettlementStorage
+  },
   data: function () {
     return {
       appState: 0,
@@ -68,7 +85,10 @@ export default {
   },
   computed: {
     ...mapState(['currentSmt']),
-    ...mapGetters(['snapshotsForCurrentSettlement'])
+    ...mapGetters(['snapshotsForCurrentSettlement']),
+    homeIcon: function () {
+      return faHome
+    }
   },
   methods: {
     ...mapActions([

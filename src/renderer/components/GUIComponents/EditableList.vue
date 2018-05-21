@@ -3,11 +3,14 @@
     <ul class="editable-list">
       <editable-list-item
         v-for="(item, index) in listItems"
-        :initTextValue="item"
+        :initTextValue="numbered ? item.name : item"
+        :count="numbered ? item.count : null"
         :placeholder="placeholder + ' ' + (index + 1)"
         :key="index"
         :autocompleteList="autocompleteList"
+        :numbered="numbered"
         @update="updateItem(index, $event)"
+        @updateCount="updateCount(index, $event)"
         @delete="deleteItem(index)" >
       </editable-list-item>
     </ul>
@@ -26,35 +29,65 @@ export default {
     max: { required: false, default: null },
     min: { required: false, default: null },
     placeholder: { required: false, default: 'Item' },
-    autocompleteList: { default: () => [] }
+    autocompleteList: { default: () => [] },
+    numbered: { default: false }
   },
   created: function () {
     // Deal with case where min is specified but
     // array in datastore does not have min elements
     // i.e. disorders first time opening survival modal
     if (this.min && this.listItems.length < this.min) {
-      var listClone = this.listItems.slice()
+      var listClone = JSON.parse(JSON.stringify(this.listItems))
       for (var i = 0; i < this.min - this.listItems.length; i++) {
-        listClone.push(null)
+        if (this.numbered) {
+          var obj = {}
+          obj.name = null
+          obj.count = 1
+        } else {
+          obj = null
+        }
       }
+      listClone.push(obj)
       this.$emit('update', listClone)
     }
   },
   methods: {
     addNew: function () {
-      var listClone = this.listItems.slice()
-      listClone.push(null)
+      // NOTE: slice() doesn't work with objects + Vuex!
+      var listClone = JSON.parse(JSON.stringify(this.listItems))
+      if (this.numbered) {
+        var obj = {}
+        obj.name = null
+        obj.count = 1
+      } else {
+        obj = null
+      }
+      listClone.push(obj)
+      this.$emit('update', listClone)
+    },
+    updateCount: function (idx, val) {
+      var listClone = JSON.parse(JSON.stringify(this.listItems))
+      if (this.numbered) {
+        listClone[idx].count = val
+      } else {
+        // should never happen if not numbered!
+        return
+      }
       this.$emit('update', listClone)
     },
     updateItem: function (idx, val) {
-      var listClone = this.listItems.slice()
-      listClone[idx] = val
+      var listClone = JSON.parse(JSON.stringify(this.listItems))
+      if (this.numbered) {
+        listClone[idx].name = val
+      } else {
+        listClone[idx] = val
+      }
       this.$emit('update', listClone)
     },
     deleteItem: function (idx) {
       // Normally delete button removes element from array
       // If at min elements, however, just set it to null
-      var listClone = this.listItems.slice()
+      var listClone = JSON.parse(JSON.stringify(this.listItems))
       if (!this.min || this.listItems.length > this.min) {
         listClone.splice(idx, 1)
       } else {
@@ -92,5 +125,8 @@ button.add-item:hover {
 button.add-item:active {
   background: black;
   color: white;
+}
+.editable-list-wrapper {
+  background: white;
 }
 </style>
