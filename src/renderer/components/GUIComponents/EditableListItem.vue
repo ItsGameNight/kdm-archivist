@@ -1,10 +1,14 @@
 <template>
   <div>
     <li class="editable-list-item" @mouseover="hover = true" @mouseleave="hover = false">
-      <input v-if="numbered"
-        class="item-count-wrapper"
+      <input
+        v-if="numbered"
+        class="item-count"
+        :class="[numberEditable ? '' : 'not-editable']"
         :value="count"
         type="number"
+        :style="{fontSize:textStyle.fontSize}"
+        :disabled="!numberEditable"
         @input="$emit('updateCount', $event.target.value)">
       </input>
       <div class="item-input-wrapper" :class="{'input-on-hover' : (hover && !editing)}">
@@ -47,7 +51,8 @@ export default {
     count: { required: true },
     autocompleteList: { required: false, default: () => [] },
     placeholder: { required: true },
-    numbered: { required: false, default: false },
+    numbered: { required: false, default: false, type: Boolean },
+    numberEditable: { required: false, default: true, type: Boolean },
     textStyle: { required: false, default: null }
   },
   data: function () {
@@ -91,12 +96,20 @@ li.editable-list-item {
   background: white;
   display: inline-block;
 }
-.item-count-wrapper {
-  width: 15px;
+.item-count {
+  width: 24px;
   text-align: center;
+  font-weight: bold;
   border: none;
-  background: white;
+  border-right: 1px solid black;
+  padding-right: 6px;
+  background: transparent;
   display: inline-block;
+  outline: none;
+}
+.not-editable {
+  user-select: none;
+  font-weight: normal;
 }
 .input-on-hover {
   background: white;

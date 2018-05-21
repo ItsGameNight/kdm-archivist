@@ -9,6 +9,7 @@
         :key="index"
         :autocompleteList="autocompleteList"
         :numbered="numbered"
+        :numberEditable="numberEditable"
         :textStyle="textStyle"
         @update="updateItem(index, $event)"
         @updateCount="updateCount(index, $event)"
@@ -31,7 +32,8 @@ export default {
     min: { required: false, default: null },
     placeholder: { required: false, default: 'Item' },
     autocompleteList: { required: false, default: () => [] },
-    numbered: { required: false, default: false },
+    numbered: { required: false, default: false, type: Boolean },
+    numberEditable: { required: false, default: true, type: Boolean },
     textStyle: { required: false, default: () => { return { fontSize: '10pt' } } }
   },
   created: function () {
