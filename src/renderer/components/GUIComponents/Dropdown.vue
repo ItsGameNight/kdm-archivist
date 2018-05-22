@@ -23,6 +23,11 @@ export default {
     initSelected: { required: false, default: 0 },
     title: { required: false, default: null }
   },
+  watch: {
+    initSelected: function (newVal) {
+      this.selected = newVal
+    }
+  },
   data: function () {
     return {
       showOptions: false,

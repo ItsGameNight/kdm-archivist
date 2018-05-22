@@ -6,6 +6,7 @@
       </button>
       <dropdown
         :options="['Alive', 'Dead', 'All']"
+        :initSelected="filter"
         title="Filter: "
         @selected="filter = $event" />
       <button @click="resetDeparting" class="reset-departing-button right-start">Reset Departing</button>
@@ -279,7 +280,7 @@ export default {
       }
     },
     showDeparted: function () {
-      return this.settlementDepartingCount > 0
+      return this.settlementDepartingCount > 0 && this.filter === 0
     }
   },
   methods: {
@@ -331,6 +332,7 @@ export default {
       this.updateAllSurvivorsInSettlement({ update: { departing: false } })
     },
     newSurvivor: function () {
+      this.filter = 0
       this.addNewSurvivor(this.currentSmt).then((s) => {
         var newSurv = this.survivorsInSettlement.find((o) => {
           return o._id === s
