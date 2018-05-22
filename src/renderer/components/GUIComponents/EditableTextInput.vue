@@ -12,7 +12,7 @@
       @focus="focus = true; $emit('focus')"
       @blur="focus = false; $emit('blur'); selectCompletion()"
       @keyup.enter="selectCompletionAndExit()"
-      @input="$emit('update', $event.target.value)"
+      @input="$emit('update', $event.target.value); filteredIdx=-1;"
       @keyup.down.prevent="downList()"
       @keyup.up.prevent="upList()"
       @keydown.tab.prevent
