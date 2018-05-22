@@ -46,8 +46,8 @@ export default {
         } else {
           obj = null
         }
+        listClone.push(obj)
       }
-      listClone.push(obj)
       this.$emit('update', listClone)
     }
   },
