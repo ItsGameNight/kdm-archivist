@@ -13,7 +13,9 @@
           v-for="(year, index) in currentSettlement.timeline"
           :key="index"
           :year="year"
-          @update="update(index, $event)" />
+          :checked="year.number <= currentSettlement.lanternYear"
+          @update="update(index, $event)"
+          @updateYear="updateYear(index, $event)" />
       </tbody>
       <tr>
         <td class="button-wrapper">
@@ -44,6 +46,15 @@ export default {
       var timeline = JSON.parse(JSON.stringify(this.currentSettlement.timeline))
       timeline[index] = value
       var update = { timeline: timeline }
+      this.updateSettlement({ id: this.currentSettlement._id, update: update })
+    },
+    updateYear: function (index, value) {
+      var update = {}
+      if (value) {
+        update['lanternYear'] = index + 1
+      } else {
+        update['lanternYear'] = index
+      }
       this.updateSettlement({ id: this.currentSettlement._id, update: update })
     },
     addYear: function () {

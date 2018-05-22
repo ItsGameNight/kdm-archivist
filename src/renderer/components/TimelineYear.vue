@@ -3,10 +3,10 @@
     <td class="timeline-year year-cell">
       <div class="square-toggle-wrapper">
         <square-toggle
-          :initValue="year.checked"
+          :initValue="checked"
           :statDisplayName="''"
           :squareSize="12"
-          @update="update('checked', $event)" />
+          @update="$emit('updateYear', $event)" />
       </div>
       <span class="year">{{ year.number }}</span>
     </td>
@@ -46,7 +46,8 @@ export default {
   name: 'timeline-year',
   components: { SquareToggle, EditableTextInput },
   props: {
-    year: { required: true }
+    year: { required: true },
+    checked: { required: true }
   },
   data: function () {
     return {
