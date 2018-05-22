@@ -12,13 +12,16 @@
       @focus="focus = true; $emit('focus')"
       @blur="focus = false; $emit('blur'); selectCompletion()"
       @keyup.enter="selectCompletionAndExit()"
-      @input="$emit('update', $event.target.value)"
+      @input="$emit('update', $event.target.value); filteredIdx=-1;"
       @keyup.down.prevent="downList()"
       @keyup.up.prevent="upList()"
       @keydown.tab.prevent
       @keyup.tab.prevent="selectCompletion()" />
 
-    <div v-if="okayToShowAutocomplete" class="autocomplete-list">
+    <div
+      v-if="okayToShowAutocomplete"
+      class="autocomplete-list"
+      ref="autocompleteListElement">
       <div
         v-for="(item, index) in filteredList"
         :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
@@ -90,7 +93,7 @@ export default {
         return this.autocompleteList
       }
       return this.autocompleteList.filter((s) => {
-        return s.substring(0, this.textValue.length) === this.textValue
+        return s.substring(0, this.textValue.length).toLowerCase() === this.textValue.toLowerCase()
       })
     }
   },
@@ -99,6 +102,7 @@ export default {
       // decrement idx
       if (this.filteredIdx > -1) {
         this.filteredIdx--
+        this.scrollSoActiveAutoItemVisible()
       }
     },
 
@@ -106,6 +110,7 @@ export default {
       // update idx
       if (this.filteredIdx < this.filteredList.length - 1) {
         this.filteredIdx++
+        this.scrollSoActiveAutoItemVisible()
       }
     },
 
@@ -122,6 +127,24 @@ export default {
     selectCompletionAndExit: function () {
       this.selectCompletion()
       this.$refs.eIn.blur()
+    },
+
+    scrollSoActiveAutoItemVisible: function () {
+      // scrolls via editing scrollTop property of autocompleteListElement
+      // TODO: replace hacky 18px / 7 per page scrolling
+
+      // if open...
+      if (typeof this.$refs.autocompleteListElement !== 'undefined') {
+        var topOfAutoItem = this.filteredIdx * 18 // each item 18px
+        var botOfAutoItem = topOfAutoItem + 18
+
+        // scroll if needed
+        if (this.$refs.autocompleteListElement.scrollTop > topOfAutoItem) {
+          this.$refs.autocompleteListElement.scrollTop -= 18
+        } else if (this.$refs.autocompleteListElement.scrollTop + 126 < botOfAutoItem) {
+          this.$refs.autocompleteListElement.scrollTop += 18
+        }
+      }
     }
   }
 }
@@ -152,24 +175,23 @@ input::-webkit-inner-spin-button {
   position: absolute;
   background: white;
   border-style: solid;
-  border-width: 2px;
+  border-width: 0px 2px 2px 2px;
+  border-color: gray;
+  border-radius: 0px 0px 8px 8px;
+  margin-top: 2px;
+  left: -2px;
+  width: 100%;
   z-index: 99;
-  max-height: 120px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  max-height: 126px;
   overflow-y: scroll;
 }
 
 .autocomplete-item {
-  border-style: solid;
-  border-width: 1px;
-  padding-left: 3px;
-  width: 100px;
-}
-
-.autocomplete-item:hover {
-  background-color: gray;
+  padding-left: 8px;
 }
 
 .activeComplete {
-  background-color: gray;
+  background-color: #E6E6E6;
 }
 </style>
