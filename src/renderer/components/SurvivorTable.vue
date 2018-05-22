@@ -1,15 +1,10 @@
 <template>
   <div>
-    <div class="collapse-toggle">
-      <span>Collapsed:</span>
-      <label class="switch">
-        <input type="checkbox" v-model="collapsedState">
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div>
-      <button @click="addNewSurvivor(currentSmt)">Add Base Survivor</button>
-      <button @click="dropAllSurvivors()">Drop All</button>
+    <div class="buttons-wrapper">
+      <button @click="addNewSurvivor(currentSmt)" class="add-button">Add Survivor</button>
+      <button @click="collapsedState = !collapsedState" class="collapse-button">
+        <font-awesome-icon :icon="collapseIcon" />
+      </button>
     </div>
     <div class="sort-controls flex-wrapper">
       <div class="sort-title">Sort:</div>
@@ -22,7 +17,7 @@
             :icon="sortDirectionIcon"
             class="sort-direction-icon" />
         </span>
-        Yee
+        Rank
       </button>
       <button
         class="sort-button"
@@ -197,7 +192,12 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 import goodnessFunction from '../../db/goodness.js'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-import { faSortUp, faSortDown } from '@fortawesome/fontawesome-free-solid'
+import {
+  faSortUp,
+  faSortDown,
+  faCaretSquareUp,
+  faCaretSquareDown
+} from '@fortawesome/fontawesome-free-solid'
 import SurvivorTableRow from './SurvivorTableRow'
 
 export default {
@@ -231,11 +231,17 @@ export default {
       } else {
         return faSortDown
       }
+    },
+    collapseIcon: function () {
+      if (this.collapsedState) {
+        return faCaretSquareUp
+      } else {
+        return faCaretSquareDown
+      }
     }
   },
   methods: {
     ...mapActions([
-      'dropAllSurvivors',
       'addNewSurvivor'
     ]),
     compareSurvivors: function (sortProp, asc = true) {
@@ -292,6 +298,28 @@ table {
   overflow-y: scroll;
   padding-left: 8px;
 }
+div.buttons-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+div.buttons-wrapper button {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  font-size: 10pt;
+  font-weight: bold;
+  outline: none;
+}
+div.buttons-wrapper button:hover {
+  background-color: #ccc;
+}
+div.buttons-wrapper button:active {
+  background-color: black;
+  color: white;
+}
+div.buttons-wrapper .collapse-button {
+  margin-left: auto;
+}
 div.sort-controls {
   border: 1px solid black;
   border-radius: 3px;
@@ -308,8 +336,10 @@ div.sort-controls {
 div.sort-title {
   margin: auto 0;
   padding-right: 6px;
+  padding-bottom: 1px;
   font-family: system-ui;
-  font-size: 10pt;
+  font-size: 9pt;
+  font-style: oblique;
 }
 button.sort-button {
   display: flex;
@@ -333,49 +363,5 @@ button.sort-button:active {
 }
 .sort-direction-icon {
   padding-right: 2px;
-}
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 12px;
-}
-.switch input {
-  display: none;
-}
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 8px;
-  width: 8px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(8px);
-  transform: translateX(8px);
 }
 </style>
