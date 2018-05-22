@@ -93,7 +93,7 @@ export default {
         return this.autocompleteList
       }
       return this.autocompleteList.filter((s) => {
-        return s.substring(0, this.textValue.length) === this.textValue
+        return s.substring(0, this.textValue.length).toLowerCase() === this.textValue.toLowerCase()
       })
     }
   },
