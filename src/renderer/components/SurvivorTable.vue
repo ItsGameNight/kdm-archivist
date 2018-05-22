@@ -182,7 +182,7 @@
     </div>
     <div class="table-scroll">
       <table>
-        <transition-group name="survivors-rows" tag="tbody">
+        <transition-group :name="transitionName" tag="tbody" :class="[modalShowing ? 'no-transition' : '']">
           <tr :key="0" v-if="showDeparted"><th>Departing Survivors:</th></tr>
           <tr v-for="(surv, index) in sortedSurvivors.filter((s) => { return s.departing })"
             :key="surv._id"
@@ -191,7 +191,10 @@
               :yeeScore="yeeScore(surv)"
               :survivor="surv"
               :key="surv._id"
-              :collapsed="collapsedState" />
+              :collapsed="collapsedState"
+              :ref="'surv-' + surv._id"
+              @modalOpen="modalShowing = true"
+              @modalClose="modalShowing = false" />
           </tr>
           <tr :key="1" v-if="showDeparted"><th>Survivors in Settlement:</th></tr>
           <tr v-for="(surv, index) in sortedSurvivors.filter((s) => { return !s.departing })" :key="surv._id">
@@ -200,7 +203,9 @@
               :survivor="surv"
               :key="surv._id"
               :collapsed="collapsedState"
-              :ref="'surv-' + surv._id" />
+              :ref="'surv-' + surv._id"
+              @modalOpen="modalShowing = true"
+              @modalClose="modalShowing = false" />
           </tr>
         </transition-group>
       </table>
@@ -230,7 +235,8 @@ export default {
       collapsedState: true,
       sort: 'yeeScore',
       sortAscending: false,
-      filter: 0
+      filter: 0,
+      modalShowing: false
     }
   },
   computed: {
@@ -281,6 +287,13 @@ export default {
     },
     showDeparted: function () {
       return this.settlementDepartingCount > 0 && this.filter === 0
+    },
+    transitionName: function () {
+      if (this.modalShowing) {
+        return 'none'
+      } else {
+        return 'survivors-rows'
+      }
     }
   },
   methods: {

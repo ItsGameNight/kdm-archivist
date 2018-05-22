@@ -4,7 +4,7 @@
       v-if="modalVisible"
       :survivor="survivor"
       :yeeScore="yeeScore"
-      @close="modalVisible = false" />
+      @close="modalVisible = false; $emit('modalClose')" />
     <modal
       v-if="deleteModalVisible"
       :modalWidth="300"
@@ -22,7 +22,7 @@
       <div class="row-contents-wrapper">
         <div class="right-hand-buttons">
           <div class="modal-button-wrapper">
-            <button class="modal-button" @click="modalVisible = true" @dblclick.stop @mousedown.stop>
+            <button class="modal-button" @click="displayModal()" @dblclick.stop @mousedown.stop>
               <font-awesome-icon :icon="modalButtonIcon" />
             </button>
           </div>
@@ -364,10 +364,11 @@ export default {
     },
     onLongPress: function () {
       this.mouseDownState = false
-      this.modalVisible = true
+      this.displayModal()
     },
     displayModal: function () {
       this.modalVisible = true
+      this.$emit('modalOpen')
     }
   }
 }
