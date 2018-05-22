@@ -15,6 +15,11 @@
           :year="year"
           @update="update(index, $event)" />
       </tbody>
+      <tr>
+        <td class="button-wrapper">
+          <button class="add-button" @click="addYear()">+</button>
+        </td>
+      </tr>
     </table>
   </div>
 </template>
@@ -38,6 +43,19 @@ export default {
     update: function (index, value) {
       var timeline = JSON.parse(JSON.stringify(this.currentSettlement.timeline))
       timeline[index] = value
+      var update = { timeline: timeline }
+      this.updateSettlement({ id: this.currentSettlement._id, update: update })
+    },
+    addYear: function () {
+      var newYear = {
+        number: this.currentSettlement.timeline.length + 1,
+        settlementEvent: '',
+        story: '',
+        nemesis: '',
+        checked: false
+      }
+      var timeline = JSON.parse(JSON.stringify(this.currentSettlement.timeline))
+      timeline.push(newYear)
       var update = { timeline: timeline }
       this.updateSettlement({ id: this.currentSettlement._id, update: update })
     }
@@ -71,5 +89,28 @@ tbody {
   height: 560px;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
+}
+.button-wrapper {
+  position: relative;
+  width: 100%;
+}
+.add-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 2px solid black;
+  border-top: none;
+  background-color: white;
+  border-radius: 0 0 2px 2px;
+  font-size: 12pt;
+  outline: none;
+}
+.add-button:hover {
+  font-size: 14pt;
+  font-weight: bold;
+}
+.add-button:active {
+  color: white;
+  background-color: black;
 }
 </style>
