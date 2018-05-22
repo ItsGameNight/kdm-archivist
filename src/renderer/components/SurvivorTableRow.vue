@@ -387,8 +387,7 @@ td.survivor-table-row {
   min-width: 633px;
 }
 .mouse-down {
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  transform: translateY(2px);
 }
 div.row-contents-wrapper {
   position: relative;
