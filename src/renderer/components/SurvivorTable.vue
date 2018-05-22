@@ -1,11 +1,15 @@
 <template>
   <div>
     <div class="buttons-wrapper">
-      <button @click="addNewSurvivor(currentSmt)" class="add-button">Add Survivor</button>
-      <button @click="resetDeparting" class="reset-departing-button right-start">Reset Departing</button>
       <button @click="collapsedState = !collapsedState" class="collapse-button">
         <font-awesome-icon :icon="collapseIcon" />
       </button>
+      <dropdown
+        :options="['Alive', 'Dead', 'All']"
+        title="Filter: "
+        @selected="filter = $event" />
+      <button @click="resetDeparting" class="reset-departing-button right-start">Reset Departing</button>
+      <button @click="addNewSurvivor(currentSmt)" class="add-button">Add Survivor</button>
     </div>
     <div class="sort-controls flex-wrapper">
       <div class="sort-title">Sort:</div>
@@ -213,15 +217,17 @@ import {
   faCaretSquareDown
 } from '@fortawesome/fontawesome-free-solid'
 import SurvivorTableRow from './SurvivorTableRow'
+import { Dropdown } from './GUIComponents'
 
 export default {
   name: 'survivor-table',
-  components: { SurvivorTableRow, FontAwesomeIcon },
+  components: { SurvivorTableRow, FontAwesomeIcon, Dropdown },
   data: function () {
     return {
       collapsedState: true,
       sort: 'yeeScore',
-      sortAscending: false
+      sortAscending: false,
+      filter: 0
     }
   },
   computed: {
@@ -234,10 +240,26 @@ export default {
     ]),
     sortedSurvivors: function () {
       if (this.sort === null) {
-        return this.survivorsInSettlement
+        return this.filteredSurvivors
       } else {
-        var sorted = this.survivorsInSettlement.slice()
+        var sorted = this.filteredSurvivors.slice()
         return sorted.sort(this.compareSurvivors(this.sort, this.sortAscending))
+      }
+    },
+    filteredSurvivors: function () {
+      if (this.filter === 0) {
+        // Living survivors
+        return this.survivorsInSettlement.filter((s) => {
+          return s.alive
+        })
+      } else if (this.filter === 1) {
+        // Dead
+        return this.survivorsInSettlement.filter((s) => {
+          return !s.alive
+        })
+      } else {
+        // All
+        return this.survivorsInSettlement
       }
     },
     sortDirectionIcon: function () {
@@ -310,7 +332,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 table {
   width: 98%;
   border-spacing: 0em 0.15em;
@@ -345,7 +367,8 @@ div.buttons-wrapper button:active {
 div.buttons-wrapper .right-start {
   margin-left: auto;
 }
-div.buttons-wrapper .reset-departing-button {
+div.buttons-wrapper .reset-departing-button,
+div.buttons-wrapper .collapse-button {
   margin-right: 5px;
 }
 div.sort-controls {

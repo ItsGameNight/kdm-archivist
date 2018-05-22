@@ -382,6 +382,10 @@ export default {
     update: function (stat, val) {
       var update = {}
       update[stat] = val
+      if (stat === 'alive' && val === false) {
+        // Unset departing if died
+        update['departing'] = false
+      }
       this.updateSurvivor({ id: this.survivor._id, update: update })
     },
     setDeparting: function (val) {
