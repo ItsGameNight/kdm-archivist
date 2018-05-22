@@ -18,7 +18,10 @@
       @keydown.tab.prevent
       @keyup.tab.prevent="selectCompletion()" />
 
-    <div v-if="okayToShowAutocomplete" class="autocomplete-list">
+    <div
+      v-if="okayToShowAutocomplete"
+      class="autocomplete-list"
+      ref="autocompleteListElement">
       <div
         v-for="(item, index) in filteredList"
         :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
@@ -99,6 +102,7 @@ export default {
       // decrement idx
       if (this.filteredIdx > -1) {
         this.filteredIdx--
+        this.scrollSoActiveAutoItemVisible()
       }
     },
 
@@ -106,6 +110,7 @@ export default {
       // update idx
       if (this.filteredIdx < this.filteredList.length - 1) {
         this.filteredIdx++
+        this.scrollSoActiveAutoItemVisible()
       }
     },
 
@@ -122,6 +127,24 @@ export default {
     selectCompletionAndExit: function () {
       this.selectCompletion()
       this.$refs.eIn.blur()
+    },
+
+    scrollSoActiveAutoItemVisible: function () {
+      // scrolls via editing scrollTop property of autocompleteListElement
+      // TODO: replace hacky 18px / 7 per page scrolling
+
+      // if open...
+      if (typeof this.$refs.autocompleteListElement !== 'undefined') {
+        var topOfAutoItem = this.filteredIdx * 18 // each item 18px
+        var botOfAutoItem = topOfAutoItem + 18
+
+        // scroll if needed
+        if (this.$refs.autocompleteListElement.scrollTop > topOfAutoItem) {
+          this.$refs.autocompleteListElement.scrollTop -= 18
+        } else if (this.$refs.autocompleteListElement.scrollTop + 126 < botOfAutoItem) {
+          this.$refs.autocompleteListElement.scrollTop += 18
+        }
+      }
     }
   }
 }
@@ -160,7 +183,7 @@ input::-webkit-inner-spin-button {
   width: 100%;
   z-index: 99;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  max-height: 125px;
+  max-height: 126px;
   overflow-y: scroll;
 }
 
