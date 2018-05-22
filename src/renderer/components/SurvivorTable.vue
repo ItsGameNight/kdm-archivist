@@ -2,6 +2,7 @@
   <div>
     <div class="buttons-wrapper">
       <button @click="addNewSurvivor(currentSmt)" class="add-button">Add Survivor</button>
+      <button @click="resetDeparting" class="reset-departing-button right-start">Reset Departing</button>
       <button @click="collapsedState = !collapsedState" class="collapse-button">
         <font-awesome-icon :icon="collapseIcon" />
       </button>
@@ -177,7 +178,18 @@
     <div class="table-scroll">
       <table>
         <transition-group name="survivors-rows" tag="tbody">
-          <tr v-for="(surv, index) in sortedSurvivors" :key="surv._id">
+          <tr :key="0" v-if="showDeparted"><th>Departing Survivors:</th></tr>
+          <tr v-for="(surv, index) in sortedSurvivors.filter((s) => { return s.departing })"
+            :key="surv._id"
+            class="departing-survivors">
+            <survivor-table-row
+              :yeeScore="yeeScore(surv)"
+              :survivor="surv"
+              :key='surv._id'
+              :collapsed="collapsedState" />
+          </tr>
+          <tr :key="1" v-if="showDeparted"><th>Survivors in Settlement:</th></tr>
+          <tr v-for="(surv, index) in sortedSurvivors.filter((s) => { return !s.departing })" :key="surv._id">
             <survivor-table-row
               :yeeScore="yeeScore(surv)"
               :survivor="surv"
@@ -217,7 +229,8 @@ export default {
       'currentSmt'
     ]),
     ...mapGetters([
-      'survivorsInSettlement'
+      'survivorsInSettlement',
+      'settlementDepartingCount'
     ]),
     sortedSurvivors: function () {
       if (this.sort === null) {
@@ -240,11 +253,15 @@ export default {
       } else {
         return faCaretSquareDown
       }
+    },
+    showDeparted: function () {
+      return this.settlementDepartingCount > 0
     }
   },
   methods: {
     ...mapActions([
-      'addNewSurvivor'
+      'addNewSurvivor',
+      'updateAllSurvivorsInSettlement'
     ]),
     compareSurvivors: function (sortProp, asc = true) {
       return function (a, b) {
@@ -285,6 +302,9 @@ export default {
           this.sortAscending = true
         }
       }
+    },
+    resetDeparting: function () {
+      this.updateAllSurvivorsInSettlement({ update: { departing: false } })
     }
   }
 }
@@ -294,6 +314,9 @@ export default {
 table {
   width: 98%;
   border-spacing: 0em 0.15em;
+}
+th {
+  padding-top: 6px;
 }
 .table-scroll {
   height: 560px;
@@ -319,8 +342,11 @@ div.buttons-wrapper button:active {
   background-color: black;
   color: white;
 }
-div.buttons-wrapper .collapse-button {
+div.buttons-wrapper .right-start {
   margin-left: auto;
+}
+div.buttons-wrapper .reset-departing-button {
+  margin-right: 5px;
 }
 div.sort-controls {
   border: 1px solid black;
@@ -368,5 +394,8 @@ button.sort-button:active {
 }
 .survivors-rows-move {
   transition: transform 0.5s;
+}
+.survivors-rows-leave-active {
+  display: none;
 }
 </style>

@@ -65,6 +65,10 @@ export default new Vuex.Store({
       return getters.survivorsInSettlement.filter((s) => { return s.sex === 'f' }).length
     },
 
+    settlementDepartingCount: (state, getters) => {
+      return getters.survivorsInSettlement.filter((s) => { return s.departing }).length
+    },
+
     snapshotsForCurrentSettlement: (state) => {
       return state.snapshots.filter((s) => { return s.settlement._id === state.currentSmt })
     }
@@ -185,6 +189,18 @@ export default new Vuex.Store({
       this.$survivors.updateOne(id, update, () => {
         this.$survivors.getMatching({ _id: id }, (s) => {
           commit('SET_SURVIVOR_BY_ID', { id: s[0]._id, newObj: s[0] })
+        })
+      })
+    },
+
+    updateAllSurvivorsInSettlement ({ state, commit }, payload) {
+      if (state.currentSnap != null) {
+        return
+      }
+      var update = payload.update
+      this.$survivors.updateSettlement(state.currentSmt, update, () => {
+        this.$survivors.getAll((survs) => {
+          commit('SET_SURVIVORS', survs)
         })
       })
     },

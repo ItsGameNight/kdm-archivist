@@ -59,6 +59,14 @@
                     <font-awesome-icon :icon="aliveIcon" />
                   </button>
                 </div>
+                <div v-if="survivor.alive" class="depart-button-wrapper">
+                  <button class="depart-button"
+                    :class="[survivor.departing ? 'green' : '']"
+                    @click="setDeparting(!survivor.departing)"
+                    @dblclick.stop @mousedown.stop>
+                    <font-awesome-icon :icon="departIcon" />
+                  </button>
+                </div>
               </div>
               <div class="general-info">
                 <div class="name-input-wrapper" @dblclick.stop @mousedown.stop>
@@ -255,7 +263,9 @@ import {
   faSkull,
   faCircle,
   faExclamationTriangle,
-  faFrown
+  faFrown,
+  faCheckSquare,
+  faHome
 } from '@fortawesome/fontawesome-free-solid'
 
 import SurvivorModal from './SurvivorModal'
@@ -288,7 +298,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentSettlement'
+      'currentSettlement',
+      'settlementDepartingCount'
     ]),
     collapseButtonIcon: function () {
       if (this.collapsedState) {
@@ -324,6 +335,13 @@ export default {
     },
     deleteIcon: function () {
       return faTrashAlt
+    },
+    departIcon: function () {
+      if (this.survivor.departing) {
+        return faCheckSquare
+      } else {
+        return faHome
+      }
     },
     yeeColor: function () {
       switch (this.yeeScore) {
@@ -366,6 +384,13 @@ export default {
       update[stat] = val
       this.updateSurvivor({ id: this.survivor._id, update: update })
     },
+    setDeparting: function (val) {
+      if (val && this.settlementDepartingCount >= 4) {
+        alert('You can only have up to 4 departing survivors at a time!')
+      } else {
+        this.update('departing', val)
+      }
+    },
     onLongPress: function () {
       this.mouseDownState = false
       this.modalVisible = true
@@ -382,8 +407,6 @@ div.survivor-table-row-wrapper {
   margin: 0 auto;
 }
 td.survivor-table-row {
-  padding: 0;
-  margin: 0;
   min-width: 633px;
 }
 .mouse-down {
@@ -430,7 +453,7 @@ div.collapse-button-wrapper {
 }
 div.warning {
   position: absolute;
-  left: 6px;
+  left: 35px;
   top: 0;
 }
 div.warning span {
@@ -463,7 +486,8 @@ div.left-icons {
   margin: auto 5px;
 }
 div.yee-icon,
-div.alive-button-wrapper {
+div.alive-button-wrapper,
+div.depart-button-wrapper {
   padding: 2px 2px 2px 0;
   text-align: center;
 }
@@ -471,7 +495,8 @@ div.yee-icon {
   font-size: 12pt;
   padding-left: 0;
 }
-.alive-button {
+.alive-button,
+.depart-button {
   outline: none;
   border: none;
   background-color: white;
@@ -481,14 +506,19 @@ div.yee-icon {
   margin: 0;
   text-align: center;
 }
-.alive-button:hover {
+.alive-button:hover,
+.depart-button:hover {
   cursor: pointer;
 }
-.alive-button:active {
+.alive-button:active,
+.depart-button:active {
   transform: translateY(2px);
 }
 .red {
   color: #8a0707;
+}
+.green {
+  color: #00ab66;
 }
 div.general-info {
   padding-left: 5px;
