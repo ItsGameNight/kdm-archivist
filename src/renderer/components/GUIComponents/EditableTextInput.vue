@@ -152,24 +152,27 @@ input::-webkit-inner-spin-button {
   position: absolute;
   background: white;
   border-style: solid;
-  border-width: 2px;
+  border-width: 0px 2px 2px 2px;
+  border-color: gray;
+  border-radius: 0px 0px 8px 8px;
+  margin-top: 2px;
+  left: -2px;
+  width: 100%;
   z-index: 99;
-  max-height: 120px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  max-height: 125px;
   overflow-y: scroll;
 }
 
 .autocomplete-item {
-  border-style: solid;
-  border-width: 1px;
-  padding-left: 3px;
-  width: 100px;
+  padding-left: 8px;
 }
 
 .autocomplete-item:hover {
-  background-color: gray;
+  background-color: #E6E6E6;
 }
 
 .activeComplete {
-  background-color: gray;
+  background-color: #E6E6E6;
 }
 </style>
