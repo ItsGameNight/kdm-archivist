@@ -54,7 +54,7 @@
         <div v-if="currentTab === 'storage'" class="tab-storage">
           <settlement-storage />
         </div>
-        <div v-if="currentTab === 'notes'" class="tab-storage">
+        <div v-if="currentTab === 'notes'" class="notes-tab">
           <notes-tab/>
         </div>
       </div>

@@ -16,6 +16,7 @@ class SettlementsDatabase extends Database {
       lanternYear: 0,
       survivalLimit: 1,
       survivalOnDepart: 0,
+      notes: '',
       baseSurvivor: {
         settlementID: null,
         name: null,
