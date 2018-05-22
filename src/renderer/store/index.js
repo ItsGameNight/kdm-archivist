@@ -174,16 +174,20 @@ export default new Vuex.Store({
     },
 
     addNewSurvivor ({ commit }, smtID) {
-      console.log(smtID)
-      this.$survivors.addBase(smtID, { }, () => {
-        this.$survivors.getAll((survs) => {
-          commit('SET_SURVIVORS', survs)
+      return new Promise((resolve, reject) => {
+        this.$survivors.addBase(smtID, { }, (newSurv) => {
+          this.$survivors.getAll((survs) => {
+            commit('SET_SURVIVORS', survs)
+            resolve(newSurv._id)
+          })
         })
       })
     },
 
     updateSurvivor ({ state, commit }, payload) {
-      if (state.currentSnap != null) { return }
+      if (state.currentSnap != null) {
+        return
+      }
       var id = payload.id
       var update = payload.update
       this.$survivors.updateOne(id, update, () => {

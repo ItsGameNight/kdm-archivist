@@ -398,6 +398,9 @@ export default {
     onLongPress: function () {
       this.mouseDownState = false
       this.modalVisible = true
+    },
+    displayModal: function () {
+      this.modalVisible = true
     }
   }
 }

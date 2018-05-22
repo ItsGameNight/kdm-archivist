@@ -9,7 +9,7 @@
         title="Filter: "
         @selected="filter = $event" />
       <button @click="resetDeparting" class="reset-departing-button right-start">Reset Departing</button>
-      <button @click="addNewSurvivor(currentSmt)" class="add-button">Add Survivor</button>
+      <button @click="newSurvivor()" class="add-button">Add Survivor</button>
     </div>
     <div class="sort-controls flex-wrapper">
       <div class="sort-title">Sort:</div>
@@ -189,7 +189,7 @@
             <survivor-table-row
               :yeeScore="yeeScore(surv)"
               :survivor="surv"
-              :key='surv._id'
+              :key="surv._id"
               :collapsed="collapsedState" />
           </tr>
           <tr :key="1" v-if="showDeparted"><th>Survivors in Settlement:</th></tr>
@@ -197,8 +197,9 @@
             <survivor-table-row
               :yeeScore="yeeScore(surv)"
               :survivor="surv"
-              :key='surv._id'
-              :collapsed="collapsedState" />
+              :key="surv._id"
+              :collapsed="collapsedState"
+              :ref="'surv-' + surv._id" />
           </tr>
         </transition-group>
       </table>
@@ -217,11 +218,12 @@ import {
   faCaretSquareDown
 } from '@fortawesome/fontawesome-free-solid'
 import SurvivorTableRow from './SurvivorTableRow'
+import SurvivorModal from './SurvivorModal'
 import { Dropdown } from './GUIComponents'
 
 export default {
   name: 'survivor-table',
-  components: { SurvivorTableRow, FontAwesomeIcon, Dropdown },
+  components: { SurvivorTableRow, FontAwesomeIcon, Dropdown, SurvivorModal },
   data: function () {
     return {
       collapsedState: true,
@@ -327,6 +329,15 @@ export default {
     },
     resetDeparting: function () {
       this.updateAllSurvivorsInSettlement({ update: { departing: false } })
+    },
+    newSurvivor: function () {
+      this.addNewSurvivor(this.currentSmt).then((s) => {
+        var newSurv = this.survivorsInSettlement.find((o) => {
+          return o._id === s
+        })
+        var survRef = 'surv-' + newSurv._id
+        this.$refs[survRef][0].displayModal()
+      })
     }
   }
 }

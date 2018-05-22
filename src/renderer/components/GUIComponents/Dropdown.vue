@@ -41,7 +41,7 @@ export default {
 <style type="text/css" scoped>
 .dropdown {
   position: relative;
-  z-index: 999;
+  z-index: 777;
 }
 .options-list {
   position: absolute;
