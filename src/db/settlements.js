@@ -5,6 +5,7 @@ class SettlementsDatabase extends Database {
     super(dbpath, 'settlements.db')
     this.baseSmt = {
       name: null,
+      timeline: null,
       principles: [],
       locations: [],
       innovations: [],

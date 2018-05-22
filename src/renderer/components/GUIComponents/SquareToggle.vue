@@ -19,6 +19,11 @@ export default {
       checkValue: this.initValue
     }
   },
+  watch: {
+    initValue: function (newVal) {
+      this.checkValue = newVal
+    }
+  },
   computed: {
     toggleSize: function () {
       var toggleStyle = {}

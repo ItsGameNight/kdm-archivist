@@ -5,7 +5,8 @@
       <editable-list
         :listItems="currentSettlement.resources"
         :autocompleteList="resourceNames"
-        :numbered="true"
+        numbered
+        :textStyle="{fontSize:'12pt'}"
         @update="update('resources', $event)"
         ></editable-list>
     </div>
@@ -13,7 +14,8 @@
       <h3>Gear</h3>
       <editable-list
         :listItems="currentSettlement.storedGear"
-        :numbered="true"
+        numbered
+        :textStyle="{fontSize:'12pt'}"
         @update="update('storedGear', $event)"
         ></editable-list>
     </div>

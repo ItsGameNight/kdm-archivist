@@ -31,7 +31,8 @@
               Storage
           </button>
         </div>
-        <div v-if="currentTab === 'timelime'" class="tab-timeline">
+        <div v-if="currentTab === 'timeline'" class="tab-timeline">
+          <settlement-timeline />
         </div>
         <div v-if="currentTab === 'survivors'" class="tab-survivors">
           <survivor-table id="survivor-table" />
@@ -45,7 +46,7 @@
           </button>
         </div>
         <div v-if="currentTab === 'storage'" class="tab-storage">
-          <settlement-storage></settlement-storage>
+          <settlement-storage />
         </div>
       </div>
       <!-- <div id="note-panel">
@@ -62,6 +63,7 @@ import SurvivorTable from './SurvivorTable'
 import SettlementInspector from './SettlementInspector'
 import NotePanel from './NotePanel'
 import SettlementStorage from './Storage'
+import SettlementTimeline from './Timeline'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
@@ -75,7 +77,8 @@ export default {
     SettlementInspector,
     NotePanel,
     FontAwesomeIcon,
-    SettlementStorage
+    SettlementStorage,
+    SettlementTimeline
   },
   data: function () {
     return {
