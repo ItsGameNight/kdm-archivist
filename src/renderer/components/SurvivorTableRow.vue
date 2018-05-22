@@ -3,6 +3,7 @@
     <survivor-modal
       v-if="modalVisible"
       :survivor="survivor"
+      :yeeScore="yeeScore"
       @close="modalVisible = false" />
     <modal
       v-if="deleteModalVisible"
@@ -257,13 +258,10 @@ import {
   faExpand,
   faCaretSquareUp,
   faCaretSquareDown,
-  faStar,
+  faSkull,
   faHeartbeat,
   faTrashAlt,
-  faSkull,
-  faCircle,
   faExclamationTriangle,
-  faFrown,
   faCheckSquare,
   faHome
 } from '@fortawesome/fontawesome-free-solid'
@@ -272,6 +270,7 @@ import SurvivorModal from './SurvivorModal'
 import Modal from './Modal'
 import { EditableTextInput, EditableStat } from './GUIComponents'
 import { MaleFemaleToggle } from './SurvivorComponents'
+import YeeScoreMixin from '../mixins/YeeScore'
 
 export default {
   name: 'survivor-table-row',
@@ -283,6 +282,7 @@ export default {
     EditableStat,
     MaleFemaleToggle
   },
+  mixins: [YeeScoreMixin],
   props: {
     survivor: { required: true },
     collapsed: { default: false },
@@ -311,21 +311,6 @@ export default {
     modalButtonIcon: function () {
       return faExpand
     },
-    yeeIcon: function () {
-      switch (this.yeeScore) {
-        case 0:
-          return faFrown
-        case 1:
-          return faCircle
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-          return faStar
-        default:
-          return faCircle
-      }
-    },
     aliveIcon: function () {
       if (this.survivor.alive) {
         return faHeartbeat
@@ -341,24 +326,6 @@ export default {
         return faCheckSquare
       } else {
         return faHome
-      }
-    },
-    yeeColor: function () {
-      switch (this.yeeScore) {
-        case 0:
-          return { color: '#000' }
-        case 1:
-          return { color: '#d11141' }
-        case 2:
-          return { color: '#00b159' }
-        case 3:
-          return { color: '#00aedb' }
-        case 4:
-          return { color: '#f37735' }
-        case 5:
-          return { color: '#ffc425' }
-        default:
-          return { color: 'black' }
       }
     },
     warning: function () {

@@ -32,6 +32,12 @@
           <div class="birth-label">Born LY:</div><div class="birth-year"><editable-text-input :inputType="'number'" :textValue="survivor.birthYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'birthYear')" /></div>
           <div class="dead-or-alive"><alive-toggle :initValue="survivor.alive" :survivorID="survivor._id" /></div>
           <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'deathYear'); update(false, 'alive')" /></div>
+          <div class="rank-label">Rank:</div>
+          <div class="yee-icon">
+            <font-awesome-icon
+              :icon="yeeIcon"
+              :style="yeeColor" />
+          </div>
         </div>
       </div>
       <!----------------------------------------------------------------------------------->
@@ -248,7 +254,9 @@ import {
   LockToggle,
   EditableList
 } from './GUIComponents'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { Disorders, FightingArts, Impairments } from '../assets/StaticGameData'
+import YeeScoreMixin from '../mixins/YeeScore'
 
 export default {
   name: 'survivor-modal',
@@ -265,10 +273,13 @@ export default {
     LockToggle,
     AliveToggle,
     ProgressBar,
-    EditableList
+    EditableList,
+    FontAwesomeIcon
   },
+  mixins: [YeeScoreMixin],
   props: {
-    survivor: { required: true }
+    survivor: { required: true },
+    yeeScore: { required: true }
   },
   data: function () {
     return {
@@ -394,6 +405,18 @@ export default {
 .dead-or-alive {
   width: 58px;
   padding-top: 1px;
+}
+.rank-label {
+  font-size: 11pt;
+  padding-right: 4px;
+  margin-left: auto;
+  padding-top: 2px;
+  line-height: 14pt;
+}
+.yee-icon {
+  padding-top: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 img.depart {
   height: 20px;
