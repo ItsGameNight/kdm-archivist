@@ -1,4 +1,4 @@
-# Twighlight Archivist
+# Twilight Archivist
 
 A Kingdom Death: Monster Companion App from one board game enthusiast to another.
 
@@ -36,7 +36,7 @@ npm run dev
 ```
 
 ## Authors
-Twighlight Archivist is the brain child of [Alex Karle](https://github.com/akarle) and [Makenzie Scwhartz](https://github.com/mws96).
+Twilight Archivist is the brain child of [Alex Karle](https://github.com/akarle) and [Makenzie Scwhartz](https://github.com/mws96).
 
 We're two recent UMass Amherst grads just having a good time and enjoying our newfound free time by making this app!
 
