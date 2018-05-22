@@ -176,13 +176,15 @@
     </div>
     <div class="table-scroll">
       <table>
-        <tr v-for="(surv, index) in sortedSurvivors">
-          <survivor-table-row
-            :yeeScore="yeeScore(surv)"
-            :survivor="surv"
-            :key='surv._id'
-            :collapsed="collapsedState" />
-        </tr>
+        <transition-group name="survivors-rows" tag="tbody">
+          <tr v-for="(surv, index) in sortedSurvivors" :key="surv._id">
+            <survivor-table-row
+              :yeeScore="yeeScore(surv)"
+              :survivor="surv"
+              :key='surv._id'
+              :collapsed="collapsedState" />
+          </tr>
+        </transition-group>
       </table>
     </div>
   </div>
@@ -363,5 +365,8 @@ button.sort-button:active {
 }
 .sort-direction-icon {
   padding-right: 2px;
+}
+.survivors-rows-move {
+  transition: transform 0.5s;
 }
 </style>
