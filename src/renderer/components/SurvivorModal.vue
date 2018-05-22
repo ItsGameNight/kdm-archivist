@@ -1,238 +1,236 @@
 <template>
-  <div>
-    <modal @close="$emit('close', survivor)" :modalWidth="750">
-      <div slot="header" style="display: none;"></div>
-      <div slot="body">
-        <!----------------------------------------------------------------------------------->
-        <!-------------------------------------- ROW 1 -------------------------------------->
-        <!----------------------------------------------------------------------------------->
-        <div class="flex-wrapper row1">
-          <div class="flex-wrapper general-info">
-            <div class="survivor-name">
-              <editable-text-input :textValue="survivor.name" @update="update($event, 'name')" :textStyle="{fontWeight:'bold', fontSize: '14pt'}" :placeholder="'Unnamed'" />
-            </div>
-            <div class="sex-toggle">
-              <male-female-toggle :initSex="survivor.sex" :survivorID="survivor._id" />
-            </div>
+  <modal @close="$emit('close', survivor)" :modalWidth="750">
+    <div slot="header" style="display: none;"></div>
+    <div slot="body">
+      <!----------------------------------------------------------------------------------->
+      <!-------------------------------------- ROW 1 -------------------------------------->
+      <!----------------------------------------------------------------------------------->
+      <div class="flex-wrapper row1">
+        <div class="flex-wrapper general-info">
+          <div class="survivor-name">
+            <editable-text-input :textValue="survivor.name" @update="update($event, 'name')" :textStyle="{fontWeight:'bold', fontSize: '14pt'}" :placeholder="'Unnamed'" />
           </div>
-          <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
-        </div>
-        <!----------------------------------------------------------------------------------->
-        <!-------------------------------------- ROW 2 -------------------------------------->
-        <!----------------------------------------------------------------------------------->
-        <div class="flex-wrapper row2">
-          <div class="flex-wrapper extra-names">
-            <div class="nickname">
-              <editable-text-input :placeholder="'Nickname'" :textValue="survivor.nickname" @update="update($event, 'nickname')" :textStyle="{fontSize: '10pt'}" />
-            </div>
-            <div class="surname">
-              <editable-text-input :placeholder="'Surname'" :textValue="survivor.surname" @update="update($event, 'surname')" :textStyle="{fontSize: '10pt'}" />
-            </div>
-          </div>
-          <div class="flex-wrapper alive-box">
-            <div class="birth-label">Born LY:</div><div class="birth-year"><editable-text-input :inputType="'number'" :textValue="survivor.birthYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'birthYear')" /></div>
-            <div class="dead-or-alive"><alive-toggle :initValue="survivor.alive" :survivorID="survivor._id" /></div>
-            <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'deathYear'); update(false, 'alive')" /></div>
-            <div class="flex-wrapper depart-toggle" @click="update(!survivor.departing, 'departing')">
-              <img class="depart" :src="departStatusImg" :title="departStatusText" />
-              <div class="depart-text" v-if="survivor.departing">Departing</div><div class="depart-text" v-else>Resting</div>
-            </div>
+          <div class="sex-toggle">
+            <male-female-toggle :initSex="survivor.sex" :survivorID="survivor._id" />
           </div>
         </div>
-        <!----------------------------------------------------------------------------------->
-        <!-------------------------------------- ROW 3 -------------------------------------->
-        <!----------------------------------------------------------------------------------->
-        <div class="flex-wrapper row3">
-          <div class="survival-box">
-            <div :class="[survivor.cannotSpendSurvival ? 'no-survival' : '']">
-              <div class="row3-title"><span>Survival</span></div>
-              <div class="flex-wrapper">
-                <div class="survival-input"><editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" :minValue="0" limitBox @update="update($event, 'survival')" /></div>
-                <div class="survival-abilities">
-                 <div class="ability"><square-toggle :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" @update="update($event, 'dodge')"/></div>
-                 <div class="ability"><square-toggle :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" @update="update($event, 'encourage')" /></div>
-                 <div class="ability"><square-toggle :statDisplayName="'Dash'" :initValue="survivor.dash" :squareSize="'8'" @update="update($event, 'dash')" /></div>
-                 <div class="ability"><square-toggle :statDisplayName="'Surge'" :initValue="survivor.surge" :squareSize="'8'" @update="update($event, 'surge')" /></div>
-                 <div class="ability"><square-toggle :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" @update="update($event, 'endure')" /></div>
-               </div>
-             </div>
-           </div>
-           <div class="cannot-spend-survival">
-            <lock-toggle :initValue="survivor.cannotSpendSurvival" :statDisplayName="'Cannot Spend Survival'" @update="update($event, 'cannotSpendSurvival')" />
+        <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
+      </div>
+      <!----------------------------------------------------------------------------------->
+      <!-------------------------------------- ROW 2 -------------------------------------->
+      <!----------------------------------------------------------------------------------->
+      <div class="flex-wrapper row2">
+        <div class="flex-wrapper extra-names">
+          <div class="nickname">
+            <editable-text-input :placeholder="'Nickname'" :textValue="survivor.nickname" @update="update($event, 'nickname')" :textStyle="{fontSize: '10pt'}" />
           </div>
-          </div>
-          <div class="stats-box">
-            <div class="row3-title"><span>Showdown Stats</span><div class="skip-hunt"><lock-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update($event, 'skipHunt')"/></div></div>
-            <div class="flex-wrapper stats-group">
-              <editable-stat :statDisplayName="'MOV'" :initValue="survivor.movement" @update="update($event, 'movement')" />
-              <editable-stat :statDisplayName="'ACC'" :initValue="survivor.accuracy" @update="update($event, 'accuracy')" />
-              <editable-stat :statDisplayName="'STR'" :initValue="survivor.strength" @update="update($event, 'strength')" />
-              <editable-stat :statDisplayName="'EVA'" :initValue="survivor.evasion" @update="update($event, 'evasion')" />
-              <editable-stat :statDisplayName="'LCK'" :initValue="survivor.luck" @update="update($event, 'luck')" />
-              <editable-stat :statDisplayName="'SPD'" :initValue="survivor.speed" @update="update($event, 'speed')" />
-            </div>
-          </div>
-          <div class="progress-box">
-            <div class="row3-title"><span>Development Stats</span></div>
-            <div class="progress-group">
-              <div class="flex-wrapper weapon-prof-group">
-                <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
-                <div class="weapon-type">
-                  <div class="weapon-type-text">
-                    Weapon Type:
-                  </div>
-                  <div class="weapon-type-input"><editable-text-input :textValue="survivor.weaponProficiency" @update="update($event, 'weaponProficiency')" :textStyle="{fontSize: '9pt', fontStyle: 'oblique'}" :placeholder="'None declared'" /></div>
-                </div>
-              </div>
-              <div class="crg-und-group">
-                <div class="flex-wrapper">
-                  <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
-                  <div class="left"><understanding-bar :survivorID="survivor._id" :level="survivor.understanding" /></div>
-                </div>
-                <div class="flex-wrapper">
-                  <div class="skill-input-wrapper">
-                    <div class="skill-input"><editable-text-input :textValue="survivor.boldSkill" @update="update($event, 'boldSkill')" :placeholder="'Bold Skill'" :textStyle="{fontSize: '9pt'}" /></div>
-                  </div>
-                  <div class="skill-input-wrapper right">
-                    <div class="skill-input"><editable-text-input :textValue="survivor.insightSkill" @update="update($event, 'insightSkill')" :placeholder="'Insight Skill'" :textStyle="{fontSize: '9pt'}" /></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="surname">
+            <editable-text-input :placeholder="'Surname'" :textValue="survivor.surname" @update="update($event, 'surname')" :textStyle="{fontSize: '10pt'}" />
           </div>
         </div>
-        <!----------------------------------------------------------------------------------->
-        <!-------------------------------------- ROW 4 -------------------------------------->
-        <!----------------------------------------------------------------------------------->
-        <div class="row4">
-          <div class="row4-box armor-points">
-            <div class="row4-title"><span>Hit Locations</span></div>
-            <div class="flex-wrapper">
-              <div class="flex-wrapper armor-point-box">
-                <img class="armor-img" :src="brainImg" />
-                <editable-stat :minValue="0" :initValue="survivor.insanity" @update="update($event, 'insanity')" />
-                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.brainHP" :maxLevel="1" :boldLevels="[1]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
-              </div>
-              <div class="flex-wrapper armor-point-box">
-                <img class="armor-img" :src="headImg" />
-                <editable-stat :initValue="survivor.headArmor" :minValue="0" @update="update($event, 'headArmor')" />
-                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.headHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'headHP'" /></div>
-              </div>
-              <div class="flex-wrapper armor-point-box">
-                <img class="armor-img" :src="armsImg" />
-                <editable-stat :initValue="survivor.armsArmor" :minValue="0" @update="update($event, 'armsArmor')" />
-                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.armsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'armsHP'" /></div>
-              </div>
-              <div class="flex-wrapper armor-point-box">
-                <img class="armor-img" :src="bodyImg" />
-                <editable-stat :initValue="survivor.bodyArmor" :minValue="0" @update="update($event, 'bodyArmor')" />
-                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.bodyHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'bodyHP'" /></div>
-              </div>
-              <div class="flex-wrapper armor-point-box">
-                <img class="armor-img" :src="waistImg" />
-                <editable-stat :initValue="survivor.waistArmor" :minValue="0" @update="update($event, 'waistArmor')" />
-                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.waistHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'waistHP'" /></div>
-              </div>
-              <div class="flex-wrapper armor-point-box last">
-                <img class="armor-img" :src="legsImg" />
-                <editable-stat :initValue="survivor.legsArmor" :minValue="0" @update="update($event, 'legsArmor')" />
-                <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.legsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'legsHP'" /></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!----------------------------------------------------------------------------------->
-        <!-------------------------------------- ROW 5 -------------------------------------->
-        <!----------------------------------------------------------------------------------->
-        <div class="flex-wrapper row5">
-          <div class="fighting-arts row5box">
-            <div :class="{ 'no-fighting' : survivor.cannotUseFighting }">
-              <div class="row5title">
-                <span class="title">Fighting Arts</span>
-                <span class="subtitle">Max 3.</span>
-              </div>
-              <editable-list
-                :listItems="survivor.fightingArts"
-                :min="3"
-                :max="3"
-                :placeholder="'Fighting Art'"
-                :autocompleteList="fightingArtNames"
-                @update="update($event, 'fightingArts')"
-                />
-            </div>
-            <div class="cannot-fight"><lock-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div>
-          </div>
-          <div class="disorders row5box">
-            <div class="row5title">
-              <span class="title">Disorders</span>
-              <span class="subtitle">Max 3.</span>
-            </div>
-            <editable-list
-              :listItems="survivor.disorders"
-              :min="3"
-              :max="3"
-              :placeholder="'Disorder'"
-              :autocompleteList="disorderNames"
-              @update="update($event, 'disorders')"
-              />
-          </div>
-          <div class="abilities row5box">
-            <div class="row5title">
-              <span class="title">Abilities</span>
-            </div>
-            <div class="row5scrollbox">
-              <div class="row5scroll-wrapper">
-                <editable-list :listItems="survivor.abilities" :placeholder="'Ability'" @update="update($event, 'abilities')" />
-              </div>
-            </div>
-          </div>
-          <div class="impairments row5box">
-            <div class="row5title">
-              <span class="title">Impairments</span>
-            </div>
-            <div class="row5scrollbox">
-              <div class="row5scroll-wrapper">
-                <editable-list
-                  :listItems="survivor.impairments"
-                  :placeholder="'Impairment'"
-                  :autocompleteList="impairmentsNames"
-                  @update="update($event, 'impairments')" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <!----------------------------------------------------------------------------------->
-        <!-------------------------------------- ROW 6 -------------------------------------->
-        <!----------------------------------------------------------------------------------->
-        <div class="flex-wrapper row6">
-          <div class="family-info row6box">
-            <div class="row6title family">
-              <span>Family information:</span>
-            </div>
-            <div class="flex-wrapper family-info-box">
-              <div class="parents">
-                <div class="parents-title">
-                  Parents:
-                </div>
-              </div>
-              <div class="children">
-                <div class="children-title">
-                  Children:
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="other-box row6box">
-            <div class="row6title">
-              <span>Other information:</span>
-            </div>
-            <textarea :value="survivor.other" @input="update($event.target.value, 'other')"></textarea>
+        <div class="flex-wrapper alive-box">
+          <div class="birth-label">Born LY:</div><div class="birth-year"><editable-text-input :inputType="'number'" :textValue="survivor.birthYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'birthYear')" /></div>
+          <div class="dead-or-alive"><alive-toggle :initValue="survivor.alive" :survivorID="survivor._id" /></div>
+          <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'deathYear'); update(false, 'alive')" /></div>
+          <div class="flex-wrapper depart-toggle" @click="update(!survivor.departing, 'departing')">
+            <img class="depart" :src="departStatusImg" :title="departStatusText" />
+            <div class="depart-text" v-if="survivor.departing">Departing</div><div class="depart-text" v-else>Resting</div>
           </div>
         </div>
       </div>
-      <div slot="footer" style="display: none;"></div>
-    </modal>
-  </div>
+      <!----------------------------------------------------------------------------------->
+      <!-------------------------------------- ROW 3 -------------------------------------->
+      <!----------------------------------------------------------------------------------->
+      <div class="flex-wrapper row3">
+        <div class="survival-box">
+          <div :class="[survivor.cannotSpendSurvival ? 'no-survival' : '']">
+            <div class="row3-title"><span>Survival</span></div>
+            <div class="flex-wrapper">
+              <div class="survival-input"><editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" :minValue="0" limitBox @update="update($event, 'survival')" /></div>
+              <div class="survival-abilities">
+               <div class="ability"><square-toggle :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" @update="update($event, 'dodge')"/></div>
+               <div class="ability"><square-toggle :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" @update="update($event, 'encourage')" /></div>
+               <div class="ability"><square-toggle :statDisplayName="'Dash'" :initValue="survivor.dash" :squareSize="'8'" @update="update($event, 'dash')" /></div>
+               <div class="ability"><square-toggle :statDisplayName="'Surge'" :initValue="survivor.surge" :squareSize="'8'" @update="update($event, 'surge')" /></div>
+               <div class="ability"><square-toggle :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" @update="update($event, 'endure')" /></div>
+             </div>
+           </div>
+         </div>
+         <div class="cannot-spend-survival">
+          <lock-toggle :initValue="survivor.cannotSpendSurvival" :statDisplayName="'Cannot Spend Survival'" @update="update($event, 'cannotSpendSurvival')" />
+        </div>
+        </div>
+        <div class="stats-box">
+          <div class="row3-title"><span>Showdown Stats</span><div class="skip-hunt"><lock-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update($event, 'skipHunt')"/></div></div>
+          <div class="flex-wrapper stats-group">
+            <editable-stat :statDisplayName="'MOV'" :initValue="survivor.movement" @update="update($event, 'movement')" />
+            <editable-stat :statDisplayName="'ACC'" :initValue="survivor.accuracy" @update="update($event, 'accuracy')" />
+            <editable-stat :statDisplayName="'STR'" :initValue="survivor.strength" @update="update($event, 'strength')" />
+            <editable-stat :statDisplayName="'EVA'" :initValue="survivor.evasion" @update="update($event, 'evasion')" />
+            <editable-stat :statDisplayName="'LCK'" :initValue="survivor.luck" @update="update($event, 'luck')" />
+            <editable-stat :statDisplayName="'SPD'" :initValue="survivor.speed" @update="update($event, 'speed')" />
+          </div>
+        </div>
+        <div class="progress-box">
+          <div class="row3-title"><span>Development Stats</span></div>
+          <div class="progress-group">
+            <div class="flex-wrapper weapon-prof-group">
+              <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
+              <div class="weapon-type">
+                <div class="weapon-type-text">
+                  Weapon Type:
+                </div>
+                <div class="weapon-type-input"><editable-text-input :textValue="survivor.weaponProficiency" @update="update($event, 'weaponProficiency')" :textStyle="{fontSize: '9pt', fontStyle: 'oblique'}" :placeholder="'None declared'" /></div>
+              </div>
+            </div>
+            <div class="crg-und-group">
+              <div class="flex-wrapper">
+                <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
+                <div class="left"><understanding-bar :survivorID="survivor._id" :level="survivor.understanding" /></div>
+              </div>
+              <div class="flex-wrapper">
+                <div class="skill-input-wrapper">
+                  <div class="skill-input"><editable-text-input :textValue="survivor.boldSkill" @update="update($event, 'boldSkill')" :placeholder="'Bold Skill'" :textStyle="{fontSize: '9pt'}" /></div>
+                </div>
+                <div class="skill-input-wrapper right">
+                  <div class="skill-input"><editable-text-input :textValue="survivor.insightSkill" @update="update($event, 'insightSkill')" :placeholder="'Insight Skill'" :textStyle="{fontSize: '9pt'}" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------------------------------------------------------------------------->
+      <!-------------------------------------- ROW 4 -------------------------------------->
+      <!----------------------------------------------------------------------------------->
+      <div class="row4">
+        <div class="row4-box armor-points">
+          <div class="row4-title"><span>Hit Locations</span></div>
+          <div class="flex-wrapper">
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="brainImg" />
+              <editable-stat :minValue="0" :initValue="survivor.insanity" @update="update($event, 'insanity')" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.brainHP" :maxLevel="1" :boldLevels="[1]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="headImg" />
+              <editable-stat :initValue="survivor.headArmor" :minValue="0" @update="update($event, 'headArmor')" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.headHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'headHP'" /></div>
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="armsImg" />
+              <editable-stat :initValue="survivor.armsArmor" :minValue="0" @update="update($event, 'armsArmor')" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.armsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'armsHP'" /></div>
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="bodyImg" />
+              <editable-stat :initValue="survivor.bodyArmor" :minValue="0" @update="update($event, 'bodyArmor')" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.bodyHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'bodyHP'" /></div>
+            </div>
+            <div class="flex-wrapper armor-point-box">
+              <img class="armor-img" :src="waistImg" />
+              <editable-stat :initValue="survivor.waistArmor" :minValue="0" @update="update($event, 'waistArmor')" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.waistHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'waistHP'" /></div>
+            </div>
+            <div class="flex-wrapper armor-point-box last">
+              <img class="armor-img" :src="legsImg" />
+              <editable-stat :initValue="survivor.legsArmor" :minValue="0" @update="update($event, 'legsArmor')" />
+              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.legsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'legsHP'" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------------------------------------------------------------------------->
+      <!-------------------------------------- ROW 5 -------------------------------------->
+      <!----------------------------------------------------------------------------------->
+      <div class="flex-wrapper row5">
+        <div class="fighting-arts row5box">
+          <div :class="{ 'no-fighting' : survivor.cannotUseFighting }">
+            <div class="row5title">
+              <span class="title">Fighting Arts</span>
+              <span class="subtitle">Max 3.</span>
+            </div>
+            <editable-list
+              :listItems="survivor.fightingArts"
+              :min="3"
+              :max="3"
+              :placeholder="'Fighting Art'"
+              :autocompleteList="fightingArtNames"
+              @update="update($event, 'fightingArts')"
+              />
+          </div>
+          <div class="cannot-fight"><lock-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update($event, 'cannotUseFighting')" /></div>
+        </div>
+        <div class="disorders row5box">
+          <div class="row5title">
+            <span class="title">Disorders</span>
+            <span class="subtitle">Max 3.</span>
+          </div>
+          <editable-list
+            :listItems="survivor.disorders"
+            :min="3"
+            :max="3"
+            :placeholder="'Disorder'"
+            :autocompleteList="disorderNames"
+            @update="update($event, 'disorders')"
+            />
+        </div>
+        <div class="abilities row5box">
+          <div class="row5title">
+            <span class="title">Abilities</span>
+          </div>
+          <div class="row5scrollbox">
+            <div class="row5scroll-wrapper">
+              <editable-list :listItems="survivor.abilities" :placeholder="'Ability'" @update="update($event, 'abilities')" />
+            </div>
+          </div>
+        </div>
+        <div class="impairments row5box">
+          <div class="row5title">
+            <span class="title">Impairments</span>
+          </div>
+          <div class="row5scrollbox">
+            <div class="row5scroll-wrapper">
+              <editable-list
+                :listItems="survivor.impairments"
+                :placeholder="'Impairment'"
+                :autocompleteList="impairmentsNames"
+                @update="update($event, 'impairments')" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------------------------------------------------------------------------->
+      <!-------------------------------------- ROW 6 -------------------------------------->
+      <!----------------------------------------------------------------------------------->
+      <div class="flex-wrapper row6">
+        <div class="family-info row6box">
+          <div class="row6title family">
+            <span>Family information:</span>
+          </div>
+          <div class="flex-wrapper family-info-box">
+            <div class="parents">
+              <div class="parents-title">
+                Parents:
+              </div>
+            </div>
+            <div class="children">
+              <div class="children-title">
+                Children:
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="other-box row6box">
+          <div class="row6title">
+            <span>Other information:</span>
+          </div>
+          <textarea :value="survivor.other" @input="update($event.target.value, 'other')"></textarea>
+        </div>
+      </div>
+    </div>
+    <div slot="footer" style="display: none;"></div>
+  </modal>
 </template>
 
 <script>

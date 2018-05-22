@@ -83,7 +83,7 @@ export default {
 }
 .modal-enter .modal-container,
 .modal-leaver-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  -webkit-transform: scale(0.6);
+  transform: scale(0.6);
 }
 </style>
