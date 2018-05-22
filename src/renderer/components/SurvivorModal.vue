@@ -32,10 +32,6 @@
           <div class="birth-label">Born LY:</div><div class="birth-year"><editable-text-input :inputType="'number'" :textValue="survivor.birthYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'birthYear')" /></div>
           <div class="dead-or-alive"><alive-toggle :initValue="survivor.alive" :survivorID="survivor._id" /></div>
           <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update($event, 'deathYear'); update(false, 'alive')" /></div>
-          <div class="flex-wrapper depart-toggle" @click="update(!survivor.departing, 'departing')">
-            <img class="depart" :src="departStatusImg" :title="departStatusText" />
-            <div class="depart-text" v-if="survivor.departing">Departing</div><div class="depart-text" v-else>Resting</div>
-          </div>
         </div>
       </div>
       <!----------------------------------------------------------------------------------->
@@ -281,9 +277,7 @@ export default {
       bodyImg: 'static/body.png',
       armsImg: 'static/arms.png',
       waistImg: 'static/waist.png',
-      legsImg: 'static/legs.png',
-      homeImg: 'static/home.png',
-      departImg: 'static/depart.png'
+      legsImg: 'static/legs.png'
     }
   },
   computed: {
