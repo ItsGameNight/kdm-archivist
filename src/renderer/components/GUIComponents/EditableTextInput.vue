@@ -191,10 +191,6 @@ input::-webkit-inner-spin-button {
   padding-left: 8px;
 }
 
-.autocomplete-item:hover {
-  background-color: #E6E6E6;
-}
-
 .activeComplete {
   background-color: #E6E6E6;
 }
