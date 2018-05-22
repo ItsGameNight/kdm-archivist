@@ -15,7 +15,6 @@
       <editable-list
         :listItems="currentSettlement.storedGear"
         numbered
-        :numberEditable="false"
         :textStyle="{fontSize:'12pt'}"
         @update="update('storedGear', $event)"
         ></editable-list>

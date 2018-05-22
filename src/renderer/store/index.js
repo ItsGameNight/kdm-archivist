@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import goodnessFunction from '../../db/goodness.js'
+import { BaseTimeline } from '../assets/StaticGameData'
 
 Vue.use(Vuex)
 
@@ -143,7 +144,7 @@ export default new Vuex.Store({
 
     createNamedSettlement ({ commit }, name) {
       this.$settlements.createNew((newDoc) => {
-        this.$settlements.updateOne(newDoc._id, { name: name }, () => {
+        this.$settlements.updateOne(newDoc._id, { name: name, timeline: BaseTimeline.years }, () => {
           this.$settlements.getAll((smts) => {
             commit('SET_SETTLEMENTS', smts)
           })

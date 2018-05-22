@@ -288,7 +288,7 @@ table {
   border-spacing: 0em 0.15em;
 }
 .table-scroll {
-  height: 580px;
+  height: 560px;
   overflow-y: scroll;
   padding-left: 8px;
 }
