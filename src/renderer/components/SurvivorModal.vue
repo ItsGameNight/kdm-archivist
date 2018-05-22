@@ -224,11 +224,28 @@
               <div class="parents-title">
                 Parents:
               </div>
+              <div class="parent-input-wrapper">
+                <editable-text-input
+                  :textValue="survivor.mother"
+                  placeholder="Mother"
+                  :textStyle="{fontSize:'10pt'}"
+                  @update="update('mother', $event)" />
+              </div>
+              <div class="parent-input-wrapper">
+                <editable-text-input
+                  :textValue="survivor.father"
+                  placeholder="Father"
+                  :textStyle="{fontSize:'10pt'}"
+                  @update="update('father', $event)" />
+              </div>
             </div>
             <div class="children">
               <div class="children-title">
                 Children:
               </div>
+              <ul class="children-list">
+                <li v-for="child in childrenOfSurvivor">{{ child.name }}</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -304,7 +321,8 @@ export default {
   computed: {
     ...mapGetters([
       'currentSettlement',
-      'settlementDepartingCount'
+      'settlementDepartingCount',
+      'survivorsInSettlement'
     ]),
     departIcon: function () {
       if (this.survivor.departing) {
@@ -321,6 +339,12 @@ export default {
     },
     impairmentsNames: function () {
       return Object.values(Impairments).map((o) => { return o.name })
+    },
+    childrenOfSurvivor: function () {
+      return this.survivorsInSettlement.filter((s) => {
+        return (s.mother && s.mother === this.survivor.name) ||
+          (s.father && s.father === this.survivor.name)
+      })
     }
   },
   methods: {
@@ -663,9 +687,27 @@ div.depart-button-wrapper {
 .parents {
   width: 50%;
 }
+.parent-input-wrapper {
+  width: 80%;
+  border-bottom: 1px dotted black;
+  margin-left: 8px;
+  margin-bottom: 14px;
+  margin-top: 6px;
+}
 .children {
   width: 50%;
   border-left: 1px dashed gray;
+}
+ul.children-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 80%;
+  overflow: auto;
+}
+ul.children-list li {
+  font-size: 9pt;
 }
 .other-box {
   width: 60%;
