@@ -349,9 +349,16 @@ export default {
     update: function (stat, val) {
       var update = {}
       update[stat] = val
-      if (stat === 'alive' && val === false) {
-        // Unset departing if died
-        update['departing'] = false
+      if (stat === 'alive') {
+        if (!val) {
+          // Unset departing if died
+          update['departing'] = false
+          // Set death year
+          update['deathYear'] = this.currentSettlement.lanternYear
+        } else {
+          // Unset death year
+          update['deathYear'] = null
+        }
       }
       this.updateSurvivor({ id: this.survivor._id, update: update })
     },
