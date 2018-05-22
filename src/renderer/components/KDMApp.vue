@@ -30,6 +30,12 @@
             @click="currentTab = 'storage'">
               Storage
           </button>
+          <button
+            class="tab-button"
+            :class="{'tab-selected' : currentTab === 'notes'}"
+            @click="currentTab = 'notes'">
+              Notes
+          </button>
         </div>
         <div v-if="currentTab === 'timeline'" class="tab-timeline">
           <settlement-timeline />
@@ -48,6 +54,9 @@
         <div v-if="currentTab === 'storage'" class="tab-storage">
           <settlement-storage />
         </div>
+        <div v-if="currentTab === 'notes'" class="tab-storage">
+          <notes-tab/>
+        </div>
       </div>
       <!-- <div id="note-panel">
         <span style="font-weight: bold">Notes:</span>
@@ -64,6 +73,7 @@ import SettlementInspector from './SettlementInspector'
 import NotePanel from './NotePanel'
 import SettlementStorage from './Storage'
 import SettlementTimeline from './Timeline'
+import NotesTab from './NotesTab'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
@@ -78,7 +88,8 @@ export default {
     NotePanel,
     FontAwesomeIcon,
     SettlementStorage,
-    SettlementTimeline
+    SettlementTimeline,
+    NotesTab
   },
   data: function () {
     return {
