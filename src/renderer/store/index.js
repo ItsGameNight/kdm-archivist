@@ -71,6 +71,14 @@ export default new Vuex.Store({
 
     snapshotsForCurrentSettlement: (state) => {
       return state.snapshots.filter((s) => { return s.settlement._id === state.currentSmt })
+    },
+
+    snapshotNotesForCurrentSettlement: (state, getters) => {
+      var snaps = getters.snapshotsForCurrentSettlement
+      var notes = snaps.map((s) => {
+        return { lanternYear: s.settlement.lanternYear, notes: s.settlement.notes }
+      })
+      return notes.sort((a, b) => { return b.lanternYear - a.lanternYear })
     }
   },
   mutations: {
