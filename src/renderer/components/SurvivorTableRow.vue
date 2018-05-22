@@ -12,21 +12,26 @@
       <h3 slot="header">Delete {{ survivor.name }}?</h3>
       <p slot="body">Are you sure you want to delete this survivor?</p>
     </modal>
-    <td class="survivor-table-row" @dblclick="collapsedState = !collapsedState">
+    <td class="survivor-table-row"
+      :class="[mouseDownState ? 'mouse-down' : '']"
+      @dblclick="collapsedState = !collapsedState"
+      @mousedown="mouseDownState = true"
+      @mouseup="mouseDownState = false"
+      v-long-press="onLongPress">
       <div class="row-contents-wrapper">
         <div class="right-hand-buttons">
           <div class="modal-button-wrapper">
-            <button class="modal-button" @click="modalVisible = true" @dblclick.stop>
+            <button class="modal-button" @click="modalVisible = true" @dblclick.stop @mousedown.stop>
               <font-awesome-icon :icon="modalButtonIcon" />
             </button>
           </div>
           <div class="collapse-button-wrapper">
-            <button class="collapse-button" @click="collapsedState = !collapsedState">
+            <button class="collapse-button" @click="collapsedState = !collapsedState" @dblclick.stop @mousedown.stop>
               <font-awesome-icon :icon="collapseButtonIcon" />
             </button>
           </div>
           <div class="delete-button-wrapper">
-            <button class="delete-button" @click="deleteModalVisible = true" @dblclick.stop>
+            <button class="delete-button" @click="deleteModalVisible = true" @dblclick.stop @mousedown.stop>
               <font-awesome-icon :icon="deleteIcon" />
             </button>
           </div>
@@ -50,20 +55,20 @@
                   <button class="alive-button"
                     :class="[survivor.alive ? 'red' : '']"
                     @click="update('alive', !survivor.alive)"
-                    @dblclick.stop>
+                    @dblclick.stop @mousedown.stop>
                     <font-awesome-icon :icon="aliveIcon" />
                   </button>
                 </div>
               </div>
               <div class="general-info">
-                <div class="name-input-wrapper" @dblclick.stop>
+                <div class="name-input-wrapper" @dblclick.stop @mousedown.stop>
                   <editable-text-input
                     :textValue="survivor.name"
                     :textStyle="{fontSize:'12pt', textOverflow:'ellipsis'}"
                     :placeholder="'Unnamed'"
                     @update="update('name', $event)" />
                 </div>
-                <div class="mf-toggle-wrapper" @dblclick.stop>
+                <div class="mf-toggle-wrapper" @dblclick.stop @mousedown.stop>
                   <male-female-toggle
                     :survivorID="survivor._id"
                     :initSex="survivor.sex" />
@@ -74,7 +79,7 @@
         </div>
         <div class="row-section section4">
           <div class="section-contents-wrapper">
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.xp"
                 :statDisplayName="'XP'"
@@ -83,7 +88,7 @@
                 noBorder
                 @update="update('xp', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.survival"
                 :statDisplayName="'SUR'"
@@ -92,7 +97,7 @@
                 noBorder
                 @update="update('survival', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.insanity"
                 :statDisplayName="'INS'"
@@ -105,37 +110,37 @@
         <div class="row-section section3">
           <div class="section-contents-wrapper">
             <div class="stat-row-padding">
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.movement"
                   :statDisplayName="'MOV'"
                   @update="update('movement', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.accuracy"
                   :statDisplayName="'ACC'"
                   @update="update('accuracy', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.strength"
                   :statDisplayName="'STR'"
                   @update="update('strength', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.evasion"
                   :statDisplayName="'EVA'"
                   @update="update('evasion', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.luck"
                   :statDisplayName="'LCK'"
                   @update="update('luck', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.speed"
                   :statDisplayName="'SPD'"
@@ -146,7 +151,7 @@
         </div>
         <div class="row-section section4">
           <div class="section-contents-wrapper">
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.weaponProficiencyLevel"
                 :statDisplayName="'WPN'"
@@ -155,7 +160,7 @@
                 noBorder
                 @update="update('weaponProficiencyLevel', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.courage"
                 :statDisplayName="'CRG'"
@@ -164,7 +169,7 @@
                 noBorder
                 @update="update('courage', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.understanding"
                 :statDisplayName="'UND'"
@@ -277,7 +282,8 @@ export default {
     return {
       collapsedState: this.collapsed,
       modalVisible: false,
-      deleteModalVisible: false
+      deleteModalVisible: false,
+      mouseDownState: false
     }
   },
   computed: {
@@ -359,6 +365,10 @@ export default {
       var update = {}
       update[stat] = val
       this.updateSurvivor({ id: this.survivor._id, update: update })
+    },
+    onLongPress: function () {
+      this.mouseDownState = false
+      this.modalVisible = true
     }
   }
 }
@@ -375,6 +385,10 @@ td.survivor-table-row {
   padding: 0;
   margin: 0;
   min-width: 633px;
+}
+.mouse-down {
+  border: 1px solid #ccc;
+  border-radius: 3px;
 }
 div.row-contents-wrapper {
   position: relative;

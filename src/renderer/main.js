@@ -28,6 +28,10 @@ store.$settlements = smts
 store.$survivors = survs
 store.$snapshots = snaps
 
+// Add long press directive
+var longpress = require('vue-long-press-directive')
+Vue.use(longpress, { duration: 500 })
+
 /* eslint-disable no-new */
 new Vue({
   components: { App },
