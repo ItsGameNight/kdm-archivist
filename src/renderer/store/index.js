@@ -173,9 +173,9 @@ export default new Vuex.Store({
       })
     },
 
-    addNewSurvivor ({ commit }, smtID) {
+    addNewSurvivor ({ state, commit }, payload) {
       return new Promise((resolve, reject) => {
-        this.$survivors.addBase(smtID, { }, (newSurv) => {
+        this.$survivors.addBase(payload.smtID, { birthYear: payload.birthYear }, (newSurv) => {
           this.$survivors.getAll((survs) => {
             commit('SET_SURVIVORS', survs)
             resolve(newSurv._id)

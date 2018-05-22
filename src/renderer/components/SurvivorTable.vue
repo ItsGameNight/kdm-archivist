@@ -245,7 +245,8 @@ export default {
     ]),
     ...mapGetters([
       'survivorsInSettlement',
-      'settlementDepartingCount'
+      'settlementDepartingCount',
+      'currentSettlement'
     ]),
     sortedSurvivors: function () {
       if (this.sort === null) {
@@ -346,7 +347,8 @@ export default {
     },
     newSurvivor: function () {
       this.filter = 0
-      this.addNewSurvivor(this.currentSmt).then((s) => {
+      var payload = { smtID: this.currentSmt, birthYear: this.currentSettlement.lanternYear }
+      this.addNewSurvivor(payload).then((s) => {
         var newSurv = this.survivorsInSettlement.find((o) => {
           return o._id === s
         })
