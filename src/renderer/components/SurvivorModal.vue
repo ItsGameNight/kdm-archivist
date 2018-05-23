@@ -229,6 +229,7 @@
                   :textValue="survivor.mother"
                   placeholder="Mother"
                   :textStyle="{fontSize:'10pt'}"
+                  :autocompleteList="survivorsInSettlement.map((s) => { return s.name })"
                   @update="update('mother', $event)" />
               </div>
               <div class="parent-input-wrapper">
@@ -236,6 +237,7 @@
                   :textValue="survivor.father"
                   placeholder="Father"
                   :textStyle="{fontSize:'10pt'}"
+                  :autocompleteList="survivorsInSettlement.map((s) => { return s.name })"
                   @update="update('father', $event)" />
               </div>
             </div>
