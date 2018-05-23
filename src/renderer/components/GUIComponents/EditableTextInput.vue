@@ -59,7 +59,13 @@ export default {
       focus: false,
       filteredIdx: -1,
       windowHeight: 0,
-      boundingBox: null
+      boundingBox: null,
+      containerHeight: this.parentHeight
+    }
+  },
+  watch: {
+    parentHeight: function (newVal) {
+      this.containerHeight = newVal
     }
   },
   mounted: function () {
@@ -129,7 +135,7 @@ export default {
     maxListHeight: function () {
       var maxHeight = Math.min(126,
         Math.abs(this.windowHeight - (this.boundingBox.bottom + 10)),
-        Math.abs(this.parentHeight - (this.boundingBox.bottom + 10)))
+        Math.abs(this.containerHeight - (this.boundingBox.bottom + 10)))
       return maxHeight
     },
 

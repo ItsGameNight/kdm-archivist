@@ -81,7 +81,17 @@ export default {
     }
   },
   mounted: function () {
-    this.height = this.$el.getBoundingClientRect().height
+    this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+    this.$nextTick(() => {
+      // Detect window resizes
+      window.addEventListener('resize', (e) => {
+        this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+      })
+      // Detect scrolls
+      window.addEventListener('scroll', (e) => {
+        this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+      })
+    })
   },
   computed: {
     ...mapGetters([
