@@ -3,7 +3,8 @@
     <survivor-modal
       v-if="modalVisible"
       :survivor="survivor"
-      @close="modalVisible = false" />
+      :yeeScore="yeeScore"
+      @close="modalVisible = false; $emit('modalClose')" />
     <modal
       v-if="deleteModalVisible"
       :modalWidth="300"
@@ -12,21 +13,26 @@
       <h3 slot="header">Delete {{ survivor.name }}?</h3>
       <p slot="body">Are you sure you want to delete this survivor?</p>
     </modal>
-    <td class="survivor-table-row" @dblclick="collapsedState = !collapsedState">
+    <td class="survivor-table-row"
+      :class="[mouseDownState ? 'mouse-down' : '']"
+      @dblclick="collapsedState = !collapsedState"
+      @mousedown="mouseDownState = true"
+      @mouseup="mouseDownState = false"
+      v-long-press="onLongPress">
       <div class="row-contents-wrapper">
         <div class="right-hand-buttons">
           <div class="modal-button-wrapper">
-            <button class="modal-button" @click="modalVisible = true" @dblclick.stop>
+            <button class="modal-button" @click="displayModal()" @dblclick.stop @mousedown.stop>
               <font-awesome-icon :icon="modalButtonIcon" />
             </button>
           </div>
           <div class="collapse-button-wrapper">
-            <button class="collapse-button" @click="collapsedState = !collapsedState">
+            <button class="collapse-button" @click="collapsedState = !collapsedState" @dblclick.stop @mousedown.stop>
               <font-awesome-icon :icon="collapseButtonIcon" />
             </button>
           </div>
           <div class="delete-button-wrapper">
-            <button class="delete-button" @click="deleteModalVisible = true" @dblclick.stop>
+            <button class="delete-button" @click="deleteModalVisible = true" @dblclick.stop @mousedown.stop>
               <font-awesome-icon :icon="deleteIcon" />
             </button>
           </div>
@@ -50,20 +56,28 @@
                   <button class="alive-button"
                     :class="[survivor.alive ? 'red' : '']"
                     @click="update('alive', !survivor.alive)"
-                    @dblclick.stop>
+                    @dblclick.stop @mousedown.stop>
                     <font-awesome-icon :icon="aliveIcon" />
+                  </button>
+                </div>
+                <div v-if="survivor.alive" class="depart-button-wrapper">
+                  <button class="depart-button"
+                    :class="[survivor.departing ? 'green' : '']"
+                    @click="setDeparting(!survivor.departing)"
+                    @dblclick.stop @mousedown.stop>
+                    <font-awesome-icon :icon="departIcon" />
                   </button>
                 </div>
               </div>
               <div class="general-info">
-                <div class="name-input-wrapper" @dblclick.stop>
+                <div class="name-input-wrapper" @dblclick.stop @mousedown.stop>
                   <editable-text-input
                     :textValue="survivor.name"
                     :textStyle="{fontSize:'12pt', textOverflow:'ellipsis'}"
                     :placeholder="'Unnamed'"
                     @update="update('name', $event)" />
                 </div>
-                <div class="mf-toggle-wrapper" @dblclick.stop>
+                <div class="mf-toggle-wrapper" @dblclick.stop @mousedown.stop>
                   <male-female-toggle
                     :survivorID="survivor._id"
                     :initSex="survivor.sex" />
@@ -74,7 +88,7 @@
         </div>
         <div class="row-section section4">
           <div class="section-contents-wrapper">
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.xp"
                 :statDisplayName="'XP'"
@@ -83,7 +97,7 @@
                 noBorder
                 @update="update('xp', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.survival"
                 :statDisplayName="'SUR'"
@@ -92,7 +106,7 @@
                 noBorder
                 @update="update('survival', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.insanity"
                 :statDisplayName="'INS'"
@@ -105,37 +119,37 @@
         <div class="row-section section3">
           <div class="section-contents-wrapper">
             <div class="stat-row-padding">
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.movement"
                   :statDisplayName="'MOV'"
                   @update="update('movement', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.accuracy"
                   :statDisplayName="'ACC'"
                   @update="update('accuracy', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.strength"
                   :statDisplayName="'STR'"
                   @update="update('strength', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.evasion"
                   :statDisplayName="'EVA'"
                   @update="update('evasion', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.luck"
                   :statDisplayName="'LCK'"
                   @update="update('luck', $event)" />
               </div>
-              <div @dblclick.stop>
+              <div @dblclick.stop @mousedown.stop>
                 <editable-stat
                   :initValue="survivor.speed"
                   :statDisplayName="'SPD'"
@@ -146,7 +160,7 @@
         </div>
         <div class="row-section section4">
           <div class="section-contents-wrapper">
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.weaponProficiencyLevel"
                 :statDisplayName="'WPN'"
@@ -155,7 +169,7 @@
                 noBorder
                 @update="update('weaponProficiencyLevel', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.courage"
                 :statDisplayName="'CRG'"
@@ -164,7 +178,7 @@
                 noBorder
                 @update="update('courage', $event)" />
             </div>
-            <div @dblclick.stop>
+            <div @dblclick.stop @mousedown.stop>
               <editable-stat
                 :initValue="survivor.understanding"
                 :statDisplayName="'UND'"
@@ -244,19 +258,19 @@ import {
   faExpand,
   faCaretSquareUp,
   faCaretSquareDown,
-  faStar,
+  faSkull,
   faHeartbeat,
   faTrashAlt,
-  faSkull,
-  faCircle,
   faExclamationTriangle,
-  faFrown
+  faCheckSquare,
+  faHome
 } from '@fortawesome/fontawesome-free-solid'
 
 import SurvivorModal from './SurvivorModal'
 import Modal from './Modal'
 import { EditableTextInput, EditableStat } from './GUIComponents'
 import { MaleFemaleToggle } from './SurvivorComponents'
+import YeeScoreMixin from '../mixins/YeeScore'
 
 export default {
   name: 'survivor-table-row',
@@ -268,6 +282,7 @@ export default {
     EditableStat,
     MaleFemaleToggle
   },
+  mixins: [YeeScoreMixin],
   props: {
     survivor: { required: true },
     collapsed: { default: false },
@@ -277,12 +292,14 @@ export default {
     return {
       collapsedState: this.collapsed,
       modalVisible: false,
-      deleteModalVisible: false
+      deleteModalVisible: false,
+      mouseDownState: false
     }
   },
   computed: {
     ...mapGetters([
-      'currentSettlement'
+      'currentSettlement',
+      'settlementDepartingCount'
     ]),
     collapseButtonIcon: function () {
       if (this.collapsedState) {
@@ -294,21 +311,6 @@ export default {
     modalButtonIcon: function () {
       return faExpand
     },
-    yeeIcon: function () {
-      switch (this.yeeScore) {
-        case 0:
-          return faFrown
-        case 1:
-          return faCircle
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-          return faStar
-        default:
-          return faCircle
-      }
-    },
     aliveIcon: function () {
       if (this.survivor.alive) {
         return faHeartbeat
@@ -319,22 +321,11 @@ export default {
     deleteIcon: function () {
       return faTrashAlt
     },
-    yeeColor: function () {
-      switch (this.yeeScore) {
-        case 0:
-          return { color: '#000' }
-        case 1:
-          return { color: '#d11141' }
-        case 2:
-          return { color: '#00b159' }
-        case 3:
-          return { color: '#00aedb' }
-        case 4:
-          return { color: '#f37735' }
-        case 5:
-          return { color: '#ffc425' }
-        default:
-          return { color: 'black' }
+    departIcon: function () {
+      if (this.survivor.departing) {
+        return faCheckSquare
+      } else {
+        return faHome
       }
     },
     warning: function () {
@@ -358,7 +349,33 @@ export default {
     update: function (stat, val) {
       var update = {}
       update[stat] = val
+      if (stat === 'alive') {
+        if (!val) {
+          // Unset departing if died
+          update['departing'] = false
+          // Set death year
+          update['deathYear'] = this.currentSettlement.lanternYear
+        } else {
+          // Unset death year
+          update['deathYear'] = null
+        }
+      }
       this.updateSurvivor({ id: this.survivor._id, update: update })
+    },
+    setDeparting: function (val) {
+      if (val && this.settlementDepartingCount >= 4) {
+        alert('You can only have up to 4 departing survivors at a time!')
+      } else {
+        this.update('departing', val)
+      }
+    },
+    onLongPress: function () {
+      this.mouseDownState = false
+      this.displayModal()
+    },
+    displayModal: function () {
+      this.modalVisible = true
+      this.$emit('modalOpen')
     }
   }
 }
@@ -372,9 +389,10 @@ div.survivor-table-row-wrapper {
   margin: 0 auto;
 }
 td.survivor-table-row {
-  padding: 0;
-  margin: 0;
   min-width: 633px;
+}
+.mouse-down {
+  transform: translateY(2px);
 }
 div.row-contents-wrapper {
   position: relative;
@@ -417,7 +435,7 @@ div.collapse-button-wrapper {
 }
 div.warning {
   position: absolute;
-  left: 6px;
+  left: 35px;
   top: 0;
 }
 div.warning span {
@@ -450,7 +468,8 @@ div.left-icons {
   margin: auto 5px;
 }
 div.yee-icon,
-div.alive-button-wrapper {
+div.alive-button-wrapper,
+div.depart-button-wrapper {
   padding: 2px 2px 2px 0;
   text-align: center;
 }
@@ -458,7 +477,8 @@ div.yee-icon {
   font-size: 12pt;
   padding-left: 0;
 }
-.alive-button {
+.alive-button,
+.depart-button {
   outline: none;
   border: none;
   background-color: white;
@@ -468,14 +488,19 @@ div.yee-icon {
   margin: 0;
   text-align: center;
 }
-.alive-button:hover {
+.alive-button:hover,
+.depart-button:hover {
   cursor: pointer;
 }
-.alive-button:active {
+.alive-button:active,
+.depart-button:active {
   transform: translateY(2px);
 }
 .red {
   color: #8a0707;
+}
+.green {
+  color: #00ab66;
 }
 div.general-info {
   padding-left: 5px;

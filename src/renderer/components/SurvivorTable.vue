@@ -1,15 +1,16 @@
 <template>
   <div>
-    <div class="collapse-toggle">
-      <span>Collapsed:</span>
-      <label class="switch">
-        <input type="checkbox" v-model="collapsedState">
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div>
-      <button @click="addNewSurvivor(currentSmt)">Add Base Survivor</button>
-      <button @click="dropAllSurvivors()">Drop All</button>
+    <div class="buttons-wrapper">
+      <button @click="collapsedState = !collapsedState" class="collapse-button">
+        <font-awesome-icon :icon="collapseIcon" />
+      </button>
+      <dropdown
+        :options="['Alive', 'Dead', 'All']"
+        :initSelected="filter"
+        title="Filter: "
+        @selected="filter = $event" />
+      <button @click="resetDeparting" class="reset-departing-button right-start">Reset Departing</button>
+      <button @click="newSurvivor()" class="add-button">Add Survivor</button>
     </div>
     <div class="sort-controls flex-wrapper">
       <div class="sort-title">Sort:</div>
@@ -22,7 +23,7 @@
             :icon="sortDirectionIcon"
             class="sort-direction-icon" />
         </span>
-        Yee
+        Rank
       </button>
       <button
         class="sort-button"
@@ -181,13 +182,32 @@
     </div>
     <div class="table-scroll">
       <table>
-        <tr v-for="(surv, index) in sortedSurvivors">
-          <survivor-table-row
-            :yeeScore="yeeScore(surv)"
-            :survivor="surv"
-            :key='surv._id'
-            :collapsed="collapsedState" />
-        </tr>
+        <transition-group :name="transitionName" tag="tbody" :class="[modalShowing ? 'no-transition' : '']">
+          <tr :key="0" v-if="showDeparted"><th>Departing Survivors:</th></tr>
+          <tr v-for="(surv, index) in sortedSurvivors.filter((s) => { return s.departing })"
+            :key="surv._id"
+            class="departing-survivors">
+            <survivor-table-row
+              :yeeScore="yeeScore(surv)"
+              :survivor="surv"
+              :key="surv._id"
+              :collapsed="collapsedState"
+              :ref="'surv-' + surv._id"
+              @modalOpen="modalShowing = true"
+              @modalClose="modalShowing = false" />
+          </tr>
+          <tr :key="1" v-if="showDeparted"><th>Survivors in Settlement:</th></tr>
+          <tr v-for="(surv, index) in sortedSurvivors.filter((s) => { return !s.departing })" :key="surv._id">
+            <survivor-table-row
+              :yeeScore="yeeScore(surv)"
+              :survivor="surv"
+              :key="surv._id"
+              :collapsed="collapsedState"
+              :ref="'surv-' + surv._id"
+              @modalOpen="modalShowing = true"
+              @modalClose="modalShowing = false" />
+          </tr>
+        </transition-group>
       </table>
     </div>
   </div>
@@ -197,17 +217,26 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 import goodnessFunction from '../../db/goodness.js'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-import { faSortUp, faSortDown } from '@fortawesome/fontawesome-free-solid'
+import {
+  faSortUp,
+  faSortDown,
+  faCaretSquareUp,
+  faCaretSquareDown
+} from '@fortawesome/fontawesome-free-solid'
 import SurvivorTableRow from './SurvivorTableRow'
+import SurvivorModal from './SurvivorModal'
+import { Dropdown } from './GUIComponents'
 
 export default {
   name: 'survivor-table',
-  components: { SurvivorTableRow, FontAwesomeIcon },
+  components: { SurvivorTableRow, FontAwesomeIcon, Dropdown, SurvivorModal },
   data: function () {
     return {
       collapsedState: true,
       sort: 'yeeScore',
-      sortAscending: false
+      sortAscending: false,
+      filter: 0,
+      modalShowing: false
     }
   },
   computed: {
@@ -215,14 +244,32 @@ export default {
       'currentSmt'
     ]),
     ...mapGetters([
-      'survivorsInSettlement'
+      'survivorsInSettlement',
+      'settlementDepartingCount',
+      'currentSettlement'
     ]),
     sortedSurvivors: function () {
       if (this.sort === null) {
-        return this.survivorsInSettlement
+        return this.filteredSurvivors
       } else {
-        var sorted = this.survivorsInSettlement.slice()
+        var sorted = this.filteredSurvivors.slice()
         return sorted.sort(this.compareSurvivors(this.sort, this.sortAscending))
+      }
+    },
+    filteredSurvivors: function () {
+      if (this.filter === 0) {
+        // Living survivors
+        return this.survivorsInSettlement.filter((s) => {
+          return s.alive
+        })
+      } else if (this.filter === 1) {
+        // Dead
+        return this.survivorsInSettlement.filter((s) => {
+          return !s.alive
+        })
+      } else {
+        // All
+        return this.survivorsInSettlement
       }
     },
     sortDirectionIcon: function () {
@@ -231,12 +278,29 @@ export default {
       } else {
         return faSortDown
       }
+    },
+    collapseIcon: function () {
+      if (this.collapsedState) {
+        return faCaretSquareUp
+      } else {
+        return faCaretSquareDown
+      }
+    },
+    showDeparted: function () {
+      return this.settlementDepartingCount > 0 && this.filter === 0
+    },
+    transitionName: function () {
+      if (this.modalShowing) {
+        return 'none'
+      } else {
+        return 'survivors-rows'
+      }
     }
   },
   methods: {
     ...mapActions([
-      'dropAllSurvivors',
-      'addNewSurvivor'
+      'addNewSurvivor',
+      'updateAllSurvivorsInSettlement'
     ]),
     compareSurvivors: function (sortProp, asc = true) {
       return function (a, b) {
@@ -277,20 +341,63 @@ export default {
           this.sortAscending = true
         }
       }
+    },
+    resetDeparting: function () {
+      this.updateAllSurvivorsInSettlement({ update: { departing: false } })
+    },
+    newSurvivor: function () {
+      this.filter = 0
+      var payload = { smtID: this.currentSmt, birthYear: this.currentSettlement.lanternYear }
+      this.addNewSurvivor(payload).then((s) => {
+        var newSurv = this.survivorsInSettlement.find((o) => {
+          return o._id === s
+        })
+        var survRef = 'surv-' + newSurv._id
+        this.$refs[survRef][0].displayModal()
+      })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 table {
   width: 98%;
   border-spacing: 0em 0.15em;
+}
+th {
+  padding-top: 6px;
 }
 .table-scroll {
   height: 560px;
   overflow-y: scroll;
   padding-left: 8px;
+}
+div.buttons-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+div.buttons-wrapper button {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  font-size: 10pt;
+  font-weight: bold;
+  outline: none;
+}
+div.buttons-wrapper button:hover {
+  background-color: #ccc;
+}
+div.buttons-wrapper button:active {
+  background-color: black;
+  color: white;
+}
+div.buttons-wrapper .right-start {
+  margin-left: auto;
+}
+div.buttons-wrapper .reset-departing-button,
+div.buttons-wrapper .collapse-button {
+  margin-right: 5px;
 }
 div.sort-controls {
   border: 1px solid black;
@@ -308,8 +415,10 @@ div.sort-controls {
 div.sort-title {
   margin: auto 0;
   padding-right: 6px;
+  padding-bottom: 1px;
   font-family: system-ui;
-  font-size: 10pt;
+  font-size: 9pt;
+  font-style: oblique;
 }
 button.sort-button {
   display: flex;
@@ -334,48 +443,10 @@ button.sort-button:active {
 .sort-direction-icon {
   padding-right: 2px;
 }
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 12px;
+.survivors-rows-move {
+  transition: transform 0.5s;
 }
-.switch input {
+.survivors-rows-leave-active {
   display: none;
-}
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 8px;
-  width: 8px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(8px);
-  transform: translateX(8px);
 }
 </style>
