@@ -17,6 +17,7 @@
           :textStyle="listTextStyle"
           :placeholder="placeholder"
           :autocompleteList="autocompleteList"
+          :parentHeight="parentHeight"
           @update="$emit('update', $event)"
           @focus="editing = true"
           @blur="editing = false"
@@ -53,7 +54,8 @@ export default {
     placeholder: { required: true },
     numbered: { required: false, default: false, type: Boolean },
     numberEditable: { required: false, default: true, type: Boolean },
-    textStyle: { required: false, default: null }
+    textStyle: { required: false, default: null },
+    parentHeight: { required: false, default: 9999 }
   },
   data: function () {
     return {

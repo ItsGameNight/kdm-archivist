@@ -52,6 +52,7 @@
       <editable-list
         :listItems="currentSettlement.quarries"
         :autocompleteList="quarryNames"
+        :parentHeight="height"
         @update="update('quarries', $event)"></editable-list>
     </p>
   </div>
@@ -74,6 +75,14 @@ function getNames (obj) {
 export default {
   name: 'settlement-inspector',
   components: { EditableList },
+  data: function () {
+    return {
+      height: 0
+    }
+  },
+  mounted: function () {
+    this.height = this.$el.getBoundingClientRect().height
+  },
   computed: {
     ...mapGetters([
       'numberAliveInSettlement',

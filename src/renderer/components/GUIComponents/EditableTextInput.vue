@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="editable-text-input-wrapper">
     <input
       class="editable-text-input"
       ref="eIn"
@@ -21,6 +21,7 @@
     <div
       v-if="okayToShowAutocomplete"
       class="autocomplete-list"
+      :style="maxListHeightStyle"
       ref="autocompleteListElement">
       <div
         v-for="(item, index) in filteredList"
@@ -46,15 +47,41 @@ export default {
     textValue: { required: true },
     textStyle: { default: null },
     inputType: { default: 'text' },
-    autocompleteList: { default: () => [] } // need function so not all have same list!
+    autocompleteList: { default: () => [] }, // need function so not all have same list!
+    parentHeight: { required: false, default: 9999 }
   },
   data: function () {
     return {
       bgImgUrl: 'static/pencil.png',
       hover: false,
       focus: false,
-      filteredIdx: -1
+      filteredIdx: -1,
+      windowHeight: 0,
+      bottomPos: 0
     }
+  },
+  mounted: function () {
+    // Need to detect changes to dynamically update maxHeight for autocomplete list
+    this.windowHeight = window.innerHeight
+    this.bottomPos = this.$el.getBoundingClientRect().bottom
+    this.$nextTick(() => {
+      // Detect window resizes
+      window.addEventListener('resize', (e) => {
+        this.windowHeight = window.innerHeight
+        this.bottomPos = this.$el.getBoundingClientRect().bottom
+      })
+      // Detect scrolls
+      window.addEventListener('scroll', (e) => {
+        this.windowHeight = window.innerHeight
+        this.bottomPos = this.$el.getBoundingClientRect().bottom
+      })
+    })
+    // Detect insertions/deletion etc. from DOM
+    var obs = new MutationObserver((mutations) => {
+      this.windowHeight = window.innerHeight
+      this.bottomPos = this.$el.getBoundingClientRect().bottom
+    })
+    obs.observe(this.$root.$el, { childList: true, subtree: true })
   },
   computed: {
     editableStyle: function () {
@@ -95,6 +122,17 @@ export default {
       return this.autocompleteList.filter((s) => {
         return s.substring(0, this.textValue.length).toLowerCase() === this.textValue.toLowerCase()
       })
+    },
+
+    maxListHeight: function () {
+      var maxHeight = Math.min(126,
+        Math.abs(this.windowHeight - (this.bottomPos + 10)),
+        Math.abs(this.parentHeight - (this.bottomPos + 10)))
+      return maxHeight
+    },
+
+    maxListHeightStyle: function () {
+      return { maxHeight: this.maxListHeight + 'px' }
     }
   },
   methods: {
@@ -141,7 +179,7 @@ export default {
         // scroll if needed
         if (this.$refs.autocompleteListElement.scrollTop > topOfAutoItem) {
           this.$refs.autocompleteListElement.scrollTop -= 18
-        } else if (this.$refs.autocompleteListElement.scrollTop + 126 < botOfAutoItem) {
+        } else if (this.$refs.autocompleteListElement.scrollTop + this.maxListHeight < botOfAutoItem) {
           this.$refs.autocompleteListElement.scrollTop += 18
         }
       }
@@ -151,6 +189,9 @@ export default {
 </script>
 
 <style>
+.editable-text-input-wrapper {
+  position: relative;
+}
 .editable-text-input {
   width: 100%;
   outline: none;
@@ -179,6 +220,7 @@ input::-webkit-inner-spin-button {
   border-color: gray;
   border-radius: 0px 0px 8px 8px;
   margin-top: 2px;
+  padding-right: 4px;
   left: -2px;
   width: 100%;
   z-index: 99;

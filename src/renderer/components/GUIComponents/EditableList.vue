@@ -11,6 +11,7 @@
         :numbered="numbered"
         :numberEditable="numberEditable"
         :textStyle="textStyle"
+        :parentHeight="parentHeight"
         @update="updateItem(index, $event)"
         @updateCount="updateCount(index, $event)"
         @delete="deleteItem(index)" >
@@ -34,7 +35,8 @@ export default {
     autocompleteList: { required: false, default: () => [] },
     numbered: { required: false, default: false, type: Boolean },
     numberEditable: { required: false, default: true, type: Boolean },
-    textStyle: { required: false, default: () => { return { fontSize: '10pt' } } }
+    textStyle: { required: false, default: () => { return { fontSize: '10pt' } } },
+    parentHeight: { required: false, default: 9999 }
   },
   created: function () {
     // Deal with case where min is specified but
