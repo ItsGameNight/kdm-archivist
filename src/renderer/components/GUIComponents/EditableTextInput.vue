@@ -26,6 +26,8 @@
       <div
         v-for="(item, index) in filteredList"
         :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
+        :key="index"
+        :id="'autoItem-' + index"
         @mouseover="filteredIdx = index"
         @mouseleave="filteredIdx = -1" >
         <div v-if="textValue != null">
@@ -57,7 +59,7 @@ export default {
       focus: false,
       filteredIdx: -1,
       windowHeight: 0,
-      bottomPos: 0
+      boundingBox: null
     }
   },
   mounted: function () {
@@ -68,18 +70,18 @@ export default {
       // Detect window resizes
       window.addEventListener('resize', (e) => {
         this.windowHeight = window.innerHeight
-        this.bottomPos = this.$el.getBoundingClientRect().bottom
+        this.boundingBox = this.$el.getBoundingClientRect()
       })
       // Detect scrolls
       window.addEventListener('scroll', (e) => {
         this.windowHeight = window.innerHeight
-        this.bottomPos = this.$el.getBoundingClientRect().bottom
+        this.boundingBox = this.$el.getBoundingClientRect()
       })
     })
     // Detect insertions/deletion etc. from DOM
     var obs = new MutationObserver((mutations) => {
       this.windowHeight = window.innerHeight
-      this.bottomPos = this.$el.getBoundingClientRect().bottom
+      this.boundingBox = this.$el.getBoundingClientRect()
     })
     obs.observe(this.$root.$el, { childList: true, subtree: true })
   },
@@ -126,8 +128,8 @@ export default {
 
     maxListHeight: function () {
       var maxHeight = Math.min(126,
-        Math.abs(this.windowHeight - (this.bottomPos + 10)),
-        Math.abs(this.parentHeight - (this.bottomPos + 10)))
+        Math.abs(this.windowHeight - (this.boundingBox.bottom + 10)),
+        Math.abs(this.parentHeight - (this.boundingBox.bottom + 10)))
       return maxHeight
     },
 
@@ -172,15 +174,16 @@ export default {
       // TODO: replace hacky 18px / 7 per page scrolling
 
       // if open...
-      if (typeof this.$refs.autocompleteListElement !== 'undefined') {
-        var topOfAutoItem = this.filteredIdx * 18 // each item 18px
-        var botOfAutoItem = topOfAutoItem + 18
+      if (typeof this.$refs.autocompleteListElement !== 'undefined' && this.filteredIdx >= 0) {
+        var autoItemBox = this.$el.querySelector('#autoItem-' + this.filteredIdx).getBoundingClientRect()
+        var topOfAutoItem = autoItemBox.top - this.boundingBox.top - this.boundingBox.height
+        var botOfAutoItem = autoItemBox.bottom - this.boundingBox.top - this.boundingBox.height
 
         // scroll if needed
-        if (this.$refs.autocompleteListElement.scrollTop > topOfAutoItem) {
-          this.$refs.autocompleteListElement.scrollTop -= 18
-        } else if (this.$refs.autocompleteListElement.scrollTop + this.maxListHeight < botOfAutoItem) {
-          this.$refs.autocompleteListElement.scrollTop += 18
+        if (topOfAutoItem < 0) {
+          this.$refs.autocompleteListElement.scrollTop -= autoItemBox.height
+        } else if (this.maxListHeight < botOfAutoItem) {
+          this.$refs.autocompleteListElement.scrollTop += autoItemBox.height
         }
       }
     }
