@@ -7,10 +7,7 @@
       v-model="currNote"
       >
     </textarea>
-      <button class="add-note"
-        @click="addNote">
-        <font-awesome-icon :icon="addIcon"/>
-      </button>
+      <button class="add-note" @click="addNote"> + </button>
 
     <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
@@ -29,22 +26,15 @@
 </template>
 
 <script>
-import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-import { faPlus } from '@fortawesome/fontawesome-free-solid'
-
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'notes-tab',
-  components: { FontAwesomeIcon },
   computed: {
     ...mapGetters(['currentSettlement']),
     sortedNotes: function () {
       var notesClone = JSON.parse(JSON.stringify(this.currentSettlement.notes))
       return notesClone.sort((a, b) => { return b.time - a.time })
-    },
-    addIcon: function () {
-      return faPlus
     }
   },
   data: function () {
@@ -71,7 +61,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .notes-input {
   display: block;
   overflow-y: scroll;
@@ -110,11 +100,22 @@ p.note-timestamp {
   text-align: right;
 }
 button.add-note {
-  background: white;
+  float: right;
+  background-color: white;
+  font-size: 14pt;
+  font-weight: normal;
+  padding: 0px 8px 3px 8px;
   border: 2px solid black;
   border-top: none;
-  float: right;
-  width: 37px;
-  height: 27px;
+  border-radius: 0 0 2px 2px;
+  outline: none;
+}
+button.add-note:hover {
+  font-weight: bold;
+  font-size: 16pt;
+}
+button.add-note:active {
+  background: black;
+  color: white;
 }
 </style>
