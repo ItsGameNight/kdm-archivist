@@ -69,7 +69,6 @@
 import WelcomeScreen from './WelcomeScreen'
 import SurvivorTable from './SurvivorTable'
 import SettlementInspector from './SettlementInspector'
-import NotePanel from './NotePanel'
 import SettlementStorage from './Storage'
 import SettlementTimeline from './Timeline'
 import NotesTab from './NotesTab'
@@ -84,7 +83,6 @@ export default {
     WelcomeScreen,
     SurvivorTable,
     SettlementInspector,
-    NotePanel,
     FontAwesomeIcon,
     SettlementStorage,
     SettlementTimeline,

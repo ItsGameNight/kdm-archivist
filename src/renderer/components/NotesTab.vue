@@ -60,7 +60,6 @@ export default {
       this.currNote = ''
     },
     deleteNote: function (idx) {
-      console.log(idx)
       var oldNotes = JSON.parse(JSON.stringify(this.sortedNotes))
       oldNotes.splice(idx, 1)
       this.updateSettlement({ id: this.currentSettlement._id, update: { notes: oldNotes } })
