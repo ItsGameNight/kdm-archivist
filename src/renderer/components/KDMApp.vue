@@ -48,9 +48,6 @@
         <div v-if="currentTab === 'storage'" class="tab-storage">
           <settlement-storage />
         </div>
-        <div v-if="currentTab === 'notes'" class="notes-tab">
-          <notes-tab/>
-        </div>
       </div>
       <button
         class="notes-button"
@@ -158,12 +155,6 @@ export default {
 #content {
   width: 70%;
 }
-#note-panel {
-  width: 5%;
-  margin-left: 2%;
-  border-left: 1px solid black;
-  background-color: white;
-}
 div.tabbar {
   border-bottom: 2px solid black;
   margin: 4px 0 10px 0;
@@ -192,7 +183,6 @@ button.notes-button {
   border: 2px solid black;
   width: 30px;
   height: 30px;
-  float: right;
   position: absolute;
   right: 1.5%;
   z-index: 99;
