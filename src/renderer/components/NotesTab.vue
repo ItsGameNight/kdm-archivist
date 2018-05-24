@@ -7,9 +7,9 @@
       v-model="currNote"
       >
     </textarea>
-      <button
+      <button class="add-note"
         @click="addNote">
-        +
+        <font-awesome-icon :icon="addIcon"/>
       </button>
 
     <div v-if="currentSettlement.notes.length > 0">
@@ -19,7 +19,7 @@
         <br>
         {{ note.body }}
         <br>
-        <p style="color: gray; font-size: 8px; text-align: right;">
+        <p class="note-timestamp">
         {{ note.timeStr }}
         </p>
       </div>
@@ -29,15 +29,22 @@
 </template>
 
 <script>
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import { faPlus } from '@fortawesome/fontawesome-free-solid'
+
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'notes-tab',
+  components: { FontAwesomeIcon },
   computed: {
     ...mapGetters(['currentSettlement']),
     sortedNotes: function () {
       var notesClone = JSON.parse(JSON.stringify(this.currentSettlement.notes))
       return notesClone.sort((a, b) => { return b.time - a.time })
+    },
+    addIcon: function () {
+      return faPlus
     }
   },
   data: function () {
@@ -96,5 +103,18 @@ div.notes-tab {
   z-index: 98;
   border-left: 1px solid black;
   padding: 0px 10px 0px 10px;
+}
+p.note-timestamp {
+  color: gray;
+  font-size: 8px;
+  text-align: right;
+}
+button.add-note {
+  background: white;
+  border: 2px solid black;
+  border-top: none;
+  float: right;
+  width: 37px;
+  height: 27px;
 }
 </style>
