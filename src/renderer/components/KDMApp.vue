@@ -5,7 +5,7 @@
     </div>
     <div id="kdm-app" v-if="appState === 1">
       <settlement-inspector id="inspector" />
-      <div id="content">
+      <div id="content" @click="notesOpen = false">
         <div class="tabbar">
           <button
             class="tab-button"
