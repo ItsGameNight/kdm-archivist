@@ -13,8 +13,8 @@
       @blur="focus = false; $emit('blur'); selectCompletion()"
       @keyup.enter="selectCompletionAndExit()"
       @input="$emit('update', $event.target.value); filteredIdx=-1;"
-      @keyup.down.prevent="downList()"
-      @keyup.up.prevent="upList()"
+      @keydown.down.prevent="downList()"
+      @keydown.up.prevent="upList()"
       @keydown.tab.prevent
       @keyup.tab.prevent="selectCompletion()" />
 
