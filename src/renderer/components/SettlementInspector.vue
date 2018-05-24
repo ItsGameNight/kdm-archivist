@@ -28,6 +28,7 @@
         :listItems="currentSettlement.principles"
         :max="4"
         :autocompleteList="principleNames"
+        :parentHeight="height"
         @update="update('principles', $event)"
         ></editable-list>
     </p>
@@ -36,6 +37,7 @@
       <editable-list
         :listItems="currentSettlement.locations"
         :autocompleteList="settlementLocationNames"
+        :parentHeight="height"
         @update="update('locations', $event)"
         ></editable-list>
     </p>
@@ -44,6 +46,7 @@
       <editable-list
         :listItems="currentSettlement.innovations"
         :autocompleteList="innovationNames"
+        :parentHeight="height"
         @update="update('innovations', $event)"
         ></editable-list>
     </p>
