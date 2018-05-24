@@ -28,6 +28,7 @@
         :listItems="currentSettlement.principles"
         :max="4"
         :autocompleteList="principleNames"
+        :parentHeight="height"
         @update="update('principles', $event)"
         ></editable-list>
     </p>
@@ -36,6 +37,7 @@
       <editable-list
         :listItems="currentSettlement.locations"
         :autocompleteList="settlementLocationNames"
+        :parentHeight="height"
         @update="update('locations', $event)"
         ></editable-list>
     </p>
@@ -44,6 +46,7 @@
       <editable-list
         :listItems="currentSettlement.innovations"
         :autocompleteList="innovationNames"
+        :parentHeight="height"
         @update="update('innovations', $event)"
         ></editable-list>
     </p>
@@ -52,6 +55,7 @@
       <editable-list
         :listItems="currentSettlement.quarries"
         :autocompleteList="quarryNames"
+        :parentHeight="height"
         @update="update('quarries', $event)"></editable-list>
     </p>
   </div>
@@ -74,6 +78,24 @@ function getNames (obj) {
 export default {
   name: 'settlement-inspector',
   components: { EditableList },
+  data: function () {
+    return {
+      height: 0
+    }
+  },
+  mounted: function () {
+    this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+    this.$nextTick(() => {
+      // Detect window resizes
+      window.addEventListener('resize', (e) => {
+        this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+      })
+      // Detect scrolls
+      window.addEventListener('scroll', (e) => {
+        this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+      })
+    })
+  },
   computed: {
     ...mapGetters([
       'numberAliveInSettlement',

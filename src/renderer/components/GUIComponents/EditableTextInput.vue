@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="editable-text-input-wrapper">
     <input
       class="editable-text-input"
       ref="eIn"
@@ -10,21 +10,25 @@
       @mouseover="hover = true"
       @mouseleave="hover = false"
       @focus="focus = true; $emit('focus')"
-      @blur="focus = false; $emit('blur'); selectCompletion()"
-      @keyup.enter="selectCompletionAndExit()"
-      @input="$emit('update', $event.target.value); filteredIdx=-1;"
-      @keyup.down.prevent="downList()"
-      @keyup.up.prevent="upList()"
+      @blur="focus = false; selectCompletion(); $emit('blur');"
+      @keyup.enter="selectCompletion(); $event.target.blur()"
+      @input="$emit('update', $event.target.value); filteredIdx = -1;"
+      @keydown.down.prevent="downList()"
+      @keydown.up.prevent="upList()"
       @keydown.tab.prevent
-      @keyup.tab.prevent="selectCompletion()" />
+      @keyup.tab.prevent="selectCompletion()"
+      @keyup.esc="filteredIdx = -1; $event.target.blur()" />
 
     <div
       v-if="okayToShowAutocomplete"
       class="autocomplete-list"
+      :style="maxListHeightStyle"
       ref="autocompleteListElement">
       <div
         v-for="(item, index) in filteredList"
         :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
+        :key="index"
+        :id="'autoItem-' + index"
         @mouseover="filteredIdx = index"
         @mouseleave="filteredIdx = -1" >
         <div v-if="textValue != null">
@@ -46,15 +50,47 @@ export default {
     textValue: { required: true },
     textStyle: { default: null },
     inputType: { default: 'text' },
-    autocompleteList: { default: () => [] } // need function so not all have same list!
+    autocompleteList: { default: () => [] }, // need function so not all have same list!
+    parentHeight: { required: false, default: 9999 }
   },
   data: function () {
     return {
       bgImgUrl: 'static/pencil.png',
       hover: false,
       focus: false,
-      filteredIdx: -1
+      filteredIdx: -1,
+      windowHeight: 0,
+      boundingBox: null,
+      containerHeight: this.parentHeight
     }
+  },
+  watch: {
+    parentHeight: function (newVal) {
+      this.containerHeight = newVal
+    }
+  },
+  mounted: function () {
+    // Need to detect changes to dynamically update maxHeight for autocomplete list
+    this.windowHeight = window.innerHeight
+    this.bottomPos = this.$el.getBoundingClientRect().bottom
+    this.$nextTick(() => {
+      // Detect window resizes
+      window.addEventListener('resize', (e) => {
+        this.windowHeight = window.innerHeight
+        this.boundingBox = this.$el.getBoundingClientRect()
+      })
+      // Detect scrolls
+      window.addEventListener('scroll', (e) => {
+        this.windowHeight = window.innerHeight
+        this.boundingBox = this.$el.getBoundingClientRect()
+      })
+    })
+    // Detect insertions/deletion etc. from DOM
+    var obs = new MutationObserver((mutations) => {
+      this.windowHeight = window.innerHeight
+      this.boundingBox = this.$el.getBoundingClientRect()
+    })
+    obs.observe(this.$root.$el, { childList: true, subtree: true })
   },
   computed: {
     editableStyle: function () {
@@ -78,12 +114,9 @@ export default {
     },
 
     okayToShowAutocomplete: function () {
-      // check that >= 1 character in text (or already in list -- allows down arrow)
-      if (this.filteredIdx > -1 || (this.textValue !== null && this.textValue.length > 0)) {
-        // check filtered list has stuff + focus on
-        if (this.focus && this.filteredList.length > 0) {
-          return true
-        }
+      // check filtered list has stuff + focus on
+      if (this.focus && this.filteredList.length > 0) {
+        return true
       }
       return false
     },
@@ -95,6 +128,17 @@ export default {
       return this.autocompleteList.filter((s) => {
         return s.substring(0, this.textValue.length).toLowerCase() === this.textValue.toLowerCase()
       })
+    },
+
+    maxListHeight: function () {
+      var maxHeight = Math.min(126,
+        Math.abs(this.windowHeight - (this.boundingBox.bottom + 10)),
+        Math.abs(this.containerHeight - (this.boundingBox.bottom + 10)))
+      return maxHeight
+    },
+
+    maxListHeightStyle: function () {
+      return { maxHeight: this.maxListHeight + 'px' }
     }
   },
   methods: {
@@ -130,19 +174,16 @@ export default {
     },
 
     scrollSoActiveAutoItemVisible: function () {
-      // scrolls via editing scrollTop property of autocompleteListElement
-      // TODO: replace hacky 18px / 7 per page scrolling
-
-      // if open...
-      if (typeof this.$refs.autocompleteListElement !== 'undefined') {
-        var topOfAutoItem = this.filteredIdx * 18 // each item 18px
-        var botOfAutoItem = topOfAutoItem + 18
+      if (typeof this.$refs.autocompleteListElement !== 'undefined' && this.filteredIdx >= 0) {
+        var autoItemBox = this.$el.querySelector('#autoItem-' + this.filteredIdx).getBoundingClientRect()
+        var topOfAutoItem = autoItemBox.top - this.boundingBox.top - this.boundingBox.height
+        var botOfAutoItem = autoItemBox.bottom - this.boundingBox.top - this.boundingBox.height
 
         // scroll if needed
-        if (this.$refs.autocompleteListElement.scrollTop > topOfAutoItem) {
-          this.$refs.autocompleteListElement.scrollTop -= 18
-        } else if (this.$refs.autocompleteListElement.scrollTop + 126 < botOfAutoItem) {
-          this.$refs.autocompleteListElement.scrollTop += 18
+        if (topOfAutoItem < 0) {
+          this.$refs.autocompleteListElement.scrollTop -= autoItemBox.height
+        } else if (this.maxListHeight < botOfAutoItem) {
+          this.$refs.autocompleteListElement.scrollTop += autoItemBox.height
         }
       }
     }
@@ -151,6 +192,9 @@ export default {
 </script>
 
 <style>
+.editable-text-input-wrapper {
+  position: relative;
+}
 .editable-text-input {
   width: 100%;
   outline: none;
@@ -179,6 +223,7 @@ input::-webkit-inner-spin-button {
   border-color: gray;
   border-radius: 0px 0px 8px 8px;
   margin-top: 2px;
+  padding-right: 4px;
   left: -2px;
   width: 100%;
   z-index: 99;
