@@ -10,13 +10,14 @@
       @mouseover="hover = true"
       @mouseleave="hover = false"
       @focus="focus = true; $emit('focus')"
-      @blur="focus = false; $emit('blur'); selectCompletion()"
-      @keyup.enter="selectCompletionAndExit()"
-      @input="$emit('update', $event.target.value); filteredIdx=-1;"
+      @blur="focus = false; selectCompletion(); $emit('blur');"
+      @keyup.enter="selectCompletion(); $event.target.blur()"
+      @input="$emit('update', $event.target.value); filteredIdx = -1;"
       @keydown.down.prevent="downList()"
       @keydown.up.prevent="upList()"
       @keydown.tab.prevent
-      @keyup.tab.prevent="selectCompletion()" />
+      @keyup.tab.prevent="selectCompletion()"
+      @keyup.esc="filteredIdx = -1; $event.target.blur()" />
 
     <div
       v-if="okayToShowAutocomplete"
@@ -173,10 +174,6 @@ export default {
     },
 
     scrollSoActiveAutoItemVisible: function () {
-      // scrolls via editing scrollTop property of autocompleteListElement
-      // TODO: replace hacky 18px / 7 per page scrolling
-
-      // if open...
       if (typeof this.$refs.autocompleteListElement !== 'undefined' && this.filteredIdx >= 0) {
         var autoItemBox = this.$el.querySelector('#autoItem-' + this.filteredIdx).getBoundingClientRect()
         var topOfAutoItem = autoItemBox.top - this.boundingBox.top - this.boundingBox.height
