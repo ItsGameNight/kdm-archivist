@@ -11,8 +11,9 @@
 
     <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
-      <div v-for="note in sortedNotes" class="past-note">
+      <div v-for="(note, index) in sortedNotes" class="past-note">
         <b> Lantern Year {{ note.lanternYear }} </b>
+        <button class="delete-note" @click="deleteNote(index)">x</button>
         <br>
         {{ note.body }}
         <br>
@@ -56,6 +57,13 @@ export default {
       var oldNotes = JSON.parse(JSON.stringify(this.currentSettlement.notes))
       oldNotes.push(fullNote)
       this.updateSettlement({ id: this.currentSettlement._id, update: { notes: oldNotes } })
+      this.currNote = ''
+    },
+    deleteNote: function (idx) {
+      console.log(idx)
+      var oldNotes = JSON.parse(JSON.stringify(this.sortedNotes))
+      oldNotes.splice(idx, 1)
+      this.updateSettlement({ id: this.currentSettlement._id, update: { notes: oldNotes } })
     }
   }
 }
@@ -78,7 +86,7 @@ export default {
 .past-note {
   background: white;
   margin-bottom: 10px;
-  padding: 5px;
+  padding-left: 5px;
   box-sizing: border-box;
   border-style: solid;
   border-width: 2px;
@@ -98,6 +106,7 @@ p.note-timestamp {
   color: gray;
   font-size: 8px;
   text-align: right;
+  margin-right: 5px;
 }
 button.add-note {
   float: right;
@@ -115,6 +124,27 @@ button.add-note:hover {
   font-size: 16pt;
 }
 button.add-note:active {
+  background: black;
+  color: white;
+}
+
+button.delete-note {
+  float: right;
+  background-color: white;
+  font-size: 8pt;
+  font-weight: normal;
+  padding: 0px 8px 3px 8px;
+  border: 2px solid black;
+  border-top: none;
+  border-right: none;
+  border-radius: 0 0 2px 2px;
+  outline: none;
+}
+button.delete-note:hover {
+  font-weight: bold;
+  font-size: 10pt;
+}
+button.delete-note:active {
   background: black;
   color: white;
 }
