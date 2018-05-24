@@ -58,10 +58,7 @@
         <font-awesome-icon v-if="!notesOpen" :icon="bookIcon" />
         <font-awesome-icon v-else :icon="closeIcon" />
       </button>
-      <!-- <div id="note-panel">
-        <span style="font-weight: bold">Notes:</span>
-        <note-panel />
-      </div> -->
+      <notes-tab v-if="notesOpen" transition="notes-expand"/>
     </div>
   </div>
 </template>
@@ -198,6 +195,8 @@ button.notes-button {
   float: right;
   position: absolute;
   right: 1.5%;
+  z-index: 99;
   border-radius: 4px;
+  outline: none;
 }
 </style>

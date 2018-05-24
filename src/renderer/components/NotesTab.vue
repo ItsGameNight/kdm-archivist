@@ -1,6 +1,6 @@
 <template>
-  <div style="height: 600px; overflow-y: scroll">
-    <h3>Lantern Year {{ currentSettlement.lanternYear }} Notes</h3>
+  <div class="notes-tab">
+    <h2>Notes</h2>
     <textarea
       class="notes-input"
       placeholder="What happened this year?"
@@ -63,5 +63,16 @@ export default {
   box-sizing: border-box;
   border-style: solid;
   border-width: 2px;
+}
+div.notes-tab {
+  background: white;
+  height: 600px;
+  width: 250px;
+  position: absolute;
+  right: 0px;
+  overflow-y: scroll;
+  z-index: 98;
+  border-left: 1px solid black;
+  padding: 0px 10px 0px 10px;
 }
 </style>
