@@ -30,12 +30,6 @@
             @click="currentTab = 'storage'">
               Storage
           </button>
-          <button
-            class="tab-button"
-            :class="{'tab-selected' : currentTab === 'notes'}"
-            @click="currentTab = 'notes'">
-              Notes
-          </button>
         </div>
         <div v-if="currentTab === 'timeline'" class="tab-timeline">
           <settlement-timeline />
@@ -58,6 +52,12 @@
           <notes-tab/>
         </div>
       </div>
+      <button
+        class="notes-button"
+        @click="notesOpen = !notesOpen">
+        <font-awesome-icon v-if="!notesOpen" :icon="bookIcon" />
+        <font-awesome-icon v-else :icon="closeIcon" />
+      </button>
       <!-- <div id="note-panel">
         <span style="font-weight: bold">Notes:</span>
         <note-panel />
@@ -77,7 +77,7 @@ import NotesTab from './NotesTab'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-import { faHome } from '@fortawesome/fontawesome-free-solid'
+import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
 
 export default {
   name: 'kdm-app',
@@ -94,7 +94,8 @@ export default {
   data: function () {
     return {
       appState: 0,
-      currentTab: 'survivors'
+      currentTab: 'survivors',
+      notesOpen: false
     }
   },
   computed: {
@@ -102,6 +103,12 @@ export default {
     ...mapGetters(['snapshotsForCurrentSettlement']),
     homeIcon: function () {
       return faHome
+    },
+    bookIcon: function () {
+      return faBook
+    },
+    closeIcon: function () {
+      return faWindowClose
     }
   },
   methods: {
@@ -182,5 +189,15 @@ button.tab-button:active {
 button.tab-button.tab-selected {
   background-color: black;
   color: white;
+}
+button.notes-button {
+  background-color: white;
+  border: 2px solid black;
+  width: 30px;
+  height: 30px;
+  float: right;
+  position: absolute;
+  right: 1.5%;
+  border-radius: 4px;
 }
 </style>
