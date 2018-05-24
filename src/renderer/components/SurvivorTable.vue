@@ -409,7 +409,7 @@ div.sort-controls {
   font-size: 11pt;
   height: 1.5em;
   overflow-x: scroll;
-  z-index: 99;
+  z-index: 97;
   position: relative;
 }
 div.sort-title {
