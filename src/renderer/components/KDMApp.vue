@@ -58,7 +58,9 @@
         <font-awesome-icon v-if="!notesOpen" :icon="bookIcon" />
         <font-awesome-icon v-else :icon="closeIcon" />
       </button>
-      <notes-tab v-if="notesOpen" transition="notes-expand"/>
+      <transition name="slide">
+        <notes-tab v-if="notesOpen"/>
+      </transition>
     </div>
   </div>
 </template>
@@ -198,5 +200,14 @@ button.notes-button {
   z-index: 99;
   border-radius: 4px;
   outline: none;
+}
+.slide-enter-active {
+  transition: all .5s ease;
+}
+.slide-leave-active {
+  transition: all .5s ease;
+}
+.slide-enter, .slide-leave-to {
+  transform: translateX(300px);
 }
 </style>
