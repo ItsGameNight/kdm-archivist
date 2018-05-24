@@ -20,7 +20,7 @@
           :parentHeight="parentHeight"
           @update="$emit('update', $event)"
           @focus="editing = true"
-          @blur="editing = false"
+          @blur="editing = false; hover = false"
           />
       </div>
       <div class="delete-icon-wrapper">
