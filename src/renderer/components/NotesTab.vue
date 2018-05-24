@@ -4,17 +4,24 @@
     <textarea
       class="notes-input"
       placeholder="What happened this year?"
-      :value="currentSettlement.notes"
-      @input="updateNotes"
+      v-model="currNote"
       >
     </textarea>
+      <button
+        @click="addNote">
+        +
+      </button>
 
-    <div v-if="snapshotNotesForCurrentSettlement.length > 0">
+    <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
-      <div v-for="snap in snapshotNotesForCurrentSettlement" class="past-note">
-        <b>Lantern Year {{ snap.lanternYear }}:</b>
+      <div v-for="note in sortedNotes" class="past-note">
+        <b> Lantern Year {{ note.lanternYear }} </b>
         <br>
-        <p>{{ snap.notes }}</p>
+        {{ note.body }}
+        <br>
+        <p style="color: gray; font-size: 8px; text-align: right;">
+        {{ note.timeStr }}
+        </p>
       </div>
     </div>
 
@@ -27,16 +34,31 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'notes-tab',
   computed: {
-    ...mapGetters([
-      'currentSettlement',
-      'snapshotNotesForCurrentSettlement'
-    ])
+    ...mapGetters(['currentSettlement']),
+    sortedNotes: function () {
+      var notesClone = JSON.parse(JSON.stringify(this.currentSettlement.notes))
+      return notesClone.sort((a, b) => { return b.time - a.time })
+    }
+  },
+  data: function () {
+    return {
+      currNote: ''
+    }
   },
   methods: {
     ...mapActions(['updateSettlement']),
-    updateNotes: function (e) {
-      var update = { notes: e.target.value }
-      this.updateSettlement({ id: this.currentSettlement._id, update: update })
+    addNote: function () {
+      var d = new Date()
+      var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
+      var fullNote = {
+        body: this.currNote,
+        time: Date.now(),
+        timeStr: dateStr,
+        lanternYear: this.currentSettlement.lanternYear
+      }
+      var oldNotes = JSON.parse(JSON.stringify(this.currentSettlement.notes))
+      oldNotes.push(fullNote)
+      this.updateSettlement({ id: this.currentSettlement._id, update: { notes: oldNotes } })
     }
   }
 }

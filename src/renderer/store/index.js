@@ -71,14 +71,6 @@ export default new Vuex.Store({
 
     snapshotsForCurrentSettlement: (state) => {
       return state.snapshots.filter((s) => { return s.settlement._id === state.currentSmt })
-    },
-
-    snapshotNotesForCurrentSettlement: (state, getters) => {
-      var snaps = getters.snapshotsForCurrentSettlement
-      var notes = snaps.map((s) => {
-        return { lanternYear: s.settlement.lanternYear, notes: s.settlement.notes }
-      })
-      return notes.sort((a, b) => { return b.lanternYear - a.lanternYear })
     }
   },
   mutations: {
@@ -181,38 +173,22 @@ export default new Vuex.Store({
       })
     },
 
-    addNewSurvivor ({ state, commit }, payload) {
-      return new Promise((resolve, reject) => {
-        this.$survivors.addBase(payload.smtID, { birthYear: payload.birthYear }, (newSurv) => {
-          this.$survivors.getAll((survs) => {
-            commit('SET_SURVIVORS', survs)
-            resolve(newSurv._id)
-          })
+    addNewSurvivor ({ commit }, smtID) {
+      console.log(smtID)
+      this.$survivors.addBase(smtID, { }, () => {
+        this.$survivors.getAll((survs) => {
+          commit('SET_SURVIVORS', survs)
         })
       })
     },
 
     updateSurvivor ({ state, commit }, payload) {
-      if (state.currentSnap != null) {
-        return
-      }
+      if (state.currentSnap != null) { return }
       var id = payload.id
       var update = payload.update
       this.$survivors.updateOne(id, update, () => {
         this.$survivors.getMatching({ _id: id }, (s) => {
           commit('SET_SURVIVOR_BY_ID', { id: s[0]._id, newObj: s[0] })
-        })
-      })
-    },
-
-    updateAllSurvivorsInSettlement ({ state, commit }, payload) {
-      if (state.currentSnap != null) {
-        return
-      }
-      var update = payload.update
-      this.$survivors.updateSettlement(state.currentSmt, update, () => {
-        this.$survivors.getAll((survs) => {
-          commit('SET_SURVIVORS', survs)
         })
       })
     },
