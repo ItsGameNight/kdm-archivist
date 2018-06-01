@@ -221,6 +221,21 @@ export default new Vuex.Store({
       commit('SET_CURRENTSNAP', id)
     },
 
+    setCurrentSnapByLanternYear ({ getters, commit }, ly) {
+      var snapsOfLY = getters.snapshotsForCurrentSettlement.filter((s) => {
+        return s.settlement.lanternYear === ly
+      })
+
+      // TODO: handle case w more than 1 other than just returning first?
+      if (snapsOfLY.length > 0) {
+        console.log('setting snap to be of ly ' + String(ly))
+        commit('SET_CURRENTSNAP', snapsOfLY[0]._id)
+      } else {
+        console.log('no snap for currentSmt of requested LY.. resetting')
+        commit('SET_CURRENTSNAP', null)
+      }
+    },
+
     deleteSurvivor ({ commit }, payload) {
       var id = payload.id
       this.$survivors.remove(id, () => {
