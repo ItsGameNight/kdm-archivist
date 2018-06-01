@@ -36,14 +36,6 @@
         </div>
         <div v-if="currentTab === 'survivors'" class="tab-survivors">
           <survivor-table id="survivor-table" />
-          <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
-          <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
-          <br>
-          <button
-            v-for="snap in snapshotsForCurrentSettlement"
-            @click="setCurrentSnap(snap._id)">
-            {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
-          </button>
         </div>
         <div v-if="currentTab === 'storage'" class="tab-storage">
           <settlement-storage />
@@ -69,7 +61,7 @@ import SettlementInspector from './SettlementInspector'
 import SettlementStorage from './Storage'
 import SettlementTimeline from './Timeline'
 import NotesTab from './NotesTab'
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
@@ -94,7 +86,6 @@ export default {
   },
   computed: {
     ...mapState(['currentSmt']),
-    ...mapGetters(['snapshotsForCurrentSettlement']),
     homeIcon: function () {
       return faHome
     },
@@ -106,10 +97,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'createSnapshot',
-      'setCurrentSnap'
-    ]),
     play: function () {
       if (this.currentSmt !== null) {
         this.appState = 1
