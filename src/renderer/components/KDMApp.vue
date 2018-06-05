@@ -50,6 +50,12 @@
       <transition name="slide">
         <notes-tab v-if="notesOpen"/>
       </transition>
+      <div
+        v-if="currentSnap != null"
+        class="history-bar"
+        @click="setCurrentSnap(null)" >
+        You are in <strong>History Mode</strong>! Click banner to exit, otherwise, look around!
+      </div>
     </div>
   </div>
 </template>
@@ -61,7 +67,7 @@ import SettlementInspector from './SettlementInspector'
 import SettlementStorage from './Storage'
 import SettlementTimeline from './Timeline'
 import NotesTab from './NotesTab'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
@@ -85,7 +91,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentSmt']),
+    ...mapState([
+      'currentSmt',
+      'currentSnap'
+    ]),
     homeIcon: function () {
       return faHome
     },
@@ -97,6 +106,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setCurrentSnap']),
     play: function () {
       if (this.currentSmt !== null) {
         this.appState = 1
@@ -184,5 +194,16 @@ button.notes-button {
 }
 .slide-enter, .slide-leave-to {
   transform: translateX(300px);
+}
+div.history-bar {
+  background-color: gray;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 36px;
+  text-align: center;
+  color: white;
+  line-height: 36px;
 }
 </style>
