@@ -231,7 +231,7 @@ export default new Vuex.Store({
         console.log('setting snap to be of ly ' + String(ly))
         commit('SET_CURRENTSNAP', snapsOfLY[0]._id)
       } else {
-        console.log('no snap for currentSmt of requested LY.. resetting')
+        console.log('no snap for currentSmt of LY ' + String(ly) + '.. resetting')
         commit('SET_CURRENTSNAP', null)
       }
     },

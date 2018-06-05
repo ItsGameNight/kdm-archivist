@@ -14,6 +14,9 @@
       <div v-for="(note, index) in sortedNotes" class="past-note">
         <b> Lantern Year {{ note.lanternYear }} </b>
         <button class="delete-note" @click="deleteNote(index)">x</button>
+        <button class="delete-note" @click="setCurrentSnapByLanternYear(note.lanternYear)">
+          <font-awesome-icon :icon="histIcon"/>
+        </button>
         <br>
         {{ note.body }}
         <br>
@@ -28,14 +31,20 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import { faHistory } from '@fortawesome/fontawesome-free-solid'
 
 export default {
   name: 'notes-tab',
+  components: { FontAwesomeIcon },
   computed: {
     ...mapGetters(['currentSettlement']),
     sortedNotes: function () {
       var notesClone = JSON.parse(JSON.stringify(this.currentSettlement.notes))
       return notesClone.sort((a, b) => { return b.time - a.time })
+    },
+    histIcon: function () {
+      return faHistory
     }
   },
   data: function () {
@@ -44,7 +53,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['updateSettlement']),
+    ...mapActions([
+      'updateSettlement',
+      'setCurrentSnapByLanternYear'
+    ]),
     addNote: function () {
       var d = new Date()
       var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
@@ -59,6 +71,7 @@ export default {
       this.updateSettlement({ id: this.currentSettlement._id, update: { notes: oldNotes } })
       this.currNote = ''
     },
+
     deleteNote: function (idx) {
       var oldNotes = JSON.parse(JSON.stringify(this.sortedNotes))
       oldNotes.splice(idx, 1)
