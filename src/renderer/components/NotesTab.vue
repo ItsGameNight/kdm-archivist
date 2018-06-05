@@ -7,14 +7,15 @@
       v-model="currNote"
       >
     </textarea>
-      <button class="add-note" @click="addNote"> + </button>
+
+    <button class="add-note" @click="addNote"> + </button>
 
     <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
       <div v-for="(note, index) in sortedNotes" class="past-note">
         <b> Lantern Year {{ note.lanternYear }} </b>
         <button class="delete-note" @click="deleteNote(index)">x</button>
-        <button class="delete-note" @click="setCurrentSnapByLanternYear(note.lanternYear)">
+        <button class="delete-note" @click="setCurrentSnapByLanternYearAndNoteID({ ly: note.lanternYear, noteID: note._id })">
           <font-awesome-icon :icon="histIcon"/>
         </button>
         <br>
@@ -55,12 +56,14 @@ export default {
   methods: {
     ...mapActions([
       'updateSettlement',
-      'setCurrentSnapByLanternYear'
+      'setCurrentSnapByLanternYearAndNoteID',
+      'createSnapshot'
     ]),
     addNote: function () {
       var d = new Date()
       var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
       var fullNote = {
+        _id: 'id_' + Date.now(),
         body: this.currNote,
         time: Date.now(),
         timeStr: dateStr,
@@ -70,6 +73,9 @@ export default {
       oldNotes.push(fullNote)
       this.updateSettlement({ id: this.currentSettlement._id, update: { notes: oldNotes } })
       this.currNote = ''
+
+      // create snapshot with this noteID!
+      this.createSnapshot({ smtID: this.currentSettlement._id, noteID: fullNote._id })
     },
 
     deleteNote: function (idx) {

@@ -209,8 +209,8 @@ export default new Vuex.Store({
       })
     },
 
-    createSnapshot ({ commit }, smtID) {
-      this.$snapshots.createNew(smtID, () => {
+    createSnapshot ({ commit }, ids) {
+      this.$snapshots.createNew(ids.smtID, ids.noteID, () => {
         this.$snapshots.getAll((snaps) => {
           commit('SET_SNAPSHOTS', snaps)
         })
@@ -221,17 +221,26 @@ export default new Vuex.Store({
       commit('SET_CURRENTSNAP', id)
     },
 
+    setCurrentSnapByLanternYearAndNoteID ({ getters, commit }, ids) {
+      var snaps = getters.snapshotsForCurrentSettlement.filter((s) => {
+        return s.noteID === ids.noteID && s.settlement.lanternYear === ids.ly
+      })
+
+      if (snaps.length > 0) {
+        commit('SET_CURRENTSNAP', snaps[0]._id)
+      } else {
+        commit('SET_CURRENTSNAP', null)
+      }
+    },
+
     setCurrentSnapByLanternYear ({ getters, commit }, ly) {
       var snapsOfLY = getters.snapshotsForCurrentSettlement.filter((s) => {
         return s.settlement.lanternYear === ly
       })
 
-      // TODO: handle case w more than 1 other than just returning first?
       if (snapsOfLY.length > 0) {
-        console.log('setting snap to be of ly ' + String(ly))
         commit('SET_CURRENTSNAP', snapsOfLY[0]._id)
       } else {
-        console.log('no snap for currentSmt of LY ' + String(ly) + '.. resetting')
         commit('SET_CURRENTSNAP', null)
       }
     },

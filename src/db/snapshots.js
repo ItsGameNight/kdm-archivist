@@ -8,15 +8,18 @@ class SnapshotsDatabase extends Database {
     this.survsdb = survsdb
   }
 
-  createNew (smtID, cb) {
+  createNew (smtID, noteID, cb) {
     // Get the settlement object
     this.smtsdb.getMatching({ _id: smtID }, (smts) => {
       if (smts.length === 0) {
         throw new Error('Tried to add base survivor for non-existant settlement!')
       }
 
-      // create a new snapshot with settlement
-      var snapshot = { settlement: smts[0] }
+      // create a new snapshot with settlement and noteID
+      var snapshot = {
+        settlement: smts[0],
+        noteID: noteID
+      }
 
       // Get all of the survivors...
       this.survsdb.getMatching({ settlementID: smtID }, (survs) => {
