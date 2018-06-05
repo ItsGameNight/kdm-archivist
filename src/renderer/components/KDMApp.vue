@@ -56,6 +56,7 @@
         @click="setCurrentSnap(null)" >
         You are in <strong>History Mode</strong>! Click banner to exit, otherwise, look around!
       </div>
+      <div v-if="currentSnap != null" class="history-dimmer"></div>
     </div>
   </div>
 </template>
@@ -205,5 +206,19 @@ div.history-bar {
   text-align: center;
   color: white;
   line-height: 36px;
+  user-select: none;
+  cursor: default;
+  z-index: 1000;
+}
+div.history-dimmer {
+  background-color: #A9A9A9;
+  opacity: .4;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  pointer-events: none;  /* send clicks thru */
 }
 </style>
