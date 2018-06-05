@@ -3,19 +3,33 @@
     <h2>Notes</h2>
     <textarea
       class="notes-input"
+      :disabled="inHistoryMode"
       placeholder="What happened this year?"
       v-model="currNote"
       >
     </textarea>
 
-    <button class="add-note" @click="addNote"> + </button>
+    <button
+      class="add-note"
+      :disabled="inHistoryMode"
+      @click="addNote">
+      +
+    </button>
 
     <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
       <div v-for="(note, index) in sortedNotes" class="past-note">
         <b> Lantern Year {{ note.lanternYear }} </b>
-        <button class="delete-note" @click="deleteNote(index)">x</button>
-        <button class="delete-note" @click="setCurrentSnapByLanternYearAndNoteID({ ly: note.lanternYear, noteID: note._id })">
+        <button
+          class="delete-note"
+          :disabled="inHistoryMode"
+          @click="deleteNote(index)">
+          x
+        </button>
+        <button
+          class="delete-note"
+          :disabled="inHistoryMode"
+          @click="setCurrentSnapByLanternYearAndNoteID({ ly: note.lanternYear, noteID: note._id })">
           <font-awesome-icon :icon="histIcon"/>
         </button>
         <br>
@@ -39,7 +53,10 @@ export default {
   name: 'notes-tab',
   components: { FontAwesomeIcon },
   computed: {
-    ...mapGetters(['currentSettlement']),
+    ...mapGetters([
+      'inHistoryMode',
+      'currentSettlement'
+    ]),
     sortedNotes: function () {
       var notesClone = JSON.parse(JSON.stringify(this.currentSettlement.notes))
       return notesClone.sort((a, b) => { return b.time - a.time })

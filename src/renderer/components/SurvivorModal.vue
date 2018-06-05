@@ -39,6 +39,7 @@
           <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update('deathYear', $event); update('alive', false)" /></div>
           <div v-if="survivor.alive" class="depart-button-wrapper">
             <button class="depart-button"
+              :disabled="inHistoryMode"
               :class="[survivor.departing ? 'green' : '']"
               @click="setDeparting(!survivor.departing)"
               @dblclick.stop @mousedown.stop>
@@ -322,6 +323,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'inHistoryMode',
       'currentSettlement',
       'settlementDepartingCount',
       'survivorsInSettlement'

@@ -19,7 +19,12 @@
       </tbody>
       <tr>
         <td class="button-wrapper">
-          <button class="add-button" @click="addYear()">+</button>
+          <button
+            class="add-button"
+            :disabled="inHistoryMode"
+            @click="addYear()">
+            +
+          </button>
         </td>
       </tr>
     </table>
@@ -35,6 +40,7 @@ export default {
   components: { TimelineYear },
   computed: {
     ...mapGetters([
+      'inHistoryMode',
       'currentSettlement'
     ])
   },
