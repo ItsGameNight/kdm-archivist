@@ -51,12 +51,12 @@
         <notes-tab v-if="notesOpen"/>
       </transition>
       <div
-        v-if="currentSnap != null"
+        v-if="inHistoryMode"
         class="history-bar"
         @click="setCurrentSnap(null)" >
         You are in <strong>History Mode</strong>! Click banner to exit, otherwise, look around!
       </div>
-      <div v-if="currentSnap != null" class="history-dimmer"></div>
+      <div v-if="inHistoryMode" class="history-dimmer"></div>
     </div>
   </div>
 </template>
@@ -68,7 +68,7 @@ import SettlementInspector from './SettlementInspector'
 import SettlementStorage from './Storage'
 import SettlementTimeline from './Timeline'
 import NotesTab from './NotesTab'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
@@ -92,10 +92,8 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'currentSmt',
-      'currentSnap'
-    ]),
+    ...mapState(['currentSmt']),
+    ...mapGetters(['inHistoryMode']),
     homeIcon: function () {
       return faHome
     },
