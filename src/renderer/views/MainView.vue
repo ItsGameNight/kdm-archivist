@@ -70,7 +70,7 @@ import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
 
 export default {
-  name: 'kdm-app',
+  name: 'main-view',
   components: {
     SurvivorTable,
     SettlementInspector,

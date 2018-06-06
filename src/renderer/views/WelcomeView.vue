@@ -14,7 +14,7 @@
 <script>
 import SettlementTable from '@/components/SettlementTable'
 export default {
-  name: 'welcome-screen',
+  name: 'welcome-view',
   components: { SettlementTable }
 }
 </script>
