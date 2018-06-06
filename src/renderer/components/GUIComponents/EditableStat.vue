@@ -1,9 +1,19 @@
 <template>
-  <div class="editable-stat">
+  <div 
+    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+    class="editable-stat">
     <div class="increment-box" @mouseover="hover = true" @mouseleave="hover = false">
       <div class="chevron top"><font-awesome-icon :icon="chevronUp" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="updateStat(statValue + 1); bounceTop()" /></div>
       <div :class="{ maxbox : limitBox }">
-        <input type="number" class="statbox" :class="{ borderless : limitBox, 'no-border': noBorder }" :value="statValue" @input="updateStat($event.target.value)" @focus="$event.target.select(); focus = true" @blur="focus = false" @keydown.enter="$event.target.blur()" />
+        <input
+        type="number"
+        class="statbox"
+        :class="{ borderless : limitBox, 'no-border': noBorder }"
+        :value="statValue"
+        @input="updateStat($event.target.value)"
+        @focus="$event.target.select(); focus = true"
+        @blur="focus = false"
+        @keydown.enter="$event.target.blur()" />
         <span v-if="limitBox" class="limitbox"><div class="limit-label">Limit</div>{{ maxValue }}</span>
       </div>
       <div v-if="statDisplayName" class="stat-display-name" :style="displayNameStyle">{{ statDisplayName }}</div>
@@ -15,6 +25,7 @@
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/fontawesome-free-solid'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'editable-stat',
@@ -42,6 +53,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['inHistoryMode']),
     chevronUp: function () {
       return faChevronUp
     },
@@ -177,28 +189,28 @@ input::-webkit-inner-spin-button {
   animation-timing-function: linear;
   animation-iteration-count: 1;
   -webkit-animation-iteration-count: 1;
-} 
+}
 @-webkit-keyframes bounce {
   0%, 100% {-webkit-transform: translateY(0);}
   50% {-webkit-transform: translateY(-5px);}
-} 
-@keyframes bounce { 
+}
+@keyframes bounce {
   0%, 100% {transform: translateY(0);}
   50% {transform: translateY(-5px);}
-} 
-.bounce { 
+}
+.bounce {
   -webkit-animation-name: bounce;
   animation-name: bounce;
 }
 @-webkit-keyframes bounceDown {
   0%, 100% {-webkit-transform: translateY(0);}
   50% {-webkit-transform: translateY(5px);}
-} 
-@keyframes bounceDown { 
+}
+@keyframes bounceDown {
   0%, 100% {transform: translateY(0);}
   50% {transform: translateY(5px);}
-} 
-.bounceDown { 
+}
+.bounceDown {
   -webkit-animation-name: bounceDown;
   animation-name: bounceDown;
 }

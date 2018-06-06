@@ -17,12 +17,19 @@
         @delete="deleteItem(index)" >
       </editable-list-item>
     </ul>
-    <button v-if="!max || listItems.length < max" class="add-item" @click="addNew">+</button>
+    <button
+      v-if="!max || listItems.length < max"
+      class="add-item"
+      :disabled="inHistoryMode"
+      @click="addNew">
+      +
+    </button>
   </div>
 </template>
 
 <script>
 import EditableListItem from './EditableListItem'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'editable-list',
@@ -37,6 +44,9 @@ export default {
     numberEditable: { required: false, default: true, type: Boolean },
     textStyle: { required: false, default: () => { return { fontSize: '10pt' } } },
     parentHeight: { required: false, default: 9999 }
+  },
+  computed: {
+    ...mapGetters(['inHistoryMode'])
   },
   created: function () {
     // Deal with case where min is specified but

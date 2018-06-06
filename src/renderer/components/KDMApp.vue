@@ -9,7 +9,7 @@
         <div class="tabbar">
           <button
             class="tab-button"
-            @click="appState = 0">
+            @click="appState = 0; leaveHistoryMode()">
             <font-awesome-icon :icon="homeIcon" />
           </button>
           <button
@@ -36,14 +36,6 @@
         </div>
         <div v-if="currentTab === 'survivors'" class="tab-survivors">
           <survivor-table id="survivor-table" />
-          <button @click="createSnapshot(currentSmt)">Create Snapshot</button>
-          <button @click="setCurrentSnap(null)">Leave Snapshot Mode</button>
-          <br>
-          <button
-            v-for="snap in snapshotsForCurrentSettlement"
-            @click="setCurrentSnap(snap._id)">
-            {{ snap.settlement.name }} at LY {{ snap.settlement.lanternYear }}
-          </button>
         </div>
         <div v-if="currentTab === 'storage'" class="tab-storage">
           <settlement-storage />
@@ -58,6 +50,13 @@
       <transition name="slide">
         <notes-tab v-if="notesOpen"/>
       </transition>
+      <div
+        v-if="inHistoryMode"
+        class="history-bar"
+        @click="leaveHistoryMode" >
+        You are in <strong>History Mode</strong>! Click this banner to exit, otherwise, look around!
+      </div>
+      <div v-if="inHistoryMode" class="history-dimmer"></div>
     </div>
   </div>
 </template>
@@ -69,7 +68,7 @@ import SettlementInspector from './SettlementInspector'
 import SettlementStorage from './Storage'
 import SettlementTimeline from './Timeline'
 import NotesTab from './NotesTab'
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
@@ -94,7 +93,7 @@ export default {
   },
   computed: {
     ...mapState(['currentSmt']),
-    ...mapGetters(['snapshotsForCurrentSettlement']),
+    ...mapGetters(['inHistoryMode']),
     homeIcon: function () {
       return faHome
     },
@@ -106,10 +105,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'createSnapshot',
-      'setCurrentSnap'
-    ]),
+    ...mapActions(['leaveHistoryMode']),
     play: function () {
       if (this.currentSmt !== null) {
         this.appState = 1
@@ -197,5 +193,30 @@ button.notes-button {
 }
 .slide-enter, .slide-leave-to {
   transform: translateX(300px);
+}
+div.history-bar {
+  background-color: gray;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 36px;
+  text-align: center;
+  color: white;
+  line-height: 36px;
+  user-select: none;
+  cursor: default;
+  z-index: 1000;
+}
+div.history-dimmer {
+  background-color: #A9A9A9;
+  opacity: .4;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  pointer-events: none;  /* send clicks thru */
 }
 </style>

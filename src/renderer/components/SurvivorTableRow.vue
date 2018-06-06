@@ -32,7 +32,12 @@
             </button>
           </div>
           <div class="delete-button-wrapper">
-            <button class="delete-button" @click="deleteModalVisible = true" @dblclick.stop @mousedown.stop>
+            <button
+              :disabled="inHistoryMode"
+              class="delete-button"
+              @click="deleteModalVisible = true"
+              @dblclick.stop
+              @mousedown.stop>
               <font-awesome-icon :icon="deleteIcon" />
             </button>
           </div>
@@ -54,6 +59,7 @@
                 </div>
                 <div class="alive-button-wrapper">
                   <button class="alive-button"
+                    :disabled="inHistoryMode"
                     :class="[survivor.alive ? 'red' : '']"
                     @click="update('alive', !survivor.alive)"
                     @dblclick.stop @mousedown.stop>
@@ -62,6 +68,7 @@
                 </div>
                 <div v-if="survivor.alive" class="depart-button-wrapper">
                   <button class="depart-button"
+                    :disabled="inHistoryMode"
                     :class="[survivor.departing ? 'green' : '']"
                     @click="setDeparting(!survivor.departing)"
                     @dblclick.stop @mousedown.stop>
@@ -298,6 +305,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'inHistoryMode',
       'currentSettlement',
       'settlementDepartingCount'
     ]),

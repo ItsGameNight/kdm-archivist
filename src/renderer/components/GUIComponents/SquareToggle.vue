@@ -1,5 +1,9 @@
 <template>
-  <div class="square-toggle" :style="titleSize" @click="toggle()">
+  <div
+    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+    class="square-toggle"
+    :style="titleSize"
+    @click="toggle()">
     <div class="flex-wrapper">
       <div :class="[checkValue ? 'square' : 'empty-square']" :style="toggleSize"></div><div class="toggle-title">{{ statDisplayName }}</div>
     </div>
@@ -7,6 +11,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'square-toggle',
   props: {
@@ -25,6 +30,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['inHistoryMode']),
     toggleSize: function () {
       var toggleStyle = {}
       toggleStyle['width'] = this.squareSize + 'px'

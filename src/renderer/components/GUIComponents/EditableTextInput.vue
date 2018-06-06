@@ -5,6 +5,7 @@
       ref="eIn"
       :placeholder="placeholder"
       :type="inputType"
+      :disabled="inHistoryMode"
       :style="editableStyle"
       :value="textValue"
       @mouseover="hover = true"
@@ -43,6 +44,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'editable-text-input',
   props: {
@@ -93,6 +96,7 @@ export default {
     obs.observe(this.$root.$el, { childList: true, subtree: true })
   },
   computed: {
+    ...mapGetters(['inHistoryMode']),
     editableStyle: function () {
       if (this.focus) {
         return {

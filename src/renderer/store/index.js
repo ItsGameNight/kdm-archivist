@@ -14,15 +14,17 @@ export default new Vuex.Store({
     currentSnap: null
   },
   getters: {
-    snapshotSurvivors: (state) => {
-      if (state.currentSnap == null) { return [] }
+    snapshotSurvivors: (state, getters) => {
+      if (!getters.inHistoryMode) {
+        return []
+      }
       var snap = state.snapshots.find((s) => { return s._id === state.currentSnap })
       return snap.survivors
     },
 
     // OUTWARD FACING -- takes into account snapshot (which overrides currentSmt)
     survivorsInSettlement: (state, getters) => {
-      if (state.currentSnap == null) {
+      if (!getters.inHistoryMode) {
         return state.survivors.filter((s) => { return s.settlementID === state.currentSmt })
       } else {
         return getters.snapshotSurvivors
@@ -34,15 +36,15 @@ export default new Vuex.Store({
       return survs.map((s) => { return goodnessFunction(s) })
     },
 
-    snapshotSettlement: (state) => {
-      if (state.currentSnap == null) { return {} }
+    snapshotSettlement: (state, getters) => {
+      if (!getters.inHistoryMode) { return {} }
       var snap = state.snapshots.find((s) => { return s._id === state.currentSnap })
       return snap.settlement
     },
 
     // OUTWARD FACING -- takes into account snapshot (which overrides currentSmt)
     currentSettlement: (state, getters) => {
-      if (state.currentSnap == null) {
+      if (!getters.inHistoryMode) {
         return state.settlements.find((s) => { return s._id === state.currentSmt })
       } else {
         return getters.snapshotSettlement
@@ -71,6 +73,10 @@ export default new Vuex.Store({
 
     snapshotsForCurrentSettlement: (state) => {
       return state.snapshots.filter((s) => { return s.settlement._id === state.currentSmt })
+    },
+
+    inHistoryMode: (state) => {
+      return state.currentSnap != null
     }
   },
   mutations: {
@@ -122,10 +128,9 @@ export default new Vuex.Store({
       })
     },
 
-    updateSettlement ({ state, commit }, payload) {
+    updateSettlement ({ state, commit, getters }, payload) {
       // ignore if in snapshot mode!
-      // TODO: decide if wanna handle this way!
-      if (state.currentSnap != null) { return }
+      if (getters.inHistoryMode) { return }
       var id = payload.id
       var update = payload.update
       // update the smt in db
@@ -184,10 +189,8 @@ export default new Vuex.Store({
       })
     },
 
-    updateSurvivor ({ state, commit }, payload) {
-      if (state.currentSnap != null) {
-        return
-      }
+    updateSurvivor ({ state, commit, getters }, payload) {
+      if (getters.inHistoryMode) { return }
       var id = payload.id
       var update = payload.update
       this.$survivors.updateOne(id, update, () => {
@@ -197,10 +200,8 @@ export default new Vuex.Store({
       })
     },
 
-    updateAllSurvivorsInSettlement ({ state, commit }, payload) {
-      if (state.currentSnap != null) {
-        return
-      }
+    updateAllSurvivorsInSettlement ({ state, commit, getters }, payload) {
+      if (getters.inHistoryMode) { return }
       var update = payload.update
       this.$survivors.updateSettlement(state.currentSmt, update, () => {
         this.$survivors.getAll((survs) => {
@@ -209,8 +210,8 @@ export default new Vuex.Store({
       })
     },
 
-    createSnapshot ({ commit }, smtID) {
-      this.$snapshots.createNew(smtID, () => {
+    createSnapshot ({ commit }, ids) {
+      this.$snapshots.createNew(ids.smtID, ids.noteID, () => {
         this.$snapshots.getAll((snaps) => {
           commit('SET_SNAPSHOTS', snaps)
         })
@@ -219,6 +220,34 @@ export default new Vuex.Store({
 
     setCurrentSnap ({ commit }, id) {
       commit('SET_CURRENTSNAP', id)
+    },
+
+    leaveHistoryMode ({ commit }) {
+      commit('SET_CURRENTSNAP', null)
+    },
+
+    setCurrentSnapByLanternYearAndNoteID ({ getters, commit }, ids) {
+      var snaps = getters.snapshotsForCurrentSettlement.filter((s) => {
+        return s.noteID === ids.noteID && s.settlement.lanternYear === ids.ly
+      })
+
+      if (snaps.length > 0) {
+        commit('SET_CURRENTSNAP', snaps[0]._id)
+      } else {
+        commit('SET_CURRENTSNAP', null)
+      }
+    },
+
+    setCurrentSnapByLanternYear ({ getters, commit }, ly) {
+      var snapsOfLY = getters.snapshotsForCurrentSettlement.filter((s) => {
+        return s.settlement.lanternYear === ly
+      })
+
+      if (snapsOfLY.length > 0) {
+        commit('SET_CURRENTSNAP', snapsOfLY[0]._id)
+      } else {
+        commit('SET_CURRENTSNAP', null)
+      }
     },
 
     deleteSurvivor ({ commit }, payload) {

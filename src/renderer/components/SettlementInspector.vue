@@ -5,13 +5,28 @@
     <b>Overview:</b>
     <br>
       Lantern Year:
-      <input class="value" :value="currentSettlement.lanternYear" :stat="'lanternYear'" @input="updateNumberValue"/>
+      <input
+        class="value"
+        :value="currentSettlement.lanternYear"
+        :disabled="inHistoryMode"
+        :stat="'lanternYear'"
+        @input="updateNumberValue"/>
     <br>
       Survival Limit:
-      <input class="value" :value="currentSettlement.survivalLimit" :stat="'survivalLimit'" @input="updateNumberValue"/>
+      <input
+        class="value"
+        :value="currentSettlement.survivalLimit"
+        :stat="'survivalLimit'"
+        :disabled="inHistoryMode"
+        @input="updateNumberValue"/>
     <br>
       Survival on Depart:
-      <input class="value" :value="currentSettlement.survivalOnDepart" :stat="'survivalOnDepart'" @input="updateNumberValue"/>
+      <input
+        class="value"
+        :value="currentSettlement.survivalOnDepart"
+        :stat="'survivalOnDepart'"
+        :disabled="inHistoryMode"
+        @input="updateNumberValue"/>
     </p>
     <p>
     <b>Stats:</b>
@@ -98,6 +113,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'inHistoryMode',
       'numberAliveInSettlement',
       'settlementDeathCount',
       'settlementMaleCount',

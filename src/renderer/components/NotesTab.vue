@@ -3,17 +3,35 @@
     <h2>Notes</h2>
     <textarea
       class="notes-input"
+      :disabled="inHistoryMode"
       placeholder="What happened this year?"
       v-model="currNote"
       >
     </textarea>
-      <button class="add-note" @click="addNote"> + </button>
+
+    <button
+      class="add-note"
+      :disabled="inHistoryMode"
+      @click="addNote">
+      +
+    </button>
 
     <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
       <div v-for="(note, index) in sortedNotes" class="past-note">
         <b> Lantern Year {{ note.lanternYear }} </b>
-        <button class="delete-note" @click="deleteNote(index)">x</button>
+        <button
+          class="delete-note"
+          :disabled="inHistoryMode"
+          @click="deleteNote(index)">
+          x
+        </button>
+        <button
+          class="delete-note"
+          :disabled="inHistoryMode"
+          @click="setCurrentSnapByLanternYearAndNoteID({ ly: note.lanternYear, noteID: note._id })">
+          <font-awesome-icon :icon="histIcon"/>
+        </button>
         <br>
         {{ note.body }}
         <br>
@@ -28,14 +46,23 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import { faHistory } from '@fortawesome/fontawesome-free-solid'
 
 export default {
   name: 'notes-tab',
+  components: { FontAwesomeIcon },
   computed: {
-    ...mapGetters(['currentSettlement']),
+    ...mapGetters([
+      'inHistoryMode',
+      'currentSettlement'
+    ]),
     sortedNotes: function () {
       var notesClone = JSON.parse(JSON.stringify(this.currentSettlement.notes))
       return notesClone.sort((a, b) => { return b.time - a.time })
+    },
+    histIcon: function () {
+      return faHistory
     }
   },
   data: function () {
@@ -44,11 +71,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['updateSettlement']),
+    ...mapActions([
+      'updateSettlement',
+      'setCurrentSnapByLanternYearAndNoteID',
+      'createSnapshot'
+    ]),
     addNote: function () {
       var d = new Date()
       var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
       var fullNote = {
+        _id: 'id_' + Date.now(),
         body: this.currNote,
         time: Date.now(),
         timeStr: dateStr,
@@ -58,7 +90,11 @@ export default {
       oldNotes.push(fullNote)
       this.updateSettlement({ id: this.currentSettlement._id, update: { notes: oldNotes } })
       this.currNote = ''
+
+      // create snapshot with this noteID!
+      this.createSnapshot({ smtID: this.currentSettlement._id, noteID: fullNote._id })
     },
+
     deleteNote: function (idx) {
       var oldNotes = JSON.parse(JSON.stringify(this.sortedNotes))
       oldNotes.splice(idx, 1)

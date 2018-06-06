@@ -11,5 +11,8 @@
 </script>
 
 <style>
-  /* CSS */
+/* Global CSS */
+.DISABLE-CLICKS-HISTORY-MODE {
+  pointer-events: none;
+}
 </style>

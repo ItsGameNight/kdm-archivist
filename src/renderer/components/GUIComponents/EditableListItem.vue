@@ -8,7 +8,7 @@
         :value="count"
         type="number"
         :style="{fontSize:textStyle.fontSize}"
-        :disabled="!numberEditable"
+        :disabled="inHistoryMode || !numberEditable"
         @input="$emit('updateCount', $event.target.value)">
       </input>
       <div class="item-input-wrapper" :class="{'input-on-hover' : (hover && !editing)}">
@@ -43,6 +43,7 @@ import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faTimesCircle as farTimesCircle } from '@fortawesome/fontawesome-free-regular'
 import { faTimesCircle as fasTimesCircle } from '@fortawesome/fontawesome-free-solid'
 import EditableTextInput from './EditableTextInput'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'editable-list-item',
@@ -65,6 +66,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['inHistoryMode']),
     deleteIcon: function () {
       if (this.mouseDownOnDelete) {
         return fasTimesCircle

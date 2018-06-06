@@ -1,18 +1,23 @@
 <template>
-  <div class="mf-toggle">
+  <div 
+    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+    class="mf-toggle">
     M <div :class="[sex === 'm' ? 'square' : 'empty-square']" @click="setSex('m')"></div>
     F <div :class="[sex === 'f' ? 'square' : 'empty-square']" @click="setSex('f')"></div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'male-female-toggle',
   props: {
     initSex: { required: true },
     survivorID: { required: true }
+  },
+  computed: {
+    ...mapGetters(['inHistoryMode'])
   },
   data: function () {
     return {

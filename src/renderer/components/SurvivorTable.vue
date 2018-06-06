@@ -9,8 +9,18 @@
         :initSelected="filter"
         title="Filter: "
         @selected="filter = $event" />
-      <button @click="resetDeparting" class="reset-departing-button right-start">Reset Departing</button>
-      <button @click="newSurvivor()" class="add-button">Add Survivor</button>
+      <button
+        :disabled="inHistoryMode"
+        @click="resetDeparting"
+        class="reset-departing-button right-start">
+        Reset Departing
+      </button>
+      <button
+        :disabled="inHistoryMode"
+        @click="newSurvivor()"
+        class="add-button">
+        Add Survivor
+      </button>
     </div>
     <div class="sort-controls flex-wrapper">
       <div class="sort-title">Sort:</div>
@@ -244,6 +254,7 @@ export default {
       'currentSmt'
     ]),
     ...mapGetters([
+      'inHistoryMode',
       'survivorsInSettlement',
       'settlementDepartingCount',
       'currentSettlement'
