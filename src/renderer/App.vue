@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'kd-monster',
+  name: 'twilight-archivist',
   mounted: function () {
     // load all db's
     this.$store.dispatch('loadSettlements')
