@@ -222,6 +222,10 @@ export default new Vuex.Store({
       commit('SET_CURRENTSNAP', id)
     },
 
+    leaveHistoryMode ({ commit }) {
+      commit('SET_CURRENTSNAP', null)
+    },
+
     setCurrentSnapByLanternYearAndNoteID ({ getters, commit }, ids) {
       var snaps = getters.snapshotsForCurrentSettlement.filter((s) => {
         return s.noteID === ids.noteID && s.settlement.lanternYear === ids.ly

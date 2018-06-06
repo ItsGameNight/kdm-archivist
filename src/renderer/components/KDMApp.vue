@@ -9,7 +9,7 @@
         <div class="tabbar">
           <button
             class="tab-button"
-            @click="appState = 0">
+            @click="appState = 0; leaveHistoryMode()">
             <font-awesome-icon :icon="homeIcon" />
           </button>
           <button
@@ -53,7 +53,7 @@
       <div
         v-if="inHistoryMode"
         class="history-bar"
-        @click="setCurrentSnap(null)" >
+        @click="leaveHistoryMode" >
         You are in <strong>History Mode</strong>! Click banner to exit, otherwise, look around!
       </div>
       <div v-if="inHistoryMode" class="history-dimmer"></div>
@@ -105,7 +105,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setCurrentSnap']),
+    ...mapActions(['leaveHistoryMode']),
     play: function () {
       if (this.currentSmt !== null) {
         this.appState = 1
