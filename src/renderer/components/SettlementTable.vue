@@ -1,25 +1,35 @@
 <template>
-  <div>
-    <div class="modals">
-      <modal v-if="showNewSettlementModal" @okay="newSmtModalOkayPressed()" @close="showNewSettlementModal = false" :modalWidth="300">
-        <h3 slot="header">New Settlement</h3>
-        <label slot="body">Settlement Name: <input v-model="newName" /></label>
+  <div class="SettlementTable">
+    <div class="SettlementTable__modals">
+      <modal v-if="showNewSettlementModal"
+        @okay="newSmtModalOkayPressed()"
+        @close="showNewSettlementModal = false"
+        :modalWidth="300">
+          <h3 slot="header">New Settlement</h3>
+          <label slot="body">Settlement Name: <input v-model="newName" /></label>
       </modal>
     </div>
-    <div class="table-scroll" @click="setCurrentSmt(null)">
+    <div class="SettlementTable__tableScroll" @click="setCurrentSmt(null)">
       <table>
         <tr><th>Settlements:</th></tr>
-        <tr v-for="(smt, index) in settlements"><settlement-table-row :smtID="smt._id" :index="index" :key="smt._id" :selected="smt._id === currentSmt" @smt-select="setCurrentSmt"></settlement-table-row></tr>
+        <tr v-for="(smt, index) in settlements">
+          <settlement-table-row
+            :smtID="smt._id"
+            :index="index"
+            :key="smt._id"
+            :selected="smt._id === currentSmt"
+            @smt-select="setCurrentSmt" />
+        </tr>
       </table>
     </div>
-    <div id="controls">
+    <div class="SettlementTable__bottomButtons">
       <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
       <button @click="newSmtButtonPressed()">New Settlement</button>
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import SettlementTableRow from './SettlementTableRow'
 import Modal from './Modal'
 import { mapActions, mapState } from 'vuex'
@@ -58,21 +68,22 @@ export default {
 }
 </script>
 
-<style scoped>
-table {
-  width: 98%;
-  border-spacing: 0em 0.5em;
-  padding: 0 5px;
-}
-td {
-  border: 1px solid black;
-  padding: 5px;
-}
-.table-scroll {
-  height: 300px;
-  overflow-y: scroll;
-}
-#controls {
-  text-align: right;
+<style lang="scss" scoped>
+.SettlementTable {
+  &__tableScroll {
+    height: 300px;
+    overflow-y: scroll;
+
+    table {
+      width: 98%;
+      border-spacing: 0em 0.5em;
+      padding: 0 5px;
+    }
+  }
+
+  &__bottomButtons {
+    width: 98%;
+    text-align: right;
+  }
 }
 </style>

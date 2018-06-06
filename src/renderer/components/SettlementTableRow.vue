@@ -1,24 +1,25 @@
 <template>
-  <td @click.stop="setCurrentSmt(smtID)" :class="[selected ? 'selected' : '']">
-    <div v-if="this.editing">
-      <input v-model="name" placeholder="Edit Me!"></input>
-      <button class="editBtn" @click.stop="toggleEdit()">Done</button>
-    </div>
-    <div v-else>
-      <span v-if="name !== null && name !== ''">
-        {{ name }}
-        <button v-if="selected" class="editBtn" @click.stop="toggleEdit()">Edit</button>
-      </span>
-      <span v-else>
-        NAME ME!
-        <button v-if="selected" class="editBtn" @click.stop="toggleEdit()">Edit</button>
-      </span>
-    </div>
+  <td class="SettlementTableRow"
+    :class="[selected ? 'selected' : '']"
+    @click.stop="setCurrentSmt(smtID)">
+    <span v-if="editing">
+      <input v-model="name" placeholder="Unnamed Settlement"></input>
+    </span>
+    <span v-else>
+      {{ name }}
+    </span>
+    <button v-if="selected"
+      class="SettlementTableRow__editButton"
+      @click.stop="toggleEdit()">
+        <span v-if="!editing">Edit</span>
+        <span v-else>Done</span>
+    </button>
   </td>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+
 export default {
   name: 'settlement-table-row',
   props: {
@@ -55,11 +56,18 @@ export default {
 }
 </script>
 
-<style>
-.selected {
-  background: #ADD8E6;
-}
-.editBtn {
-  float: right
+<style lang="scss" scoped>
+.SettlementTableRow {
+  padding: 5px;
+  border: 1px solid $black;
+
+  &.selected {
+    background-color: $light-gray;
+  }
+
+  &__editButton {
+    float: right;
+    font-size: 8pt;
+  }
 }
 </style>
