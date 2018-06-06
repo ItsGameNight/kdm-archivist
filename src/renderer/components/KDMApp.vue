@@ -54,7 +54,7 @@
         v-if="inHistoryMode"
         class="history-bar"
         @click="leaveHistoryMode" >
-        You are in <strong>History Mode</strong>! Click banner to exit, otherwise, look around!
+        You are in <strong>History Mode</strong>! Click this banner to exit, otherwise, look around!
       </div>
       <div v-if="inHistoryMode" class="history-dimmer"></div>
     </div>

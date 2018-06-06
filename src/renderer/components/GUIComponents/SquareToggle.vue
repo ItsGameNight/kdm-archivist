@@ -74,8 +74,4 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-div.square-inactive {
-   pointer-events: none;
-   cursor: default;
-}
 </style>
