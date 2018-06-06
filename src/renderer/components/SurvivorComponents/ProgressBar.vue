@@ -1,5 +1,7 @@
 <template>
-  <div class="progress-bar">
+  <div
+    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+    class="progress-bar" >
     <span v-if="!inline && title" class="title above">{{ title }} ({{ level }}): </span>
     <div class="flex-wrapper">
       <span v-if="inline && title" class="title" :style="{minWidth: String(4 + maxLevel / 8) + 'em'}">{{ title }} ({{ level }}): </span>
@@ -10,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'progress-bar',
@@ -29,6 +31,9 @@ export default {
     return {
       level: this.initLevel
     }
+  },
+  computed: {
+    ...mapGetters(['inHistoryMode'])
   },
   methods: {
     ...mapActions([

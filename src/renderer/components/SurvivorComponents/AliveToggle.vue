@@ -1,5 +1,8 @@
 <template>
-  <div class="alive-wrapper" @click="toggle()">
+  <div 
+    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+    class="alive-wrapper"
+    @click="toggle()">
     <div class="flex-wrapper">
       <div><div class="alive-toggle" :class="[toggleState ? 'alive' : 'dead']"><font-awesome-icon :icon="icon" /></div></div>
       <div class="alive-toggle-text"><span v-if="toggleState">Alive</span><span v-else>Dead</span></div>
@@ -31,6 +34,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'inHistoryMode',
       'currentSettlement'
     ]),
     icon: function () {

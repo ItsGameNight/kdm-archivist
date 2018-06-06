@@ -1,5 +1,7 @@
 <template>
-  <div class="editable-stat">
+  <div 
+    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+    class="editable-stat">
     <div class="increment-box" @mouseover="hover = true" @mouseleave="hover = false">
       <div class="chevron top"><font-awesome-icon :icon="chevronUp" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="updateStat(statValue + 1); bounceTop()" /></div>
       <div :class="{ maxbox : limitBox }">
@@ -7,7 +9,6 @@
         type="number"
         class="statbox"
         :class="{ borderless : limitBox, 'no-border': noBorder }"
-        :disabled="inHistoryMode"
         :value="statValue"
         @input="updateStat($event.target.value)"
         @focus="$event.target.select(); focus = true"

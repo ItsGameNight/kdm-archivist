@@ -256,7 +256,10 @@
           <div class="row6title">
             <span>Other information:</span>
           </div>
-          <textarea :value="survivor.other" @input="update('other', $event.target.value)"></textarea>
+          <textarea
+            :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+            :value="survivor.other"
+            @input="update('other', $event.target.value)"></textarea>
         </div>
       </div>
     </div>

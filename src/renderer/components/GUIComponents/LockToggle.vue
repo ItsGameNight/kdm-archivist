@@ -1,5 +1,7 @@
 <template>
-  <div @click="toggleState = !toggleState; $emit('update', toggleState)">
+  <div 
+    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+    @click="toggleState = !toggleState; $emit('update', toggleState)">
     <div class="flex-wrapper">
       <div><div class="lock" :class="lockClass"><font-awesome-icon :icon="icon" /></div></div>
       <div class="lock-toggle-text">{{ statDisplayName }}</div>
@@ -10,6 +12,7 @@
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faLock, faLockOpen } from '@fortawesome/fontawesome-free-solid'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'lock-toggle',
@@ -24,6 +27,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['inHistoryMode']),
     icon: function () {
       if (this.toggleState) {
         return faLock
