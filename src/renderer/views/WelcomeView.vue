@@ -7,12 +7,12 @@
     <div id="settlement-table">
       <settlement-table></settlement-table>
     </div>
-    <button id="play-button" @click="$emit('play')">Play</button>
+    <button id="play-button" @click="$router.push({ name: 'main' })">Play</button>
   </div>
 </template>
 
 <script>
-import SettlementTable from './SettlementTable'
+import SettlementTable from '@/components/SettlementTable'
 export default {
   name: 'welcome-screen',
   components: { SettlementTable }

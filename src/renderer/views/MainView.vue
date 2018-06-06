@@ -1,15 +1,12 @@
 <template>
   <div>
-    <div v-if="appState === 0" id="welcome">
-      <welcome-screen @play="play" />
-    </div>
-    <div id="kdm-app" v-if="appState === 1">
+    <div id="kdm-app">
       <settlement-inspector id="inspector" />
       <div id="content" @click="notesOpen = false">
         <div class="tabbar">
           <button
             class="tab-button"
-            @click="appState = 0; leaveHistoryMode()">
+            @click="leaveHistoryMode(); $router.push({ name: 'welcome' })">
             <font-awesome-icon :icon="homeIcon" />
           </button>
           <button
@@ -62,12 +59,11 @@
 </template>
 
 <script>
-import WelcomeScreen from './WelcomeScreen'
-import SurvivorTable from './SurvivorTable'
-import SettlementInspector from './SettlementInspector'
-import SettlementStorage from './Storage'
-import SettlementTimeline from './Timeline'
-import NotesTab from './NotesTab'
+import SurvivorTable from '@/components/SurvivorTable'
+import SettlementInspector from '@/components/SettlementInspector'
+import SettlementStorage from '@/components/Storage'
+import SettlementTimeline from '@/components/Timeline'
+import NotesTab from '@/components/NotesTab'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
@@ -76,7 +72,6 @@ import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-sol
 export default {
   name: 'kdm-app',
   components: {
-    WelcomeScreen,
     SurvivorTable,
     SettlementInspector,
     FontAwesomeIcon,
@@ -86,7 +81,6 @@ export default {
   },
   data: function () {
     return {
-      appState: 0,
       currentTab: 'survivors',
       notesOpen: false
     }
@@ -105,20 +99,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['leaveHistoryMode']),
-    play: function () {
-      if (this.currentSmt !== null) {
-        this.appState = 1
-      } else {
-        alert('Please select a settlement.')
-      }
-    }
-  },
-  mounted: function () {
-    // load all db's
-    this.$store.dispatch('loadSettlements')
-    this.$store.dispatch('loadSurvivors')
-    this.$store.dispatch('loadSnapshots')
+    ...mapActions(['leaveHistoryMode'])
   }
 }
 </script>
@@ -136,9 +117,6 @@ export default {
   flex-direction: row;
   background: rgb(255,255,255);
   background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(214,214,214,1) 44%, rgba(255,255,255,1) 100%);
-}
-#welcome {
-  width: 100%;
 }
 #inspector {
   width: 20%;
