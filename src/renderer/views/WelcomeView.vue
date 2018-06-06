@@ -1,46 +1,45 @@
 <template>
-  <div class="welcome-main">
+  <div class="WelcomeView">
     <header>
-      <h1 id="title">Twilight Archivist</h1>
-      <h4 id="subtitle">A Kingdom Death: Monster Companion App</h4>
+      <h1>Twilight Archivist</h1>
+      <h4>A Kingdom Death: Monster Companion App</h4>
     </header>
-    <div id="settlement-table">
-      <settlement-table></settlement-table>
+    <div class="WelcomeView__settlementTable">
+      <settlement-table />
     </div>
-    <button id="play-button" @click="$router.push({ name: 'main' })">Play</button>
+    <button class="WelcomeView__playButton" @click="$router.push({ name: 'main' })">Play</button>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import SettlementTable from '@/components/SettlementTable'
+
 export default {
   name: 'welcome-view',
   components: { SettlementTable }
 }
 </script>
 
-<style>
-.welcome-main {
+<style lang="scss" scoped>
+.WelcomeView {
+  header {
+    padding-top: 20px;
+    padding-bottom: 15px;
 
-}
-header {
-  padding-top: 20px;
-  padding-bottom: 15px;
-}
-#title {
-  text-align: center;
-}
-#subtitle {
-  text-align: center;
-}
-#settlement-table {
-  margin: auto;
-  width: 33%;
-}
-#play-button {
-  margin-top: 10px;
-  margin-left: 33%;
-  width: 33%;
-  text-align: center;
+    h1, h4 {
+      text-align: center;
+    }
+  }
+
+  &__settlementTable {
+    margin: auto;
+    width: 33%;
+  }
+
+  &__playButton {
+    margin-top: 10px;
+    margin-left: 33%;
+    width: 33%;
+  }
 }
 </style>

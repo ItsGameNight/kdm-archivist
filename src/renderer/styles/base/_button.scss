@@ -1,0 +1,19 @@
+@import 'color';
+
+button {
+  font-size: 10pt;
+  font-weight: bold;
+  background-color: $white;
+  border: 1px solid $black;
+  border-radius: 3px;
+  outline: none;
+
+  &:hover {
+    background-color: $light-gray;
+  }
+
+  &:active {
+    background-color: $black;
+    color: $white;
+  }
+}
