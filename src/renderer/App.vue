@@ -1,20 +1,23 @@
 <template>
-  <div id="app" :class="[themeClass]">
+  <div id="app" :class="[themeClass]" @dblclick="switchTheme()">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import ThemeClass from '@/mixins/ThemeClass'
+import ThemeSwitch from '@/mixins/ThemeSwitch'
 
 export default {
   name: 'twilight-archivist',
-  mixins: [ThemeClass],
+  mixins: [ThemeClass, ThemeSwitch],
   mounted: function () {
     // load all db's
     this.$store.dispatch('loadSettlements')
     this.$store.dispatch('loadSurvivors')
     this.$store.dispatch('loadSnapshots')
+    // load theme
+    this.$store.dispatch('loadTheme')
   }
 }
 </script>
@@ -25,6 +28,7 @@ html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 /* Global CSS */

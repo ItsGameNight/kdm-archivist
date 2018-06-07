@@ -1,7 +1,7 @@
 var themeClassMixin = {
   computed: {
     themeClass: function () {
-      return 'theme-dark'
+      return this.$store.getters.theme
     }
   }
 }

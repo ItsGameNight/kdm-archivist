@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import goodnessFunction from '../../db/goodness.js'
 import { BaseTimeline } from '../assets/StaticGameData'
 
+const settings = require('electron-settings')
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -11,7 +13,8 @@ export default new Vuex.Store({
     settlements: [],
     snapshots: [],
     currentSmt: null,
-    currentSnap: null
+    currentSnap: null,
+    theme: null
   },
   getters: {
     snapshotSurvivors: (state, getters) => {
@@ -77,6 +80,10 @@ export default new Vuex.Store({
 
     inHistoryMode: (state) => {
       return state.currentSnap != null
+    },
+
+    theme: (state) => {
+      return state.theme
     }
   },
   mutations: {
@@ -103,6 +110,10 @@ export default new Vuex.Store({
     SET_SURVIVOR_BY_ID (state, payload) {
       var idx = state.survivors.findIndex((s) => { return s._id === payload.id })
       Vue.set(state.survivors, idx, payload.newObj)
+    },
+    SET_THEME (state, themeName) {
+      state.theme = themeName
+      settings.set('theme', themeName)
     }
   },
   actions: {
@@ -257,6 +268,18 @@ export default new Vuex.Store({
           commit('SET_SURVIVORS', survs)
         })
       })
+    },
+
+    loadTheme ({ commit }) {
+      var theme = 'light-theme'
+      if (settings.has('theme')) {
+        theme = settings.get('theme')
+      }
+      commit('SET_THEME', theme)
+    },
+
+    setTheme ({ commit }, themeName) {
+      commit('SET_THEME', themeName)
     }
   },
   strict: process.env.NODE_ENV !== 'production'
