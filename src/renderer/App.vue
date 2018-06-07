@@ -80,6 +80,11 @@ html, body, #app {
   src: url('~@/assets/fonts/Open_Sans/OpenSans-BoldItalic.ttf')
 }
 
+.flex-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
 .DISABLE-CLICKS-HISTORY-MODE {
   pointer-events: none;
 }
