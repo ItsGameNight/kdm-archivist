@@ -1,18 +1,20 @@
 <template>
   <div class="SurvivorTableRow">
-    <survivor-modal
-      v-if="modalVisible"
-      :survivor="survivor"
-      :yeeScore="yeeScore"
-      @close="modalVisible = false; $emit('modalClose')" />
-    <modal
-      v-if="deleteModalVisible"
-      :modalWidth="300"
-      @okay="deleteSurvivor({ id: survivor._id })"
-      @close="deleteModalVisible = false">
-      <h3 slot="header">Delete {{ survivor.name }}?</h3>
-      <p slot="body">Are you sure you want to delete this survivor?</p>
-    </modal>
+    <div class="SurvivorTableRow__modals">
+      <survivor-modal
+        v-if="modalVisible"
+        :survivor="survivor"
+        :yeeScore="yeeScore"
+        @close="modalVisible = false; $emit('modalClose')" />
+      <modal
+        v-if="deleteModalVisible"
+        :modalWidth="300"
+        @okay="deleteSurvivor({ id: survivor._id })"
+        @close="deleteModalVisible = false">
+        <h3 slot="header">Delete {{ survivor.name }}?</h3>
+        <p slot="body">Are you sure you want to delete this survivor?</p>
+      </modal>
+    </div>
     <td class="SurvivorTableRow__tableData"
       :class="[mouseDownState ? 'mouse-down' : '']"
       @dblclick="collapsedState = !collapsedState"
