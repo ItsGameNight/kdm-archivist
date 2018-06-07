@@ -23,20 +23,30 @@
       </table>
     </div>
     <div class="SettlementTable__bottomButtons">
-      <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
-      <button @click="newSmtButtonPressed()">New Settlement</button>
+      <button v-if="currentSmt !== null"
+        :class="[themeClass]"
+        @click="deleteSettlement(currentSmt)">
+          Delete Settlement
+      </button>
+      <button
+        :class="[themeClass]"
+        @click="newSmtButtonPressed()">
+          New Settlement
+      </button>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
+import { mapActions, mapState } from 'vuex'
 import SettlementTableRow from './SettlementTableRow'
 import Modal from './Modal'
-import { mapActions, mapState } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'settlement-table',
   components: { SettlementTableRow, Modal },
+  mixins: [ThemeClass],
   data () {
     return {
       showNewSettlementModal: false,

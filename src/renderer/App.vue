@@ -1,12 +1,15 @@
 <template>
-  <div id="app">
+  <div id="app" :class="[themeClass]">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import ThemeClass from '@/mixins/ThemeClass'
+
 export default {
   name: 'twilight-archivist',
+  mixins: [ThemeClass],
   mounted: function () {
     // load all db's
     this.$store.dispatch('loadSettlements')
@@ -16,7 +19,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+html, body, #app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* Global CSS */
 @font-face {
   font-family: "PT Sans";

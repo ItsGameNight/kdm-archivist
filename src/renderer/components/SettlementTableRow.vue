@@ -1,6 +1,6 @@
 <template>
   <td class="SettlementTableRow"
-    :class="[selected ? 'selected' : '']"
+    :class="[selected ? 'selected' : '', themeClass]"
     @click.stop="setCurrentSmt(smtID)">
     <span v-if="editing">
       <input v-model="name" placeholder="Unnamed Settlement"></input>
@@ -19,9 +19,11 @@
 
 <script>
 import { mapActions } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'settlement-table-row',
+  mixins: [ThemeClass],
   props: {
     smtID: 0,
     index: 0,
@@ -59,10 +61,21 @@ export default {
 <style lang="scss" scoped>
 .SettlementTableRow {
   padding: 5px;
-  border: 1px solid $black;
 
-  &.selected {
-    background-color: $light-gray;
+  &.theme-light {
+    border: 2px solid $light-border;
+
+    &.selected {
+      background-color: $light-highlight;
+    }
+  }
+
+  &.theme-dark {
+    border: 2px solid $dark-input;
+
+    &.selected {
+      background-color: $dark-highlight;
+    }
   }
 
   &__editButton {

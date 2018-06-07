@@ -3,17 +3,36 @@
 button {
   font-size: 10pt;
   font-weight: bold;
-  background-color: $white;
-  border: 1px solid $black;
   border-radius: 3px;
   outline: none;
 
-  &:hover {
-    background-color: $light-gray;
+  &.theme-light {
+    color: $light-text;
+    background-color: $light-bg;
+    border: 1px solid $light-border;
+
+    &:hover {
+      background-color: $light-highlight;
+    }
+
+    &:active {
+      background-color: $light-text;
+      color: $light-bg;
+    }
   }
 
-  &:active {
-    background-color: $black;
-    color: $white;
+  &.theme-dark {
+    color: $dark-text;
+    background-color: $dark-input;
+    border: 1px solid $dark-border;
+
+    &:hover {
+      background-color: $dark-hover;
+    }
+
+    &:active {
+      background-color: $dark-text;
+      color: $dark-bg;
+    }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="WelcomeView">
+  <div class="WelcomeView" :class="[]">
     <header>
       <h1>Twilight Archivist</h1>
       <h4>A Kingdom Death: Monster Companion App</h4>
@@ -7,15 +7,22 @@
     <div class="WelcomeView__settlementTable">
       <settlement-table />
     </div>
-    <button class="WelcomeView__playButton" @click="$router.push({ name: 'main' })">Play</button>
+    <button
+      class="WelcomeView__playButton"
+      :class="[themeClass]"
+      @click="$router.push({ name: 'main' })">
+        Play
+    </button>
   </div>
 </template>
 
 <script type="text/javascript">
 import SettlementTable from '@/components/SettlementTable'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'welcome-view',
+  mixins: [ThemeClass],
   components: { SettlementTable }
 }
 </script>
