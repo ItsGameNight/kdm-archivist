@@ -123,6 +123,7 @@ ul.editable-list {
   border: 2px solid black;
   border-top: none;
   border-radius: 2px 2px 0 2px;
+  background-color: white;
 }
 button.add-item {
   float: right;
@@ -143,6 +144,5 @@ button.add-item:active {
   color: white;
 }
 .editable-list-wrapper {
-  background: white;
 }
 </style>
