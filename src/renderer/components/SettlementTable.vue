@@ -18,7 +18,7 @@
             :index="index"
             :key="smt._id"
             :selected="smt._id === currentSmt"
-            @smt-select="setCurrentSmt" />
+            @smt-select="setCurrentSmt(smt._id)" />
         </tr>
       </table>
     </div>
@@ -74,6 +74,9 @@ export default {
         this.createNamedSettlement(this.newName)
       }
     }
+  },
+  mounted () {
+    this.setCurrentSmt(null)
   }
 }
 </script>

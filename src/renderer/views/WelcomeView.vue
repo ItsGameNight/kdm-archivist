@@ -10,20 +10,33 @@
     <button
       class="WelcomeView__playButton"
       :class="[themeClass]"
-      @click="$router.push({ name: 'main' })">
+      @click="playButtonPressed()">
         Play
     </button>
   </div>
 </template>
 
 <script type="text/javascript">
+import { mapState } from 'vuex'
 import SettlementTable from '@/components/SettlementTable'
 import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'welcome-view',
   mixins: [ThemeClass],
-  components: { SettlementTable }
+  components: { SettlementTable },
+  computed: {
+    ...mapState(['currentSmt'])
+  },
+  methods: {
+    playButtonPressed: function () {
+      if (!this.currentSmt) {
+        alert('Please select a settlement to play!')
+      } else {
+        this.$router.push({ name: 'main' })
+      }
+    }
+  }
 }
 </script>
 

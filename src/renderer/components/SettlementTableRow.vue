@@ -10,6 +10,7 @@
     </span>
     <button v-if="selected"
       class="SettlementTableRow__editButton"
+      :class="themeClass"
       @click.stop="toggleEdit()">
         <span v-if="!editing">Edit</span>
         <span v-else>Done</span>
