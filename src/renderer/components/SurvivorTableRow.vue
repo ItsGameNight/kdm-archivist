@@ -410,6 +410,10 @@ export default {
   display: table;
   margin: 0 auto;
 
+  &__modals {
+    display: table-caption;
+  }
+
   &__tableData {
     min-width: 633px;
     width: 85%;
