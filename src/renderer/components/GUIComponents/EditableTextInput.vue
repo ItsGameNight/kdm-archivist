@@ -7,10 +7,8 @@
       :placeholder="placeholder"
       :type="inputType"
       :disabled="inHistoryMode"
-      :style="editableStyle"
+      :style="textStyle"
       :value="textValue"
-      @mouseover="hover = true"
-      @mouseleave="hover = false"
       @focus="focus = true; $emit('focus')"
       @blur="focus = false; selectCompletion(); $emit('blur');"
       @keyup.enter="selectCompletion(); $event.target.blur()"
@@ -63,7 +61,6 @@ export default {
   data: function () {
     return {
       bgImgUrl: 'static/pencil.png',
-      hover: false,
       focus: false,
       filteredIdx: -1,
       windowHeight: 0,
@@ -101,25 +98,6 @@ export default {
   },
   computed: {
     ...mapGetters(['inHistoryMode']),
-    editableStyle: function () {
-      if (this.focus) {
-        return {
-          ...this.textStyle,
-          backgroundImage: 'url(' + this.bgImgUrl + ')',
-          paddingLeft: '1em',
-          fontWeight: 'normal',
-          fontStyle: 'normal'
-        }
-      } else if (this.hover) {
-        return {
-          ...this.textStyle,
-          backgroundImage: 'url(' + this.bgImgUrl + ')',
-          paddingLeft: '1em'
-        }
-      } else {
-        return this.textStyle
-      }
-    },
 
     okayToShowAutocomplete: function () {
       // check filtered list has stuff + focus on
@@ -210,6 +188,33 @@ export default {
     background-size: 0.8em;
     background-position: left center;
     border: none;
+    -webkit-box-sizing: border-box;
+
+    &:hover {
+      padding-left: 1em;
+
+      &.theme-light {
+        background-image: url('~@/assets/img/pencil.png');
+      }
+
+      &.theme-dark {
+        background-image: url('~@/assets/img/pencil-white.png');
+      }
+    }
+
+    &:focus {
+      padding-left: 1em;
+      font-weight: normal;
+      font-style: normal;
+
+      &.theme-light {
+        background-image: url('~@/assets/img/pencil.png');
+      }
+
+      &.theme-dark {
+        background-image: url('~@/assets/img/pencil-white.png');
+      }
+    }
   }
 
   &__autocompleteList {
