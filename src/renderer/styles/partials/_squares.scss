@@ -1,0 +1,16 @@
+%baseSquare {
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  min-height: 10px;
+  border: 1px solid black;
+  margin: 0px 2px;
+  cursor: pointer;
+}
+.square {
+  @extend %baseSquare;
+  background: black;
+}
+.emptySquare {
+  @extend %baseSquare;
+}

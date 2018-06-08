@@ -29,3 +29,12 @@ input.theme-dark {
     background: $dark-highlight;
   }
 }
+
+.square.theme-dark {
+  background-color: $dark-text;
+  border-color: $dark-text;
+}
+
+.emptySquare.theme-dark {
+  border-color: $dark-text;
+}

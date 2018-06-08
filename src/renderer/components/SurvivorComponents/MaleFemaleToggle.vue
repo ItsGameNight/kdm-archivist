@@ -1,14 +1,14 @@
 <template>
-  <div 
-    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
-    class="mf-toggle">
-    M <div :class="[sex === 'm' ? 'square' : 'empty-square']" @click="setSex('m')"></div>
-    F <div :class="[sex === 'f' ? 'square' : 'empty-square']" @click="setSex('f')"></div>
+  <div class="MaleFemaleToggle"
+    :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '']">
+    M <div :class="[sex === 'm' ? 'square' : 'emptySquare', themeClass]" @click="setSex('m')"></div>
+    F <div :class="[sex === 'f' ? 'square' : 'emptySquare', themeClass]" @click="setSex('f')"></div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapActions, mapGetters } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'male-female-toggle',
@@ -16,6 +16,7 @@ export default {
     initSex: { required: true },
     survivorID: { required: true }
   },
+  mixins: [ThemeClass],
   computed: {
     ...mapGetters(['inHistoryMode'])
   },
@@ -41,31 +42,12 @@ export default {
 }
 </script>
 
-<style>
-.mf-toggle {
-  font-size: 10pt;
-  font-weight: normal;
+<style lang="scss" scoped>
+.MaleFemaleToggle {
   display: flex;
   flex-direction: row;
+  font-size: 10pt;
+  font-weight: normal;
   line-height: 12px;
-}
-.square {
-  width: 10px;
-  min-width: 10px;
-  height: 10px;
-  min-height: 10px;
-  background: black;
-  border: 1px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
-}
-.empty-square {
-  width: 10px;
-  min-width: 10px;
-  height: 10px;
-  min-height: 10px;
-  border: 1px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
 }
 </style>
