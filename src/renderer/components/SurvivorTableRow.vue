@@ -611,7 +611,7 @@ export default {
   }
 
   &__nameInputWrapper {
-    width: 95%;
+    width: 80%;
     margin-bottom: 6px;
   }
 
