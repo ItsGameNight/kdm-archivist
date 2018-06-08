@@ -1,6 +1,31 @@
 @import '../base/color';
 
-.theme-dark {
+div.theme-dark {
   color: $dark-text;
   background-color: $dark-bg;
+}
+
+button.theme-dark {
+  color: $dark-text;
+  background-color: $dark-input;
+  border-color: $dark-border;
+
+  &:hover {
+    background-color: $dark-hover;
+  }
+
+  &:active {
+    background-color: $dark-text;
+    color: $dark-bg;
+  }
+}
+
+input.theme-dark {
+  color: $dark-text;
+  background-color: $dark-bg;
+  border-color: $dark-border;
+
+  &::selection {
+    background: $dark-highlight;
+  }
 }

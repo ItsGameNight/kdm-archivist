@@ -7,34 +7,4 @@ button {
   border-style: solid;
   border-radius: 3px;
   outline: none;
-
-  &.theme-light {
-    color: $light-text;
-    background-color: $light-bg;
-    border-color: $light-border;
-
-    &:hover {
-      background-color: $light-highlight;
-    }
-
-    &:active {
-      background-color: $light-text;
-      color: $light-bg;
-    }
-  }
-
-  &.theme-dark {
-    color: $dark-text;
-    background-color: $dark-input;
-    border-color: $dark-border;
-
-    &:hover {
-      background-color: $dark-hover;
-    }
-
-    &:active {
-      background-color: $dark-text;
-      color: $dark-bg;
-    }
-  }
 }
