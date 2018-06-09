@@ -1,8 +1,15 @@
 <template>
-  <progress-bar :title="'Hunt XP'" :initLevel="level" :maxLevel="16" :boldLevels="[2, 6, 10, 15]" :extraBoldLevels="[16]" :survivorID="survivorID" :stat="'xp'" />
+  <progress-bar
+    :title="'Hunt XP'"
+    :initLevel="level"
+    :maxLevel="16"
+    :boldLevels="[2, 6, 10, 15]"
+    :extraBoldLevels="[16]"
+    :survivorID="survivorID"
+    :stat="'xp'" />
 </template>
 
-<script>
+<script type="text/javascript">
 import ProgressBar from './ProgressBar'
 
 export default {
@@ -15,6 +22,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
