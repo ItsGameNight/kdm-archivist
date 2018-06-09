@@ -31,6 +31,10 @@ input.theme-dark {
   }
 }
 
+.theme-dark::placeholder {
+  color: $dark-highlight;
+}
+
 textarea.theme-dark {
   color: $dark-text;
   background-color: $dark-bg;

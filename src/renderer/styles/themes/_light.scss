@@ -30,6 +30,10 @@ input.theme-light {
   }
 }
 
+.theme-light::placeholder {
+  color: $light-hover;
+}
+
 textarea.theme-light {
   color: $light-text;
   background-color: $light-bg;

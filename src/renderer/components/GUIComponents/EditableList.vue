@@ -1,6 +1,6 @@
 <template>
-  <div class="editable-list-wrapper">
-    <ul class="editable-list">
+  <div class="EditableList">
+    <ul class="EditableList__list" :class="[themeClass]">
       <editable-list-item
         v-for="(item, index) in listItems"
         :initTextValue="numbered ? item.name : item"
@@ -14,26 +14,28 @@
         :parentHeight="parentHeight"
         @update="updateItem(index, $event)"
         @updateCount="updateCount(index, $event)"
-        @delete="deleteItem(index)" >
-      </editable-list-item>
+        @delete="deleteItem(index)" />
     </ul>
     <button
       v-if="!max || listItems.length < max"
-      class="add-item"
+      class="EditableList__addButton"
+      :class="[themeClass]"
       :disabled="inHistoryMode"
       @click="addNew">
-      +
+        +
     </button>
   </div>
 </template>
 
-<script>
-import EditableListItem from './EditableListItem'
+<script type="text/javascript">
 import { mapGetters } from 'vuex'
+import EditableListItem from './EditableListItem'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'editable-list',
   components: { EditableListItem },
+  mixins: [ThemeClass],
   props: {
     listItems: { required: true },
     max: { required: false, default: null },
@@ -115,34 +117,54 @@ export default {
 }
 </script>
 
-<style scoped>
-ul.editable-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  border: 2px solid black;
-  border-top: none;
-  border-radius: 2px 2px 0 2px;
-  background-color: white;
-}
-button.add-item {
-  float: right;
-  background-color: white;
-  font-size: 8pt;
-  font-weight: normal;
-  border: 2px solid black;
-  border-top: none;
-  border-radius: 0 0 2px 2px;
-  outline: none;
-}
-button.add-item:hover {
-  font-weight: bold;
-  font-size: 10pt;
-}
-button.add-item:active {
-  background: black;
-  color: white;
-}
-.editable-list-wrapper {
+<style lang="scss" scoped>
+.EditableList {
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 2px 2px 0 2px;
+    border-top: none;
+  }
+
+  &__addButton {
+    float: right;
+    font-size: 8pt;
+    font-weight: normal;
+    border-width: 2px;
+    border-radius: 0 0 2px 2px;
+    border-top: none;
+
+    &.theme-dark {
+      background-color: $dark-bg;
+    }
+
+    &:hover {
+      font-weight: bold;
+      font-size: 10pt;
+
+      &.theme-light {
+        background-color: $light-bg;
+      }
+
+      &.theme-dark {
+        background-color: $dark-bg;
+      }
+    }
+
+    &:active {
+      &.theme-light {
+        color: $light-bg;
+        background-color: $light-text;
+      }
+
+      &.theme-dark {
+        color: $dark-bg;
+        background-color: $dark-text;
+      }
+    }
+  }
 }
 </style>

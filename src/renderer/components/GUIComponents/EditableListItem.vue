@@ -1,53 +1,59 @@
 <template>
-  <div>
-    <li class="editable-list-item" @mouseover="hover = true" @mouseleave="hover = false">
-      <input
-        v-if="numbered"
-        class="item-count"
-        :class="[numberEditable ? '' : 'not-editable']"
-        :value="count"
-        type="number"
-        :style="{fontSize:textStyle.fontSize}"
-        :disabled="inHistoryMode || !numberEditable"
-        @input="$emit('updateCount', $event.target.value)">
-      </input>
-      <div class="item-input-wrapper" :class="{'input-on-hover' : (hover && !editing)}">
-        <editable-text-input
-          :textValue="initTextValue"
-          :textStyle="listTextStyle"
-          :placeholder="placeholder"
-          :autocompleteList="autocompleteList"
-          :parentHeight="parentHeight"
-          @update="$emit('update', $event)"
-          @focus="editing = true"
-          @blur="editing = false; hover = false"
-          />
-      </div>
-      <div class="delete-icon-wrapper">
-        <font-awesome-icon
-          v-if="hover && !editing"
-          :icon="deleteIcon"
-          class="delete-icon"
-          :style="deleteIconPadding"
-          @click="$emit('delete')"
-          @mousedown="mouseDownOnDelete = true"
-          @mouseup="mouseDownOnDelete = false"
-          @mouseleave="mouseDownOnDelete = false" />
-      </div>
-    </li>
-  </div>
+  <li
+    class="EditableListItem"
+    :class="[themeClass]"
+    @mouseover="hover = true"
+    @mouseleave="hover = false">
+    <input
+      v-if="numbered"
+      class="EditableListItem__itemCount"
+      :class="[numberEditable ? '' : 'itemCount--notEditable', themeClass]"
+      :value="count"
+      type="number"
+      :style="{fontSize:textStyle.fontSize}"
+      :disabled="inHistoryMode || !numberEditable"
+      @input="$emit('updateCount', $event.target.value)">
+    </input>
+    <div
+      class="EditableListItem__inputWrapper"
+      :class="[{ 'inputWrapper--hover' : (hover && !editing) }, themeClass]">
+      <editable-text-input
+        :textValue="initTextValue"
+        :textStyle="listTextStyle"
+        :placeholder="placeholder"
+        :autocompleteList="autocompleteList"
+        :parentHeight="parentHeight"
+        @update="$emit('update', $event)"
+        @focus="editing = true"
+        @blur="editing = false; hover = false"
+        />
+    </div>
+    <div class="EditableListItem__deleteIconWrapper">
+      <font-awesome-icon
+        v-if="hover && !editing"
+        class="EditableListItem__deleteIcon"
+        :icon="deleteIcon"
+        :style="deleteIconPadding"
+        @click="$emit('delete')"
+        @mousedown="mouseDownOnDelete = true"
+        @mouseup="mouseDownOnDelete = false"
+        @mouseleave="mouseDownOnDelete = false" />
+    </div>
+  </li>
 </template>
 
-<script>
+<script type="text/javascript">
+import { mapGetters } from 'vuex'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faTimesCircle as farTimesCircle } from '@fortawesome/fontawesome-free-regular'
 import { faTimesCircle as fasTimesCircle } from '@fortawesome/fontawesome-free-solid'
 import EditableTextInput from './EditableTextInput'
-import { mapGetters } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'editable-list-item',
   components: { EditableTextInput, FontAwesomeIcon },
+  mixins: [ThemeClass],
   props: {
     initTextValue: { required: true },
     count: { required: true },
@@ -89,41 +95,39 @@ export default {
 }
 </script>
 
-<style scoped>
-li.editable-list-item {
-  padding-left: 2px;
-  border-top: 2px solid black;
+<style lang="scss" scoped>
+.EditableListItem {
   position: relative;
-}
-.item-input-wrapper {
-  width: 80%;
-  background: white;
-  display: inline-block;
-}
-.item-count {
-  width: 24px;
-  text-align: center;
-  font-weight: bold;
-  border: none;
-  border-right: 1px solid black;
-  padding-right: 6px;
-  background: transparent;
-  display: inline-block;
-  outline: none;
-}
-.not-editable {
-  user-select: none;
-  font-weight: normal;
-}
-.input-on-hover {
-  background: white;
-  width: 70%;
-}
-.delete-icon-wrapper {
-  position: absolute;
-  right: 1px;
-  top: 1px;
-}
-.delete-icon {
+  padding-left: 2px;
+  border-top-width: 2px;
+  border-top-style: solid;
+
+  &__inputWrapper {
+    display: inline-block;
+    width: 85%;
+  }
+
+  &__deleteIconWrapper {
+    position: absolute;
+    right: 2px;
+    top: 0;
+  }
+
+  &__itemCount {
+    display: inline-block;
+    width: 24px;
+    padding-right: 6px;
+    text-align: center;
+    font-weight: bold;
+    border: none;
+    border-right-width: 1px;
+    border-right-style: solid;
+    outline: none;
+
+    &.itemCount--notEditable {
+      font-weight: normal;
+      user-select: none;
+    }
+  }
 }
 </style>
