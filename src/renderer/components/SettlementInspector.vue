@@ -76,7 +76,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapGetters, mapActions } from 'vuex'
 import { EditableList } from './GUIComponents'
 import {
@@ -156,7 +156,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 input.value {
   text-align: center;
   width: 20px;
