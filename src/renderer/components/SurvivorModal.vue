@@ -1,51 +1,85 @@
 <template>
   <modal @close="$emit('close', survivor)" :modalWidth="750">
     <div slot="header" style="display: none;"></div>
-    <div slot="body">
+    <div slot="body" class="SurvivorModal">
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 1 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="flex-wrapper row1">
-        <div class="flex-wrapper general-info">
-          <div class="yee-icon">
+      <div class="SurvivorModal__row row--row1">
+        <div class="SurvivorModal__generalInfo" :class="[themeClass]">
+          <div class="SurvivorModal__yeeIcon">
             <font-awesome-icon
               :icon="yeeIcon"
               :style="yeeColor" />
           </div>
-          <div class="survivor-name">
-            <editable-text-input :textValue="survivor.name" @update="update('name', $event)" :textStyle="{fontWeight:'bold', fontSize: '14pt'}" :placeholder="'Unnamed'" />
+          <div class="SurvivorModal__survivorName">
+            <editable-text-input
+              :textValue="survivor.name"
+              :textStyle="{fontWeight:'bold', fontSize: '14pt'}"
+              :placeholder="'Unnamed'"
+              @update="update('name', $event)" />
           </div>
-          <div class="sex-toggle">
-            <male-female-toggle :initSex="survivor.sex" :survivorID="survivor._id" />
+          <div class="SurvivorModal__sexToggle">
+            <male-female-toggle
+              :initSex="survivor.sex"
+              :survivorID="survivor._id" />
           </div>
         </div>
-        <div class="hunt-xp"><hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" /></div>
+        <div class="SurvivorModal__huntXp" :class="[themeClass]">
+          <hunt-xp-bar :survivorID="survivor._id" :level="survivor.xp" />
+        </div>
       </div>
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 2 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="flex-wrapper row2">
-        <div class="flex-wrapper extra-names">
-          <div class="nickname">
-            <editable-text-input :placeholder="'Nickname'" :textValue="survivor.nickname" @update="update('nickname', $event)" :textStyle="{fontSize: '10pt'}" />
+      <div class="SurvivorModal__row row--row2">
+        <div class="SurvivorModal__extraNames">
+          <div class="SurvivorModal__extraNameInput extraNameInput--nickname" :class="[themeClass]">
+            <editable-text-input
+              :placeholder="'Nickname'"
+              :textValue="survivor.nickname"
+              :textStyle="{fontSize: '10pt'}"
+              @update="update('nickname', $event)" />
           </div>
-          <div class="surname">
-            <editable-text-input :placeholder="'Surname'" :textValue="survivor.surname" @update="update('surname', $event)" :textStyle="{fontSize: '10pt'}" />
+          <div class="SurvivorModal__extraNameInput extraNameInput--surname" :class="[themeClass]">
+            <editable-text-input
+              :placeholder="'Surname'"
+              :textValue="survivor.surname"
+              :textStyle="{fontSize: '10pt'}"
+              @update="update('surname', $event)" />
           </div>
         </div>
-        <div class="flex-wrapper alive-box">
-          <div class="birth-label">Born LY:</div><div class="birth-year"><editable-text-input :inputType="'number'" :textValue="survivor.birthYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update('birthYear', $event)" /></div>
-          <div class="dead-or-alive"><alive-toggle :initValue="survivor.alive" :survivorID="survivor._id" /></div>
-          <div class="death-label">Died LY:</div><div class="death-year"><editable-text-input :inputType="'number'" :textValue="survivor.deathYear" :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}" :placeholder="''" @update="update('deathYear', $event); update('alive', false)" /></div>
-          <div v-if="survivor.alive" class="depart-button-wrapper">
-            <button class="depart-button"
+        <div class="SurvivorModal__aliveBox">
+          <div class="SurvivorModal__aliveLabel aliveLabel--birth">Born LY:</div>
+          <div class="SurvivorModal__aliveYearInput aliveYearInput--birth">
+            <editable-text-input
+              :inputType="'number'"
+              :textValue="survivor.birthYear"
+              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}"
+              :placeholder="''"
+              @update="update('birthYear', $event)" />
+          </div>
+          <div class="SurvivorModal__deadOrAlive">
+            <alive-toggle :initValue="survivor.alive" :survivorID="survivor._id" />
+          </div>
+          <div class="SurvivorModal__aliveLabel aliveLabel--death">Died LY:</div>
+          <div class="SurvivorModal__aliveYearInput aliveYearInput--death">
+            <editable-text-input
+              :inputType="'number'"
+              :textValue="survivor.deathYear"
+              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}"
+              :placeholder="''"
+              @update="update('deathYear', $event); update('alive', false)" />
+          </div>
+          <div v-if="survivor.alive" class="SurvivorModal__departButtonWrapper">
+            <button class="SurvivorModal__departButton"
               :disabled="inHistoryMode"
-              :class="[survivor.departing ? 'green' : '']"
+              :class="[themeClass, survivor.departing ? 'green' : '']"
               @click="setDeparting(!survivor.departing)"
               @dblclick.stop @mousedown.stop>
-              <font-awesome-icon :icon="departIcon" />
-              <span v-if="survivor.departing">Departing</span>
-              <span v-else>Resting</span>
+                <font-awesome-icon :icon="departIcon" />
+                <span v-if="survivor.departing">Departing</span>
+                <span v-else>Resting</span>
             </button>
           </div>
         </div>
@@ -53,59 +87,151 @@
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 3 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="flex-wrapper row3">
-        <div class="survival-box">
-          <div :class="[survivor.cannotSpendSurvival ? 'no-survival' : '']">
-            <div class="row3-title"><span>Survival</span></div>
-            <div class="flex-wrapper">
-              <div class="survival-input"><editable-stat :initValue="survivor.survival" :maxValue="currentSettlement.survivalLimit" :minValue="0" limitBox @update="update('survival', $event)" /></div>
-              <div class="survival-abilities">
-               <div class="ability"><square-toggle :statDisplayName="'Dodge'" :initValue="survivor.dodge" :squareSize="'8'" @update="update('dodge', $event)"/></div>
-               <div class="ability"><square-toggle :statDisplayName="'Encourage'" :initValue="survivor.encourage" :squareSize="'8'" @update="update('encourage', $event)" /></div>
-               <div class="ability"><square-toggle :statDisplayName="'Dash'" :initValue="survivor.dash" :squareSize="'8'" @update="update('dash', $event)" /></div>
-               <div class="ability"><square-toggle :statDisplayName="'Surge'" :initValue="survivor.surge" :squareSize="'8'" @update="update('surge', $event)" /></div>
-               <div class="ability"><square-toggle :statDisplayName="'Endure'" :initValue="survivor.endure" :squareSize="'8'" @update="update('endure', $event)" /></div>
-             </div>
-           </div>
-         </div>
-         <div class="cannot-spend-survival">
-          <lock-toggle :initValue="survivor.cannotSpendSurvival" :statDisplayName="'Cannot Spend Survival'" @update="update('cannotSpendSurvival', $event)" />
-        </div>
-        </div>
-        <div class="stats-box">
-          <div class="row3-title"><span>Showdown Stats</span><div class="skip-hunt"><lock-toggle :statDisplayName="'Skip Next Hunt'" :initValue="survivor.skipHunt" @update="update('skipHunt', $event)"/></div></div>
-          <div class="flex-wrapper stats-group">
-            <editable-stat :statDisplayName="'MOV'" :initValue="survivor.movement" @update="update('movement', $event)" />
-            <editable-stat :statDisplayName="'ACC'" :initValue="survivor.accuracy" @update="update('accuracy', $event)" />
-            <editable-stat :statDisplayName="'STR'" :initValue="survivor.strength" @update="update('strength', $event)" />
-            <editable-stat :statDisplayName="'EVA'" :initValue="survivor.evasion" @update="update('evasion', $event)" />
-            <editable-stat :statDisplayName="'LCK'" :initValue="survivor.luck" @update="update('luck', $event)" />
-            <editable-stat :statDisplayName="'SPD'" :initValue="survivor.speed" @update="update('speed', $event)" />
-          </div>
-        </div>
-        <div class="progress-box">
-          <div class="row3-title"><span>Development Stats</span></div>
-          <div class="progress-group">
-            <div class="flex-wrapper weapon-prof-group">
-              <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
-              <div class="weapon-type">
-                <div class="weapon-type-text">
-                  Weapon Type:
+      <div class="SurvivorModal__row row--row3">
+        <div class="SurvivorModal__rowBox rowBox--row3--survival">
+          <div :class="[survivor.cannotSpendSurvival ? 'SurvivorModal__noSurvival' : '']">
+            <div class="SurvivorModal__rowTitle rowTitle--row3">
+              <span>Survival</span>
+            </div>
+            <div class="SurvivorModal__survivalBox">
+              <div class="SurvivorModal__survivalInput">
+                <editable-stat
+                  :initValue="survivor.survival"
+                  :maxValue="currentSettlement.survivalLimit"
+                  :minValue="0"
+                  limitBox
+                  @update="update('survival', $event)" />
+              </div>
+              <div class="SurvivorModal__survivalAbilitiesList">
+                <div class="SurvivorModal__survivalAbility">
+                  <square-toggle
+                    :statDisplayName="'Dodge'"
+                    :initValue="survivor.dodge"
+                    :squareSize="'8'"
+                    @update="update('dodge', $event)"/>
                 </div>
-                <div class="weapon-type-input"><editable-text-input :textValue="survivor.weaponProficiency" @update="update('weaponProficiency', $event)" :textStyle="{fontSize: '9pt', fontStyle: 'oblique'}" :placeholder="'None declared'" /></div>
+                <div class="SurvivorModal__survivalAbility">
+                  <square-toggle
+                    :statDisplayName="'Encourage'"
+                    :initValue="survivor.encourage"
+                    :squareSize="'8'"
+                    @update="update('encourage', $event)" />
+                </div>
+                <div class="SurvivorModal__survivalAbility">
+                  <square-toggle
+                    :statDisplayName="'Dash'"
+                    :initValue="survivor.dash"
+                    :squareSize="'8'"
+                    @update="update('dash', $event)" />
+                </div>
+                <div class="SurvivorModal__survivalAbility">
+                  <square-toggle
+                    :statDisplayName="'Surge'"
+                    :initValue="survivor.surge"
+                    :squareSize="'8'"
+                    @update="update('surge', $event)" />
+                </div>
+                <div class="SurvivorModal__survivalAbility">
+                  <square-toggle
+                    :statDisplayName="'Endure'"
+                    :initValue="survivor.endure"
+                    :squareSize="'8'"
+                    @update="update('endure', $event)" />
+                </div>
               </div>
             </div>
-            <div class="crg-und-group">
-              <div class="flex-wrapper">
-                <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
-                <div class="left"><understanding-bar :survivorID="survivor._id" :level="survivor.understanding" /></div>
-              </div>
-              <div class="flex-wrapper">
-                <div class="skill-input-wrapper">
-                  <div class="skill-input"><editable-text-input :textValue="survivor.boldSkill" @update="update('boldSkill', $event)" :placeholder="'Bold Skill'" :textStyle="{fontSize: '9pt'}" /></div>
+          </div>
+          <div class="SurvivorModal__cannotSpendSurvival">
+            <lock-toggle
+              :initValue="survivor.cannotSpendSurvival"
+              :statDisplayName="'Cannot Spend Survival'"
+              @update="update('cannotSpendSurvival', $event)" />
+          </div>
+        </div>
+        <div class="SurvivorModal__rowBox rowBox--row3--stats">
+          <div class="SurvivorModal__rowTitle rowTitle--row3">
+            <span>Showdown Stats</span>
+            <div class="SurvivorModal__skipHunt">
+              <lock-toggle
+                :statDisplayName="'Skip Next Hunt'"
+                :initValue="survivor.skipHunt"
+                @update="update('skipHunt', $event)"/>
+            </div>
+          </div>
+          <div class="SurvivorModal__statsGroup">
+            <editable-stat
+              :statDisplayName="'MOV'"
+              :initValue="survivor.movement"
+              @update="update('movement', $event)" />
+            <editable-stat
+              :statDisplayName="'ACC'"
+              :initValue="survivor.accuracy"
+              @update="update('accuracy', $event)" />
+            <editable-stat
+              :statDisplayName="'STR'"
+              :initValue="survivor.strength"
+              @update="update('strength', $event)" />
+            <editable-stat
+              :statDisplayName="'EVA'"
+              :initValue="survivor.evasion"
+              @update="update('evasion', $event)" />
+            <editable-stat
+              :statDisplayName="'LCK'"
+              :initValue="survivor.luck"
+              @update="update('luck', $event)" />
+            <editable-stat
+              :statDisplayName="'SPD'"
+              :initValue="survivor.speed"
+              @update="update('speed', $event)" />
+          </div>
+        </div>
+        <div class="SurvivorModal__rowBox rowBox--row3--progress">
+          <div class="SurvivorModal__rowTitle rowTitle--row3">
+            <span>Development Stats</span>
+          </div>
+          <div class="SurvivorModal__progressGroup">
+            <div class="SurvivorModal__weaponProfGroup">
+              <weapon-proficiency-bar :survivorID="survivor._id" :level="survivor.weaponProficiencyLevel" />
+              <div class="SurvivorModal__weaponType" :class="[themeClass]">
+                <div class="SurvivorModal__weaponTypeText">
+                  Weapon Type:
                 </div>
-                <div class="skill-input-wrapper right">
-                  <div class="skill-input"><editable-text-input :textValue="survivor.insightSkill" @update="update('insightSkill', $event)" :placeholder="'Insight Skill'" :textStyle="{fontSize: '9pt'}" /></div>
+                <div class="SurvivorModal__weaponTypeInput">
+                  <editable-text-input
+                    :textValue="survivor.weaponProficiency"
+                    :textStyle="{fontSize: '9pt', fontStyle: 'italic'}"
+                    :placeholder="'None declared'"
+                    @update="update('weaponProficiency', $event)" />
+                </div>
+              </div>
+            </div>
+            <div class="SurvivorModal__crgUndGroup">
+              <div class="SurvivorModal__crgUndRow">
+                <div class="SurvivorModal__courage">
+                  <courage-bar :survivorID="survivor._id" :level="survivor.courage" />
+                </div>
+                <div class="SurvivorModal__understanding">
+                  <understanding-bar :survivorID="survivor._id" :level="survivor.understanding" />
+                </div>
+              </div>
+              <div class="SurvivorModal__crgUndRow">
+                <div class="SurvivorModal__skillInputWrapper">
+                  <div class="SurvivorModal__skillInput">
+                    <editable-text-input
+                      :textValue="survivor.boldSkill"
+                      :placeholder="'Bold Skill'"
+                      :textStyle="{fontSize: '9pt'}"
+                      @update="update('boldSkill', $event)" />
+                  </div>
+                </div>
+                <div class="SurvivorModal__skillInputWrapper skillInputWrapper--right">
+                  <div class="SurvivorModal__skillInput">
+                    <editable-text-input
+                      :textValue="survivor.insightSkill"
+                      :placeholder="'Insight Skill'"
+                      :textStyle="{fontSize: '9pt'}"
+                      @update="update('insightSkill', $event)" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -115,39 +241,108 @@
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 4 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="row4">
-        <div class="row4-box armor-points">
-          <div class="row4-title"><span>Hit Locations</span></div>
-          <div class="flex-wrapper">
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="brainImg" />
-              <editable-stat :minValue="0" :initValue="survivor.insanity" @update="update('insanity', $event)" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.brainHP" :maxLevel="1" :boldLevels="[1]" :paddingSquares="1" :survivorID="survivor._id" :stat="'brainHP'" /></div>
+      <div class="SurvivorModal__row row--row4">
+        <div class="SurvivorModal__rowBox rowBox--row4--armorPoints">
+          <div class="SurvivorModal__rowTitle rowTitle--row4">
+            <span>Hit Locations</span>
+          </div>
+          <div class="SurvivorModal__hitLocations">
+            <div class="SurvivorModal__armorPointBox">
+              <img class="SurvivorModal__armorImg" :src="brainImg" />
+              <editable-stat
+                :minValue="0"
+                :initValue="survivor.insanity"
+                @update="update('insanity', $event)" />
+              <div class="SurvivorModal__hpBar">
+                <progress-bar
+                  :title="''"
+                  :initLevel="survivor.brainHP"
+                  :maxLevel="1"
+                  :boldLevels="[1]"
+                  :paddingSquares="1"
+                  :survivorID="survivor._id"
+                  :stat="'brainHP'" />
+              </div>
             </div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="headImg" />
-              <editable-stat :initValue="survivor.headArmor" :minValue="0" @update="update('headArmor', $event)" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.headHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'headHP'" /></div>
+            <div class="SurvivorModal__armorPointBox">
+              <img class="SurvivorModal__armorImg" :src="headImg" />
+              <editable-stat
+                :initValue="survivor.headArmor"
+                :minValue="0"
+                @update="update('headArmor', $event)" />
+              <div class="SurvivorModal__hpBar">
+                <progress-bar
+                  :title="''"
+                  :initLevel="survivor.headHP"
+                  :maxLevel="2"
+                  :boldLevels="[2]"
+                  :survivorID="survivor._id"
+                  :stat="'headHP'" />
+              </div>
             </div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="armsImg" />
-              <editable-stat :initValue="survivor.armsArmor" :minValue="0" @update="update('armsArmor', $event)" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.armsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'armsHP'" /></div>
+            <div class="SurvivorModal__armorPointBox">
+              <img class="SurvivorModal__armorImg" :src="armsImg" />
+              <editable-stat
+                :initValue="survivor.armsArmor"
+                :minValue="0"
+                @update="update('armsArmor', $event)" />
+              <div class="SurvivorModal__hpBar">
+                <progress-bar
+                  :title="''"
+                  :initLevel="survivor.armsHP"
+                  :maxLevel="2"
+                  :boldLevels="[2]"
+                  :survivorID="survivor._id"
+                  :stat="'armsHP'" />
+              </div>
             </div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="bodyImg" />
-              <editable-stat :initValue="survivor.bodyArmor" :minValue="0" @update="update('bodyArmor', $event)" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.bodyHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'bodyHP'" /></div>
+            <div class="SurvivorModal__armorPointBox">
+              <img class="SurvivorModal__armorImg" :src="bodyImg" />
+              <editable-stat
+                :initValue="survivor.bodyArmor"
+                :minValue="0"
+                @update="update('bodyArmor', $event)" />
+              <div class="SurvivorModal__hpBar">
+                <progress-bar
+                  :title="''"
+                  :initLevel="survivor.bodyHP"
+                  :maxLevel="2"
+                  :boldLevels="[2]"
+                  :survivorID="survivor._id"
+                  :stat="'bodyHP'" />
+              </div>
             </div>
-            <div class="flex-wrapper armor-point-box">
-              <img class="armor-img" :src="waistImg" />
-              <editable-stat :initValue="survivor.waistArmor" :minValue="0" @update="update('waistArmor', $event)" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.waistHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'waistHP'" /></div>
+            <div class="SurvivorModal__armorPointBox">
+              <img class="SurvivorModal__armorImg" :src="waistImg" />
+              <editable-stat
+                :initValue="survivor.waistArmor"
+                :minValue="0"
+                @update="update('waistArmor', $event)" />
+              <div class="SurvivorModal__hpBar">
+                <progress-bar
+                  :title="''"
+                  :initLevel="survivor.waistHP"
+                  :maxLevel="2"
+                  :boldLevels="[2]"
+                  :survivorID="survivor._id"
+                  :stat="'waistHP'" />
+              </div>
             </div>
-            <div class="flex-wrapper armor-point-box last">
-              <img class="armor-img" :src="legsImg" />
-              <editable-stat :initValue="survivor.legsArmor" :minValue="0" @update="update('legsArmor', $event)" />
-              <div class="hp-bar"><progress-bar :title="''" :initLevel="survivor.legsHP" :maxLevel="2" :boldLevels="[2]" :survivorID="survivor._id" :stat="'legsHP'" /></div>
+            <div class="SurvivorModal__armorPointBox armorPointBox--last">
+              <img class="SurvivorModal__armorImg" :src="legsImg" />
+              <editable-stat
+                :initValue="survivor.legsArmor"
+                :minValue="0"
+                @update="update('legsArmor', $event)" />
+              <div class="SurvivorModal__hpBar">
+                <progress-bar
+                  :title="''"
+                  :initLevel="survivor.legsHP"
+                  :maxLevel="2"
+                  :boldLevels="[2]"
+                  :survivorID="survivor._id"
+                  :stat="'legsHP'" />
+              </div>
             </div>
           </div>
         </div>
@@ -155,12 +350,16 @@
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 5 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="flex-wrapper row5">
-        <div class="fighting-arts row5box">
-          <div :class="{ 'no-fighting' : survivor.cannotUseFighting }">
-            <div class="row5title">
-              <span class="title">Fighting Arts</span>
-              <span class="subtitle">Max 3.</span>
+      <div class="SurvivorModal__row row--row5">
+        <div class="SurvivorModal__rowBox rowBox--row5--fightingArts">
+          <div :class="{ 'SurvivorModal__noFighting' : survivor.cannotUseFighting }">
+            <div class="SurvivorModal__rowTitle rowTitle--row5">
+              <span class="SurvivorModal__rowTitle rowTitle--row5--title">
+                Fighting Arts
+              </span>
+              <span class="SurvivorModal__rowTitle rowTitle--row5--subtitle">
+                Max 3.
+              </span>
             </div>
             <editable-list
               :listItems="survivor.fightingArts"
@@ -168,15 +367,23 @@
               :max="3"
               :placeholder="'Fighting Art'"
               :autocompleteList="fightingArtNames"
-              @update="update('fightingArts', $event)"
-              />
+              @update="update('fightingArts', $event)" />
           </div>
-          <div class="cannot-fight"><lock-toggle :statDisplayName="'Cannot Use Fighting Arts'" :initValue="survivor.cannotUseFighting" @update="update('cannotUseFighting', $event)" /></div>
+          <div class="SurvivorModal__cannotFight">
+            <lock-toggle
+              :statDisplayName="'Cannot Use Fighting Arts'"
+              :initValue="survivor.cannotUseFighting"
+              @update="update('cannotUseFighting', $event)" />
+          </div>
         </div>
-        <div class="disorders row5box">
-          <div class="row5title">
-            <span class="title">Disorders</span>
-            <span class="subtitle">Max 3.</span>
+        <div class="SurvivorModal__rowBox rowBox--row5--disorders">
+          <div class="SurvivorModal__rowTitle rowTitle--row5">
+            <span class="SurvivorModal__rowTitle rowTitle--row5--title">
+              Disorders
+            </span>
+            <span class="SurvivorModal__rowTitle rowTitle--row5--subtitle">
+              Max 3.
+            </span>
           </div>
           <editable-list
             :listItems="survivor.disorders"
@@ -184,25 +391,31 @@
             :max="3"
             :placeholder="'Disorder'"
             :autocompleteList="disorderNames"
-            @update="update('disorders', $event)"
-            />
+            @update="update('disorders', $event)" />
         </div>
-        <div class="abilities row5box">
-          <div class="row5title">
-            <span class="title">Abilities</span>
+        <div class="SurvivorModal__rowBox rowBox--row5--abilities">
+          <div class="SurvivorModal__rowTitle rowTitle--row5">
+            <span class="SurvivorModal__rowTitle rowTitle--row5--title">
+              Abilities
+            </span>
           </div>
-          <div class="row5scrollbox">
-            <div class="row5scroll-wrapper">
-              <editable-list :listItems="survivor.abilities" :placeholder="'Ability'" @update="update('abilities', $event)" />
+          <div class="SurvivorModal__row5scrollbox">
+            <div class="SurvivorModal__row5scrollWrapper">
+              <editable-list
+                :listItems="survivor.abilities"
+                :placeholder="'Ability'"
+                @update="update('abilities', $event)" />
             </div>
           </div>
         </div>
-        <div class="impairments row5box">
-          <div class="row5title">
-            <span class="title">Impairments</span>
+        <div class="SurvivorModal__rowBox rowBox--row5--impairments">
+          <div class="SurvivorModal__rowTitle rowTitle--row5">
+            <span class="SurvivorModal__rowTitle rowTitle--row5--title">
+              Impairments
+            </span>
           </div>
-          <div class="row5scrollbox">
-            <div class="row5scroll-wrapper">
+          <div class="SurvivorModal__row5scrollbox">
+            <div class="SurvivorModal__row5scrollWrapper">
               <editable-list
                 :listItems="survivor.impairments"
                 :placeholder="'Impairment'"
@@ -215,17 +428,17 @@
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 6 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="flex-wrapper row6">
-        <div class="family-info row6box">
-          <div class="row6title family">
+      <div class="SurvivorModal__row row--row6">
+        <div class="SurvivorModal__rowBox rowBox--row6--familyInfo">
+          <div class="SurvivorModal__rowTitle rowTitle--row6 family">
             <span>Family information:</span>
           </div>
-          <div class="flex-wrapper family-info-box">
-            <div class="parents">
-              <div class="parents-title">
+          <div class="SurvivorModal__familyInfoGroup" :class="[themeClass]">
+            <div class="SurvivorModal__parents">
+              <div class="SurvivorModal__parentsTitle">
                 Parents:
               </div>
-              <div class="parent-input-wrapper">
+              <div class="SurvivorModal__parentInputWrapper">
                 <editable-text-input
                   :textValue="survivor.mother"
                   placeholder="Mother"
@@ -233,7 +446,7 @@
                   :autocompleteList="survivorsInSettlement.map((s) => { return s.name })"
                   @update="update('mother', $event)" />
               </div>
-              <div class="parent-input-wrapper">
+              <div class="SurvivorModal__parentInputWrapper">
                 <editable-text-input
                   :textValue="survivor.father"
                   placeholder="Father"
@@ -242,22 +455,22 @@
                   @update="update('father', $event)" />
               </div>
             </div>
-            <div class="children">
-              <div class="children-title">
+            <div class="SurvivorModal__children" :class="[themeClass]">
+              <div class="SurvivorModal__childrenTitle">
                 Children:
               </div>
-              <ul class="children-list">
+              <ul class="SurvivorModal__childrenList">
                 <li v-for="child in childrenOfSurvivor">{{ child.name }}</li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="other-box row6box">
-          <div class="row6title">
+        <div class="SurvivorModal__rowBox rowBox--row6--otherBox">
+          <div class="SurvivorModal__rowTitle rowTitle--row6">
             <span>Other information:</span>
           </div>
-          <textarea
-            :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
+          <textarea class="SurvivorModal__otherTextArea"
+            :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '', themeClass]"
             :value="survivor.other"
             @input="update('other', $event.target.value)"></textarea>
         </div>
@@ -267,7 +480,7 @@
   </modal>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapActions, mapGetters } from 'vuex'
 import Modal from './Modal'
 import {
@@ -290,6 +503,7 @@ import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faCheckSquare, faHome } from '@fortawesome/fontawesome-free-solid'
 import { Disorders, FightingArts, Impairments } from '../assets/StaticGameData'
 import YeeScoreMixin from '../mixins/YeeScore'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'survivor-modal',
@@ -309,7 +523,7 @@ export default {
     EditableList,
     FontAwesomeIcon
   },
-  mixins: [YeeScoreMixin],
+  mixins: [YeeScoreMixin, ThemeClass],
   props: {
     survivor: { required: true },
     yeeScore: { required: true }
@@ -378,357 +592,541 @@ export default {
 }
 </script>
 
-<style scoped>
-.left {
-  margin-left: auto;
-}
-.general-info {
-  min-width: 47%;
-  width: 47%;
-  border-bottom: 3px solid black;
-}
-.yee-icon {
-  padding-top: 3px;
-  padding-right: 6px;
-}
-.survivor-name {
-  width: 80%;
-}
-.sex-toggle {
-  margin-left: auto;
-  margin-top: auto;
-  padding-bottom: 7px;
-}
-.hunt-xp {
-  margin-left: auto;
-  min-width: 47%;
-  width: 47%;
-  border-bottom: 3px solid black;
-}
-.row2 {
-  margin-top: 5px;
-}
-.extra-names {
-  font-size: 10pt;
-  width: 50%;
-}
-.extra-name-title {
-  padding-right: 4px;
-}
-.nickname {
-  width: 60%;
-  border-bottom: 1px solid black;
-  margin-right: 8px;
-}
-.surname {
-  width: 32%;
-  border-bottom: 1px solid black;
-}
-.alive-box {
-  width: 47%;
-  margin-left: auto;
-}
-.birth-label {
-  font-size: 10pt;
-  padding-right: 4px;
-  padding-left: 2px;
-  padding-top: 2px;
-  line-height: 15pt;
-}
-.death-label {
-  font-size: 10pt;
-  padding-right: 4px;
-  padding-left: 12px;
-  padding-top: 2px;
-  line-height: 15pt;
-}
-.birth-year {
-  width: 1.8em;
-  margin-right: 14px;
-  margin-top: 1px;
-}
-.death-year {
-  width: 1.8em;
-  margin-top: 1px;
-  margin-right: 6px;
-}
-.dead-or-alive {
-  width: 58px;
-  padding-top: 1px;
-}
-div.depart-button-wrapper {
-  padding: 2px;
-  text-align: center;
-}
-.depart-button {
-  outline: none;
-  border: none;
-  background-color: white;
-  font-size: 12pt;
-  color: black;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-.depart-button:hover {
-  cursor: pointer;
-}
-.depart-button:active {
-  transform: translateY(2px);
-}
-.green {
-  color: #00ab66;
-}
-.row3 {
-  margin-top: 10px;
-}
-.survival-box {
-  width: 20%;
-  min-width: 20%;
-  border: 2px solid black;
-}
-.survival-input {
-  padding-left: 4px;
-}
-.no-survival {
-  text-decoration: line-through;
-}
-.row3-title {
-  padding-left: 0.4em;
-  padding-top: 1px;
-  border-bottom: 1px solid black;
-}
-.row3-title span {
-  font-size: 12pt;
-  font-variant-caps: small-caps;
-}
-.survival-abilities {
-  margin-top: 8px;
-  margin-left: 10px;
-}
-.ability {
-  padding-top: 2px;
-}
-.cannot-spend-survival {
-  width: 96%;
-  margin: auto;
-}
-.stats-box {
-  width: 33%;
-  min-width: 33%;
-  margin-left: auto;
-  border: 2px solid black;
-}
-.stats-group {
-  width: 97%;
-  margin: 0 auto;
-}
-.skip-hunt {
-  float: right;
-  padding-bottom: 1px;
-  padding-right: 4px;
-}
-.progress-box {
-  width: 42%;
-  min-width: 42%;
-  margin-left: auto;
-  border: 2px solid black;
-}
-.progress-group {
-  padding: 4px;
-}
-.weapon-prof-group {
-  margin-bottom: 6px;
-  width: 100%;
-}
-.weapon-type {
-  width: 100%;
-  border-bottom: 1px dotted black;
-  margin-left: 18px;
-}
-.weapon-type-text {
-  font-size: 10pt;
-  font-variant-caps: small-caps;
-}
-.weapon-type-input {
-  width: 85%;
-}
-.skill-input-wrapper {
-  width: 46%;
-  border-bottom: 1px dotted black;
-}
-.skill-input-wrapper.right {
-  margin-left: auto;
-}
-.skill-input {
-  width: 80%;
-}
-.row4 {
-  margin-top: 10px;
-}
-.row4-box {
-  border: 2px solid black;
-}
-.row4-title {
-  padding-left: 0.2em;
-  border-bottom: 1px solid black;
-  padding-right: 2px;
-}
-.row4-title span {
-  font-size: 10pt;
-  font-variant-caps: small-caps;
-  padding-right: 10px;
-}
-.armor-points {
-  width: 99%;
-  margin: 0 auto;
-}
-.armor-point-box {
-  width: 20%;
-  padding-left: 12px;
-  padding-right: 6px;
-  border-right: 1px solid black;
-}
-.armor-point-box.last {
-  border-right: none;
-}
-.armor-img {
-  width: 20px;
-  height: 20px;
-  margin: auto 6px auto 0;
-}
-.hp-bar {
-  height: 18px;
-  margin: auto 0;
-}
-.notes-box {
-  margin-left: 10px;
-}
-.row5 {
-  margin-top: 10px;
-}
-.row5title {
-  padding-left: 4px;
-  padding-bottom: 2px;
-  position: relative;
-}
-.row5title span.title {
-  font-size: 12pt;
-  font-variant-caps: small-caps;
-}
-.row5title span.subtitle {
-  font-size: 9pt;
-  font-variant-caps: none;
-  font-style: oblique;
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-}
-.row5box {
-  margin-right: 1%;
-}
-.row5scrollbox {
-  min-height: 86px;
-  max-height: 86px;
-  overflow-y: scroll;
-}
-.row5scroll-wrapper {
-  width: 95%;
-}
-.fighting-arts {
-  width: 25%;
-}
-.no-fighting {
-  text-decoration: line-through;
-}
-.cannot-fight {
-  font-size: 8pt;
-  padding-top: 4px;
-  padding-left: 12px;
-}
-.disorders {
-  width: 20%;
-}
-.abilities {
-  width: 30%;
-}
-.impairments {
-  width: 22%;
-  margin-right: 0;
-}
-.row6 {
-  margin-top: 10px;
-  padding-bottom: 5px;
-  border-bottom: 3px solid black;
-}
-.row6box {
-}
-.row6title {
-  padding-bottom: 2px;
-  border: 2px solid black;
-}
-.row6title span {
-  font-size: 10pt;
-  font-style: oblique;
-  padding-left: 4px;
-}
-.row6title.family {
-  width: 90%;
-}
-.family-info {
-  width: 40%;
-}
-.family-info-box {
-  width: 90%;
-  height: 99px;
-  border: 2px solid gray;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-}
-.parents-title,
-.children-title {
-  font-size: 10pt;
-  text-align: center;
-  padding-top: 4px;
-}
-.parents {
-  width: 50%;
-}
-.parent-input-wrapper {
-  width: 80%;
-  border-bottom: 1px dotted black;
-  margin-left: 8px;
-  margin-bottom: 14px;
-  margin-top: 6px;
-}
-.children {
-  width: 50%;
-  border-left: 1px dashed gray;
-}
-ul.children-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  height: 80%;
-  overflow: auto;
-}
-ul.children-list li {
-  font-size: 9pt;
-}
-.other-box {
-  width: 60%;
-}
-.other-box textarea {
-  width: 100%;
-  height: 100px;
-  padding: 6px 6px;
-  box-sizing: border-box;
-  border: 2px solid gray;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  background-color: #f8f8f8;
-  resize: none;
-  outline: none;
+<style lang="scss" scoped>
+.SurvivorModal {
+  &__row {
+    display: flex;
+    flex-direction: row;
+
+    &.row {
+      &--row1 {}
+
+      &--row2 {
+        margin-top: 5px;
+      }
+
+      &--row3 {
+        margin-top: 10px;
+      }
+
+      &--row4 {
+        margin-top: 10px;
+      }
+
+      &--row5 {
+        margin-top: 10px;
+      }
+
+      &--row6 {
+        margin-top: 10px;
+        padding-bottom: 5px;
+        border-bottom-width: 3px;
+        border-bottom-style: solid;
+      }
+    }
+  }
+
+  &__generalInfo {
+    display: flex;
+    flex-direction: row;
+    min-width: 47%;
+    width: 47%;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+  }
+
+  &__yeeIcon {
+    padding-top: 3px;
+    padding-right: 6px;
+  }
+
+  &__survivorName {
+    width: 100%;
+    margin-right: 5px;
+  }
+
+  &__sexToggle {
+    margin-left: auto;
+    margin-top: auto;
+    padding-bottom: 7px;
+  }
+
+  &__huntXp {
+    min-width: 47%;
+    width: 47%;
+    margin-left: auto;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+  }
+
+  &__extraNames {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    font-size: 10pt;
+  }
+
+  &__extraNameInput {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+    &.extraNameInput {
+      &--nickname {
+        width: 60%;
+        margin-right: 8px;
+      }
+
+      &--surname {
+        width: 32%;
+      }
+    }
+  }
+
+  &__aliveBox {
+    display: flex;
+    flex-direction: row;
+    width: 47%;
+    margin-left: auto;
+  }
+
+  &__aliveLabel {
+    padding: 2px 4px 0 0;
+    font-size: 10pt;
+    line-height: 15pt;
+
+    &.aliveLabel {
+      &--birth {
+        padding-left: 2px;
+      }
+
+      &--death {
+        padding-left: 12px;
+      }
+    }
+  }
+
+  &__aliveYearInput {
+    width: 1.8em;
+    margin-top: 1px;
+
+    &.aliveYearInput {
+      &--birth {
+        margin-right: 14px;
+      }
+
+      &--death {
+        margin-right: 6px;
+      }
+    }
+  }
+
+  &__deadOrAlive {
+    width: 58px;
+    padding-top: 1px;
+  }
+
+  &__departButtonWrapper {
+    padding: 0 2px;
+  }
+
+  &__departButton {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    border: none;
+
+    &.theme-dark {
+      background-color: $dark-bg;
+    }
+
+    &:hover {
+      &.theme-light {
+        color: $light-text;
+        background-color: $light-bg;
+      }
+
+      &.theme-dark {
+        color: $dark-text;
+        background-color: $dark-bg;
+      }
+
+      &.green {
+        color: $departing;
+      }
+    }
+
+    &:active {
+      transform: translateY(2px);
+
+      &.theme-light {
+        color: $light-text;
+        background-color: $light-bg;
+      }
+
+      &.theme-dark {
+        color: $dark-text;
+        background-color: $dark-bg;
+      }
+
+      &.green {
+        color: $departing;
+      }
+    }
+
+    &.green {
+      color: $departing;
+    }
+  }
+
+  &__rowBox {
+    border-width: 2px;
+    border-style: solid;
+
+    &.rowBox {
+      &--row3 {
+        &--survival {
+          width: 20%;
+          min-width: 20%;
+        }
+
+        &--stats {
+          width: 33%;
+          min-width: 33%;
+          margin-left: auto;
+        }
+
+        &--progress {
+          width: 42%;
+          min-width: 42%;
+          margin-left: auto;
+        }
+      }
+
+      &--row4 {
+        &--armorPoints {
+          width: 100%;
+          margin: 0 auto;
+        }
+      }
+
+      &--row5 {
+        &--fightingArts {
+          width: 25%;
+          margin-right: 1%;
+          border: none;
+        }
+
+        &--disorders {
+          width: 20%;
+          margin-right: 1%;
+          border: none;
+        }
+
+        &--abilities {
+          width: 30%;
+          margin-right: 1%;
+          border: none;
+        }
+
+        &--impairments {
+          width: 22%;
+          border: none;
+        }
+      }
+
+      &--row6 {
+        &--familyInfo {
+          width: 40%;
+          border: none;
+        }
+
+        &--otherBox {
+          width: 60%;
+          border: none;
+        }
+      }
+    }
+  }
+
+  &__rowTitle {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+    &.rowTitle {
+      &--row3 {
+        padding-left: 0.4em;
+        padding-top: 1px;
+
+        span {
+          font-size: 11pt;
+        }
+      }
+
+      &--row4 {
+        padding-left: 0.2em;
+        padding-right: 2px;
+
+        span {
+          font-size: 10pt;
+          padding-right: 10px;
+        }
+      }
+
+      &--row5 {
+        position: relative;
+        padding-left: 2px;
+        padding-bottom: 2px;
+        border: none;
+
+        &--title {
+          font-size: 10pt;
+          border: none;
+        }
+
+        &--subtitle {
+          position: absolute;
+          bottom: 2px;
+          right: 2px;
+          font-size: 9pt;
+          font-style: italic;
+          border: none;
+        }
+      }
+
+      &--row6 {
+        padding-bottom: 2px;
+        border-width: 2px;
+        border-style: solid;
+
+        &.family {
+          width: 90%;
+        }
+
+        span {
+          padding-left: 4px;
+          font-size: 9pt;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  &__survivalBox {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__survivalInput {
+    padding-left: 4px;
+  }
+
+  &__noSurvival {
+    text-decoration: line-through;
+  }
+
+  &__survivalAbilitiesList {
+    margin-top: 8px;
+    margin-left: 4px;
+  }
+
+  &__survivalAbility {
+    padding-top: 2px;
+  }
+
+  &__cannotSpendSurvival {
+    width: 96%;
+    margin: auto;
+  }
+
+  &__statsGroup {
+    display: flex;
+    flex-direction: row;
+    width: 97%;
+    margin: 0 auto;
+  }
+
+  &__skipHunt {
+    float: right;
+    padding-top: 1px;
+    padding-right: 4px;
+  }
+
+  &__progressGroup {
+    padding: 4px;
+  }
+
+  &__weaponProfGroup {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  &__weaponType {
+    width: 100%;
+    margin-left: 18px;
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;
+  }
+
+  &__weaponTypeText {
+    font-size: 9pt;
+  }
+
+  &__crgUndRow {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__understanding {
+    margin-left: auto;
+  }
+
+  &__skillInputWrapper {
+    width: 46%;
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;
+
+    &.skillInputWrapper {
+      &--right {
+        margin-left: auto;
+      }
+    }
+  }
+
+  &__hitLocations {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__armorPointBox {
+    display: flex;
+    flex-direction: row;
+    width: 20%;
+    padding-left: 12px;
+    padding-right: 6px;
+    border-right-width: 1px;
+    border-right-style: solid;
+
+    &.armorPointBox {
+      &--last {
+        border-right: none;
+      }
+    }
+  }
+
+  &__armorImg {
+    width: 20px;
+    height: 20px;
+    margin: auto 6px auto 0;
+  }
+
+  &__hpBar {
+    height: 18px;
+    margin: auto 0;
+  }
+
+  &__row5scrollbox {
+    min-height: 86px;
+    max-height: 86px;
+    overflow-y: scroll;
+  }
+
+  &__row5scrollWrapper {
+    width: 95%;
+  }
+
+  &__noFighting {
+    text-decoration: line-through;
+  }
+
+  &__cannotFight {
+    padding-top: 4px;
+    padding-left: 6px;
+  }
+
+  &__familyInfoGroup {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    height: 99px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 0 0 4px 4px;
+    border-top: none;
+
+    &.theme-light {
+      border-color: $light-highlight;
+    }
+
+    &.theme-dark {
+      border-color: $dark-highlight;
+    }
+  }
+
+  &__parents,
+  &__children {
+    width: 50%;
+  }
+
+  &__children {
+    border-left-width: 1px;
+    border-left-style: dotted;
+
+    &.theme-light {
+      border-left-color: $light-highlight;
+    }
+
+    &.theme-dark {
+      border-left-color: $dark-highlight;
+    }
+  }
+
+  &__parentsTitle,
+  &__childrenTitle {
+    padding-top: 4px;
+    font-size: 9pt;
+    text-align: center;
+  }
+
+  &__parentInputWrapper {
+    margin: 6px 8px 14px 8px;
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;
+  }
+
+  &__childrenList {
+    height: 80%;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+    overflow: auto;
+
+    li {
+      font-size: 11pt;
+    }
+  }
+
+  &__otherTextArea {
+    width: 100%;
+    height: 100px;
+    padding: 6px 6px;
+    box-sizing: border-box;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 0 0 4px 4px;
+    border-top: none;
+    resize: none;
+    outline: none;
+
+    &.theme-light {
+      border-color: $light-highlight;
+    }
+
+    &.theme-dark {
+      border-color: $dark-highlight;
+    }
+  }
 }
 </style>

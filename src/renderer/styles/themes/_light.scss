@@ -30,6 +30,11 @@ input.theme-light {
   }
 }
 
+textarea.theme-light {
+  color: $light-text;
+  background-color: $light-bg;
+}
+
 .square.theme-light {
   background-color: $light-text;
   border-color: $light-text;

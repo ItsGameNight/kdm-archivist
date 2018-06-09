@@ -3,6 +3,7 @@
 div.theme-dark {
   color: $dark-text;
   background-color: $dark-bg;
+  border-color: $dark-border;
 }
 
 button.theme-dark {
@@ -28,6 +29,11 @@ input.theme-dark {
   &::selection {
     background: $dark-highlight;
   }
+}
+
+textarea.theme-dark {
+  color: $dark-text;
+  background-color: $dark-bg;
 }
 
 .square.theme-dark {
