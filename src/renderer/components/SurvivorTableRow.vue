@@ -606,6 +606,7 @@ export default {
   }
 
   &__generalInfo {
+    width: 95%;
     padding-left: 5px;
     margin: auto 0;
   }
