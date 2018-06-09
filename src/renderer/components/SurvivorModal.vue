@@ -1,5 +1,5 @@
 <template>
-  <modal @close="$emit('close', survivor)" :modalWidth="750">
+  <modal @close="$emit('close', survivor)" :modalWidth="750" noFooter>
     <div slot="header" style="display: none;"></div>
     <div slot="body" class="SurvivorModal">
       <!----------------------------------------------------------------------------------->

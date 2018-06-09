@@ -13,7 +13,7 @@
               Default body.
             </slot>
           </div>
-          <div class="Modal__footer">
+          <div class="Modal__footer" v-if="!noFooter">
             <slot name="footer">
               <button class="Modal__defaultButton"
                 :class="[themeClass]"
@@ -40,7 +40,8 @@ export default {
   name: 'modal',
   mixins: [ThemeClass],
   props: {
-    modalWidth: { required: true }
+    modalWidth: { required: true },
+    noFooter: { required: false, default: false, type: Boolean }
   }
 }
 </script>
