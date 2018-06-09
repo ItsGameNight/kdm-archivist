@@ -41,6 +41,13 @@ textarea.theme-dark {
   border-color: $dark-text;
 }
 
-.emptySquare.theme-dark {
+.emptySquare.theme-dark,
+.emptySquareBold.theme-dark,
+.emptySquareExtraBold.theme-dark {
   border-color: $dark-text;
+}
+
+.invisibleSquare.theme-dark {
+  background-color: $dark-bg;
+  border-color: $dark-bg;
 }

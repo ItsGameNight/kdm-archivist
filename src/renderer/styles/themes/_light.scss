@@ -40,6 +40,13 @@ textarea.theme-light {
   border-color: $light-text;
 }
 
-.emptySquare.theme-light {
+.emptySquare.theme-light,
+.emptySquareBold.theme-light,
+.emptySquareExtraBold.theme-light {
   border-color: $light-text;
+}
+
+.invisibleSquare.theme-light {
+  background-color: $light-bg;
+  border-color: $light-bg;
 }
