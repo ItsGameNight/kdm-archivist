@@ -899,8 +899,9 @@ export default {
   }
 
   &__cannotSpendSurvival {
-    width: 96%;
-    margin: auto;
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 4px;
   }
 
   &__statsGroup {
@@ -912,8 +913,8 @@ export default {
 
   &__skipHunt {
     float: right;
-    padding-top: 1px;
-    padding-right: 4px;
+    padding-top: 2px;
+    padding-right: 6px;
   }
 
   &__progressGroup {
@@ -1006,8 +1007,9 @@ export default {
   }
 
   &__cannotFight {
+    width: 80%;
     padding-top: 4px;
-    padding-left: 6px;
+    margin: 0 auto;
   }
 
   &__familyInfoGroup {
@@ -1025,7 +1027,7 @@ export default {
     }
 
     &.theme-dark {
-      border-color: $dark-highlight;
+      border-color: $dark-border;
     }
   }
 
@@ -1043,7 +1045,7 @@ export default {
     }
 
     &.theme-dark {
-      border-left-color: $dark-highlight;
+      border-left-color: $dark-border;
     }
   }
 
@@ -1090,7 +1092,7 @@ export default {
     }
 
     &.theme-dark {
-      border-color: $dark-highlight;
+      border-color: $dark-border;
     }
   }
 }
