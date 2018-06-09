@@ -1,23 +1,30 @@
 <template>
-  <div class="dropdown">
+  <div class="Dropdown">
     <button
-      @click="showOptions = !showOptions"
-      :class="[showOptions ? 'button-with-list' : '']">
+      class="Dropdown__button"
+      :class="[showOptions ? 'Dropdown__button button--withList' : '', themeClass]"
+      @click="showOptions = !showOptions">
       <span v-if="title">{{ title }}</span>{{ options[selected] }}
     </button>
-    <div v-if="showOptions" class="options-list">
+    <div v-if="showOptions" class="Dropdown__optionsList" :class="[themeClass]">
       <ul>
-        <li v-for="(option, index) in options"
-          @click="setSelected(index); showOptions = false"
-          :class="[selected === index ? 'selected' : '']">{{ option }}</li>
+        <li
+          v-for="(option, index) in options"
+          :class="[themeClass, selected === index ? 'selected' : '']"
+          @click="setSelected(index); showOptions = false">
+            {{ option }}
+        </li>
       </ul>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
+import ThemeClass from '@/mixins/ThemeClass'
+
 export default {
   name: 'dropdown',
+  mixins: [ThemeClass],
   props: {
     options: { required: true },
     initSelected: { required: false, default: 0 },
@@ -43,57 +50,80 @@ export default {
 }
 </script>
 
-<style type="text/css" scoped>
-.dropdown {
+<style lang="scss" scoped>
+.Dropdown {
   position: relative;
   z-index: 777;
-}
-.options-list {
-  position: absolute;
-  top: 23px;
-  width: 100%;
-  background-color: white;
-}
-button {
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 3px;
-  font-size: 10pt;
-  font-weight: bold;
-  outline: none;
-}
-button:hover {
-  background-color: #ccc;
-}
-button:active {
-  background-color: black;
-  color: white;
-}
-.button-with-list {
-  border-radius: 3px 3px 0 0;
-}
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 2px 0;
-  border: 1px solid black;
-  border-top: none;
-  border-radius: 0 0 3px 3px;
-}
-li {
-  font-size: 10pt;
-  font-family: system-ui;
-  padding: 2px 0 2px 8px;
-}
-li:hover {
-  background-color: #ccc;
-}
-li:active {
-  background-color: black;
-  color: white;
-}
-.selected {
-  background-color: #ccc;
-  color: black;
+
+  &__button {
+    &.button {
+      &--withList {
+        border-radius: 3px 3px 0 0;
+      }
+    }
+  }
+
+  &__optionsList {
+    position: absolute;
+    top: 23px;
+    width: 100%;
+
+    &.theme-light {
+      background-color: $light-bg;
+    }
+
+    &.theme-dark {
+      background-color: $dark-bg;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 2px 0;
+    list-style-type: none;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0 0 3px 3px;
+    border-top: none;
+
+    li {
+      padding: 2px 0 2px 8px;
+      font-size: 9pt;
+
+      &:hover {
+        &.theme-light {
+          background-color: $light-hover;
+        }
+
+        &.theme-dark {
+          background-color: $dark-hover;
+        }
+      }
+
+      &:active {
+        &.theme-light {
+          color: $light-bg;
+          background-color: $light-text;
+        }
+
+        &.theme-dark {
+          color: $dark-bg;
+          background-color: $dark-text;
+        }
+      }
+
+      &.selected {
+        &.theme-light {
+          color: $light-text;
+          background-color: $light-highlight;
+        }
+
+        &.theme-dark {
+          color: $dark-text;
+          background-color: $dark-hover;
+        }
+      }
+    }
+  }
 }
 </style>
