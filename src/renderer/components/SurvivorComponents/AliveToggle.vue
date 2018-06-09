@@ -1,23 +1,32 @@
 <template>
-  <div 
-    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
-    class="alive-wrapper"
+  <button
+    class="AliveToggle"
+    :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '', themeClass]"
     @click="toggle()">
-    <div class="flex-wrapper">
-      <div><div class="alive-toggle" :class="[toggleState ? 'alive' : 'dead']"><font-awesome-icon :icon="icon" /></div></div>
-      <div class="alive-toggle-text"><span v-if="toggleState">Alive</span><span v-else>Dead</span></div>
+    <div class="AliveToggle__wrapper">
+      <div>
+        <div class="AliveToggle__toggle" :class="[toggleState ? 'alive' : 'dead']">
+          <font-awesome-icon :icon="icon" />
+        </div>
+      </div>
+      <div class="AliveToggle__text">
+        <span v-if="toggleState">Alive</span>
+        <span v-else>Dead</span>
+      </div>
     </div>
-  </div>
+  </button>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapActions, mapGetters } from 'vuex'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faHeartbeat, faSkull } from '@fortawesome/fontawesome-free-solid'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'lock-toggle',
   components: { FontAwesomeIcon },
+  mixins: [ThemeClass],
   props: {
     initValue: { required: true },
     survivorID: { required: true }
@@ -64,26 +73,32 @@ export default {
 }
 </script>
 
-<style>
-.alive-wrapper {
-  cursor: pointer;
-  padding-left: 0.2em;
-  padding-top: 0.1em;
-}
-.alive-wrapper:hover {
-  border-radius: 10px;
-  box-shadow: 0 0 6px 0 rgba(45, 45, 45, 0.67);
-}
-.alive-toggle {
-  font-size: 12pt;
-}
-.alive {
-  color: #8a0707;
-}
-.alive-toggle-text {
-  font-size: 10pt;
-  padding-left: 0.3em;
-  min-width: 2.6em;
-  line-height: 14pt;
+<style lang="scss" scoped>
+.AliveToggle {
+  border: none;
+
+  &.theme-dark {
+    background-color: $dark-bg;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__toggle {
+    font-size: 10pt;
+
+    &.alive {
+      color: $blood-red;
+    }
+  }
+
+  &__text {
+    min-width: 2.6em;
+    padding-left: 0.3em;
+    font-size: 10pt;
+    line-height: 14pt;
+  }
 }
 </style>

@@ -711,66 +711,31 @@ export default {
 
     &.aliveYearInput {
       &--birth {
-        margin-right: 14px;
+        margin-right: 10px;
       }
 
       &--death {
-        margin-right: 6px;
+        margin-right: 2px;
       }
     }
   }
 
   &__deadOrAlive {
     width: 58px;
-    padding-top: 1px;
+    margin-right: 4px;
   }
 
   &__departButtonWrapper {
-    padding: 0 2px;
+    padding: 0 0;
   }
 
   &__departButton {
-    padding: 0;
     margin: 0;
     text-align: center;
     border: none;
 
     &.theme-dark {
       background-color: $dark-bg;
-    }
-
-    &:hover {
-      &.theme-light {
-        color: $light-text;
-        background-color: $light-bg;
-      }
-
-      &.theme-dark {
-        color: $dark-text;
-        background-color: $dark-bg;
-      }
-
-      &.green {
-        color: $departing;
-      }
-    }
-
-    &:active {
-      transform: translateY(2px);
-
-      &.theme-light {
-        color: $light-text;
-        background-color: $light-bg;
-      }
-
-      &.theme-dark {
-        color: $dark-text;
-        background-color: $dark-bg;
-      }
-
-      &.green {
-        color: $departing;
-      }
     }
 
     &.green {
