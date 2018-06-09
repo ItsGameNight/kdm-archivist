@@ -248,7 +248,8 @@
           </div>
           <div class="SurvivorModal__hitLocations">
             <div class="SurvivorModal__armorPointBox">
-              <img class="SurvivorModal__armorImg" :src="brainImg" />
+              <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/brain.png" />
+              <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/brain-white.png" />
               <editable-stat
                 :minValue="0"
                 :initValue="survivor.insanity"
@@ -265,7 +266,8 @@
               </div>
             </div>
             <div class="SurvivorModal__armorPointBox">
-              <img class="SurvivorModal__armorImg" :src="headImg" />
+              <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/head.png" />
+              <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/head-white.png" />
               <editable-stat
                 :initValue="survivor.headArmor"
                 :minValue="0"
@@ -281,7 +283,8 @@
               </div>
             </div>
             <div class="SurvivorModal__armorPointBox">
-              <img class="SurvivorModal__armorImg" :src="armsImg" />
+              <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/arms.png" />
+              <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/arms-white.png" />
               <editable-stat
                 :initValue="survivor.armsArmor"
                 :minValue="0"
@@ -297,7 +300,8 @@
               </div>
             </div>
             <div class="SurvivorModal__armorPointBox">
-              <img class="SurvivorModal__armorImg" :src="bodyImg" />
+              <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/body.png" />
+              <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/body-white.png" />
               <editable-stat
                 :initValue="survivor.bodyArmor"
                 :minValue="0"
@@ -313,7 +317,8 @@
               </div>
             </div>
             <div class="SurvivorModal__armorPointBox">
-              <img class="SurvivorModal__armorImg" :src="waistImg" />
+              <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/waist.png" />
+              <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/waist-white.png" />
               <editable-stat
                 :initValue="survivor.waistArmor"
                 :minValue="0"
@@ -329,7 +334,8 @@
               </div>
             </div>
             <div class="SurvivorModal__armorPointBox armorPointBox--last">
-              <img class="SurvivorModal__armorImg" :src="legsImg" />
+              <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/legs.png" />
+              <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/legs-white.png" />
               <editable-stat
                 :initValue="survivor.legsArmor"
                 :minValue="0"
@@ -527,16 +533,6 @@ export default {
   props: {
     survivor: { required: true },
     yeeScore: { required: true }
-  },
-  data: function () {
-    return {
-      brainImg: 'static/brain.png',
-      headImg: 'static/head.png',
-      bodyImg: 'static/body.png',
-      armsImg: 'static/arms.png',
-      waistImg: 'static/waist.png',
-      legsImg: 'static/legs.png'
-    }
   },
   computed: {
     ...mapGetters([
@@ -907,8 +903,9 @@ export default {
   &__statsGroup {
     display: flex;
     flex-direction: row;
-    width: 97%;
+    width: 93%;
     margin: 0 auto;
+    padding-top: 12px;
   }
 
   &__skipHunt {
@@ -1021,14 +1018,6 @@ export default {
     border-style: solid;
     border-radius: 0 0 4px 4px;
     border-top: none;
-
-    &.theme-light {
-      border-color: $light-highlight;
-    }
-
-    &.theme-dark {
-      border-color: $dark-border;
-    }
   }
 
   &__parents,
@@ -1039,14 +1028,6 @@ export default {
   &__children {
     border-left-width: 1px;
     border-left-style: dotted;
-
-    &.theme-light {
-      border-left-color: $light-highlight;
-    }
-
-    &.theme-dark {
-      border-left-color: $dark-border;
-    }
   }
 
   &__parentsTitle,
@@ -1086,14 +1067,6 @@ export default {
     border-top: none;
     resize: none;
     outline: none;
-
-    &.theme-light {
-      border-color: $light-highlight;
-    }
-
-    &.theme-dark {
-      border-color: $dark-border;
-    }
   }
 }
 </style>
