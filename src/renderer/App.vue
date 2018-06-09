@@ -80,6 +80,11 @@ html, body, #app {
   src: url('~@/assets/fonts/Open_Sans/OpenSans-BoldItalic.ttf')
 }
 
+@font-face {
+  font-family: "Gloria Hallelujah";
+  src: url('~@/assets/fonts/Gloria_Hallelujah/GloriaHallelujah.ttf')
+}
+
 .flex-wrapper {
   display: flex;
   flex-direction: row;
