@@ -384,7 +384,6 @@ export default {
 
 <style lang="scss" scoped>
 .SurvivorTable {
-  //box-sizing: border-box;
   height: 100%;
   position: relative;
 

@@ -1,21 +1,23 @@
 <template>
-  <div class="EditableList">
-    <ul class="EditableList__list" :class="[themeClass]">
-      <editable-list-item
-        v-for="(item, index) in listItems"
-        :initTextValue="numbered ? item.name : item"
-        :count="numbered ? item.count : null"
-        :placeholder="placeholder + ' ' + (index + 1)"
-        :key="index"
-        :autocompleteList="autocompleteList"
-        :numbered="numbered"
-        :numberEditable="numberEditable"
-        :textStyle="textStyle"
-        :parentHeight="parentHeight"
-        @update="updateItem(index, $event)"
-        @updateCount="updateCount(index, $event)"
-        @delete="deleteItem(index)" />
-    </ul>
+  <div class="EditableList" :style="fixedStyle">
+    <div class="EditableList__scrollBox" :class="[fixedHeight ? 'fixedScroll' : '']">
+      <ul class="EditableList__list" :class="[themeClass, fixedHeight ? 'fixedScroll' : '']">
+        <editable-list-item
+          v-for="(item, index) in listItems"
+          :initTextValue="numbered ? item.name : item"
+          :count="numbered ? item.count : null"
+          :placeholder="placeholder + ' ' + (index + 1)"
+          :key="index"
+          :autocompleteList="autocompleteList"
+          :numbered="numbered"
+          :numberEditable="numberEditable"
+          :textStyle="textStyle"
+          :parentHeight="parentHeight"
+          @update="updateItem(index, $event)"
+          @updateCount="updateCount(index, $event)"
+          @delete="deleteItem(index)" />
+      </ul>
+    </div>
     <button
       v-if="!max || listItems.length < max"
       class="EditableList__addButton"
@@ -45,10 +47,18 @@ export default {
     numbered: { required: false, default: false, type: Boolean },
     numberEditable: { required: false, default: true, type: Boolean },
     textStyle: { required: false, default: () => { return { fontSize: '10pt' } } },
-    parentHeight: { required: false, default: 9999 }
+    parentHeight: { required: false, default: 9999 },
+    fixedHeight: { required: false, default: null }
   },
   computed: {
-    ...mapGetters(['inHistoryMode'])
+    ...mapGetters(['inHistoryMode']),
+    fixedStyle: function () {
+      if (this.fixedHeight) {
+        return { maxHeight: this.fixedHeight, height: this.fixedHeight }
+      } else {
+        return null
+      }
+    }
   },
   created: function () {
     // Deal with case where min is specified but
@@ -119,6 +129,17 @@ export default {
 
 <style lang="scss" scoped>
 .EditableList {
+  display: block;
+
+  &__scrollBox {
+    &.fixedScroll {
+      height: 100%;
+      border: 2px solid;
+      border-radius: 2px 2px 0 2px;
+      overflow: scroll;
+    }
+  }
+
   &__list {
     margin: 0;
     padding: 0;
@@ -127,6 +148,12 @@ export default {
     border-style: solid;
     border-radius: 2px 2px 0 2px;
     border-top: none;
+
+    &.fixedScroll {
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+    }
   }
 
   &__addButton {

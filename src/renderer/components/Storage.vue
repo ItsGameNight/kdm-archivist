@@ -7,6 +7,7 @@
         :autocompleteList="resourceNames"
         numbered
         :textStyle="{fontSize:'12pt'}"
+        :fixedHeight="'85%'"
         @update="update('resources', $event)"
         ></editable-list>
     </div>
@@ -16,6 +17,7 @@
         :listItems="currentSettlement.storedGear"
         numbered
         :textStyle="{fontSize:'12pt'}"
+        :fixedHeight="'85%'"
         @update="update('storedGear', $event)"
         ></editable-list>
     </div>
@@ -57,6 +59,13 @@ export default {
 .Storage {
   display: flex;
   flex-direction: row;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+
+  h3 {
+    margin: 0 auto 8px auto;
+  }
 
   &__column {
     width: 50%;
