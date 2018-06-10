@@ -146,8 +146,8 @@ export default {
   }
 
   &__limitbox {
-    width: 1.8em;
-    min-width: 1.8em;
+    width: 2em;
+    min-width: 2em;
     margin-left: auto;
     padding-top: 0.1em;
     font-weight: bold;
@@ -166,6 +166,7 @@ export default {
   }
 
   &__limitLabel {
+    //padding: 0 1px;
     font-size: 7pt;
     font-weight: bold;
     text-transform: uppercase;

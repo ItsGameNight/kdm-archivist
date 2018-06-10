@@ -55,7 +55,7 @@
             <editable-text-input
               :inputType="'number'"
               :textValue="survivor.birthYear"
-              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}"
+              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}"
               :placeholder="''"
               @update="update('birthYear', $event)" />
           </div>
@@ -67,7 +67,7 @@
             <editable-text-input
               :inputType="'number'"
               :textValue="survivor.deathYear"
-              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid black', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}"
+              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}"
               :placeholder="''"
               @update="update('deathYear', $event); update('alive', false)" />
           </div>
@@ -448,7 +448,7 @@
                 <editable-text-input
                   :textValue="survivor.mother"
                   placeholder="Mother"
-                  :textStyle="{fontSize:'10pt'}"
+                  :textStyle="{ fontSize:'10pt', textOverflow: 'ellipsis' }"
                   :autocompleteList="survivorsInSettlement.map((s) => { return s.name })"
                   @update="update('mother', $event)" />
               </div>
@@ -456,7 +456,7 @@
                 <editable-text-input
                   :textValue="survivor.father"
                   placeholder="Father"
-                  :textStyle="{fontSize:'10pt'}"
+                  :textStyle="{ fontSize:'10pt', textOverflow: 'ellipsis' }"
                   :autocompleteList="survivorsInSettlement.map((s) => { return s.name })"
                   @update="update('father', $event)" />
               </div>
@@ -773,19 +773,19 @@ export default {
       &--row5 {
         &--fightingArts {
           width: 25%;
-          margin-right: 1%;
+          margin-right: 10px;
           border: none;
         }
 
         &--disorders {
           width: 20%;
-          margin-right: 1%;
+          margin-right: 10px;
           border: none;
         }
 
         &--abilities {
           width: 30%;
-          margin-right: 1%;
+          margin-right: 10px;
           border: none;
         }
 
@@ -810,6 +810,7 @@ export default {
   }
 
   &__rowTitle {
+    font-family: "PT Sans";
     border-bottom-width: 1px;
     border-bottom-style: solid;
 
@@ -819,7 +820,7 @@ export default {
         padding-top: 1px;
 
         span {
-          font-size: 11pt;
+          font-size: 12pt;
         }
       }
 
@@ -828,7 +829,7 @@ export default {
         padding-right: 2px;
 
         span {
-          font-size: 10pt;
+          font-size: 11pt;
           padding-right: 10px;
         }
       }
@@ -840,7 +841,7 @@ export default {
         border: none;
 
         &--title {
-          font-size: 10pt;
+          font-size: 11pt;
           border: none;
         }
 
@@ -996,7 +997,7 @@ export default {
   }
 
   &__row5scrollWrapper {
-    width: 95%;
+    width: 100%;
   }
 
   &__noFighting {
