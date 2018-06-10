@@ -409,14 +409,15 @@ export default {
   cursor: default;
   display: table;
   margin: 0 auto;
+  width: 100%;
 
   &__modals {
     display: table-caption;
   }
 
   &__tableData {
-    min-width: 633px;
-    width: 85%;
+    //min-width: 633px;
+    width: 100%;
 
     &.mouse-down {
       transform: translateY(2px);

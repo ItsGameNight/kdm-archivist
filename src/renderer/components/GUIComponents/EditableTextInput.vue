@@ -188,7 +188,7 @@ export default {
     background-size: 0.8em;
     background-position: left center;
     border: none;
-    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 
     &:hover {
       padding-left: 1em;
