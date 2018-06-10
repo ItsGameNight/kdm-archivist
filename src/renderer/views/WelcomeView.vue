@@ -1,5 +1,11 @@
 <template>
-  <div class="WelcomeView" :class="[]">
+  <div class="WelcomeView" :class="[themeClass]">
+    <button
+      class="WelcomeView__settings"
+      :class="[themeClass]"
+      @click="$router.push({ name: 'settings' })">
+      <font-awesome-icon :icon="settingsIcon" />
+    </button>
     <header>
       <h1>Twilight Archivist</h1>
       <h4>A Kingdom Death: Monster Companion App</h4>
@@ -18,15 +24,20 @@
 
 <script type="text/javascript">
 import { mapState } from 'vuex'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import { faCog } from '@fortawesome/fontawesome-free-solid'
 import SettlementTable from '@/components/SettlementTable'
 import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'welcome-view',
   mixins: [ThemeClass],
-  components: { SettlementTable },
+  components: { SettlementTable, FontAwesomeIcon },
   computed: {
-    ...mapState(['currentSmt'])
+    ...mapState(['currentSmt']),
+    settingsIcon: function () {
+      return faCog
+    }
   },
   methods: {
     playButtonPressed: function () {
@@ -42,6 +53,13 @@ export default {
 
 <style lang="scss" scoped>
 .WelcomeView {
+  position: relative;
+  height: 100%;
+
+  &.theme-light {
+    background-color: $light-bg-alt;
+  }
+
   header {
     padding-top: 20px;
     padding-bottom: 15px;
@@ -49,6 +67,13 @@ export default {
     h1, h4 {
       text-align: center;
     }
+  }
+
+  &__settings {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 14pt;
   }
 
   &__settlementTable {

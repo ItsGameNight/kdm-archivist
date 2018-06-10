@@ -78,7 +78,7 @@ export default {
   border: none;
 
   &.theme-dark {
-    background-color: $dark-bg;
+    background-color: $dark-bg-alt;
   }
 
   &__wrapper {

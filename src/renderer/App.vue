@@ -1,16 +1,15 @@
 <template>
-  <div id="app" :class="[themeClass]" @dblclick="switchTheme()">
+  <div id="app" :class="[themeClass]">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import ThemeClass from '@/mixins/ThemeClass'
-import ThemeSwitch from '@/mixins/ThemeSwitch'
 
 export default {
   name: 'twilight-archivist',
-  mixins: [ThemeClass, ThemeSwitch],
+  mixins: [ThemeClass],
   mounted: function () {
     // load all db's
     this.$store.dispatch('loadSettlements')

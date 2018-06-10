@@ -89,6 +89,7 @@ export default {
 
     &.theme-dark {
       background: $dark-bg;
+      border-color: $dark-border;
     }
 
     &.tableCell {

@@ -1,5 +1,5 @@
 <template>
-  <div class="MainView">
+  <div class="MainView" :class="[themeClass]">
     <settlement-inspector class="MainView__settlementInspector" :class="[themeClass]" />
     <div class="MainView__content" @click="notesOpen = false">
       <div class="MainView__tabBar" :class="[themeClass]">
@@ -30,7 +30,7 @@
         <button
           class="MainView__tabButton tabButton--right"
           :class="[themeClass]"
-          @click="">
+          @click="leaveHistoryMode(); $router.push({ name: 'settings' })">
             <font-awesome-icon :icon="settingsIcon" />
         </button>
       </div>
@@ -134,12 +134,12 @@ export default {
 
     &.theme-light {
       border-right: 1px solid $light-border;
-      background-color: $light-bg;
+      background-color: $light-bg-alt;
     }
 
     &.theme-dark {
       border-right: 1px solid $dark-border;
-      background-color: $dark-bg;
+      background-color: $dark-bg-alt;
     }
   }
 
@@ -206,6 +206,7 @@ export default {
     z-index: 97;
     border: none;
     border-radius: 0;
+    border-left: 1px solid;
     transition: all .5s ease;
 
     &.theme-light {

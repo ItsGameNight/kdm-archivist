@@ -5,7 +5,7 @@
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 1 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="SurvivorModal__row row--row1">
+      <div class="SurvivorModal__row row--row1" :class="[themeClass]">
         <div class="SurvivorModal__generalInfo" :class="[themeClass]">
           <div class="SurvivorModal__yeeIcon">
             <font-awesome-icon
@@ -32,7 +32,7 @@
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 2 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="SurvivorModal__row row--row2">
+      <div class="SurvivorModal__row row--row2" :class="[themeClass]">
         <div class="SurvivorModal__extraNames">
           <div class="SurvivorModal__extraNameInput extraNameInput--nickname" :class="[themeClass]">
             <editable-text-input
@@ -88,9 +88,9 @@
       <!-------------------------------------- ROW 3 -------------------------------------->
       <!----------------------------------------------------------------------------------->
       <div class="SurvivorModal__row row--row3">
-        <div class="SurvivorModal__rowBox rowBox--row3--survival">
+        <div class="SurvivorModal__rowBox rowBox--row3--survival" :class="[themeClass]">
           <div :class="[survivor.cannotSpendSurvival ? 'SurvivorModal__noSurvival' : '']">
-            <div class="SurvivorModal__rowTitle rowTitle--row3">
+            <div class="SurvivorModal__rowTitle rowTitle--row3" :class="[themeClass]">
               <span>Survival</span>
             </div>
             <div class="SurvivorModal__survivalBox">
@@ -148,8 +148,8 @@
               @update="update('cannotSpendSurvival', $event)" />
           </div>
         </div>
-        <div class="SurvivorModal__rowBox rowBox--row3--stats">
-          <div class="SurvivorModal__rowTitle rowTitle--row3">
+        <div class="SurvivorModal__rowBox rowBox--row3--stats" :class="[themeClass]">
+          <div class="SurvivorModal__rowTitle rowTitle--row3" :class="[themeClass]">
             <span>Showdown Stats</span>
             <div class="SurvivorModal__skipHunt">
               <lock-toggle
@@ -185,8 +185,8 @@
               @update="update('speed', $event)" />
           </div>
         </div>
-        <div class="SurvivorModal__rowBox rowBox--row3--progress">
-          <div class="SurvivorModal__rowTitle rowTitle--row3">
+        <div class="SurvivorModal__rowBox rowBox--row3--progress" :class="[themeClass]">
+          <div class="SurvivorModal__rowTitle rowTitle--row3" :class="[themeClass]">
             <span>Development Stats</span>
           </div>
           <div class="SurvivorModal__progressGroup">
@@ -215,7 +215,7 @@
                 </div>
               </div>
               <div class="SurvivorModal__crgUndRow">
-                <div class="SurvivorModal__skillInputWrapper">
+                <div class="SurvivorModal__skillInputWrapper" :class="[themeClass]">
                   <div class="SurvivorModal__skillInput">
                     <editable-text-input
                       :textValue="survivor.boldSkill"
@@ -224,7 +224,7 @@
                       @update="update('boldSkill', $event)" />
                   </div>
                 </div>
-                <div class="SurvivorModal__skillInputWrapper skillInputWrapper--right">
+                <div class="SurvivorModal__skillInputWrapper skillInputWrapper--right" :class="[themeClass]">
                   <div class="SurvivorModal__skillInput">
                     <editable-text-input
                       :textValue="survivor.insightSkill"
@@ -242,12 +242,12 @@
       <!-------------------------------------- ROW 4 -------------------------------------->
       <!----------------------------------------------------------------------------------->
       <div class="SurvivorModal__row row--row4">
-        <div class="SurvivorModal__rowBox rowBox--row4--armorPoints">
-          <div class="SurvivorModal__rowTitle rowTitle--row4">
+        <div class="SurvivorModal__rowBox rowBox--row4--armorPoints" :class="[themeClass]">
+          <div class="SurvivorModal__rowTitle rowTitle--row4" :class="[themeClass]">
             <span>Hit Locations</span>
           </div>
           <div class="SurvivorModal__hitLocations">
-            <div class="SurvivorModal__armorPointBox">
+            <div class="SurvivorModal__armorPointBox" :class="[themeClass]">
               <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/brain.png" />
               <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/brain-white.png" />
               <editable-stat
@@ -265,7 +265,7 @@
                   :stat="'brainHP'" />
               </div>
             </div>
-            <div class="SurvivorModal__armorPointBox">
+            <div class="SurvivorModal__armorPointBox" :class="[themeClass]">
               <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/head.png" />
               <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/head-white.png" />
               <editable-stat
@@ -282,7 +282,7 @@
                   :stat="'headHP'" />
               </div>
             </div>
-            <div class="SurvivorModal__armorPointBox">
+            <div class="SurvivorModal__armorPointBox" :class="[themeClass]">
               <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/arms.png" />
               <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/arms-white.png" />
               <editable-stat
@@ -299,7 +299,7 @@
                   :stat="'armsHP'" />
               </div>
             </div>
-            <div class="SurvivorModal__armorPointBox">
+            <div class="SurvivorModal__armorPointBox" :class="[themeClass]">
               <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/body.png" />
               <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/body-white.png" />
               <editable-stat
@@ -316,7 +316,7 @@
                   :stat="'bodyHP'" />
               </div>
             </div>
-            <div class="SurvivorModal__armorPointBox">
+            <div class="SurvivorModal__armorPointBox" :class="[themeClass]">
               <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/waist.png" />
               <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/waist-white.png" />
               <editable-stat
@@ -333,7 +333,7 @@
                   :stat="'waistHP'" />
               </div>
             </div>
-            <div class="SurvivorModal__armorPointBox armorPointBox--last">
+            <div class="SurvivorModal__armorPointBox armorPointBox--last" :class="[themeClass]">
               <img v-if="themeClass==='theme-light'" class="SurvivorModal__armorImg" src="~@/assets/img/legs.png" />
               <img v-if="themeClass==='theme-dark'" class="SurvivorModal__armorImg" src="~@/assets/img/legs-white.png" />
               <editable-stat
@@ -438,9 +438,9 @@
       <!----------------------------------------------------------------------------------->
       <!-------------------------------------- ROW 6 -------------------------------------->
       <!----------------------------------------------------------------------------------->
-      <div class="SurvivorModal__row row--row6">
-        <div class="SurvivorModal__rowBox rowBox--row6--familyInfo">
-          <div class="SurvivorModal__rowTitle rowTitle--row6 family">
+      <div class="SurvivorModal__row row--row6" :class="[themeClass]">
+        <div class="SurvivorModal__rowBox rowBox--row6--familyInfo" :class="[themeClass]">
+          <div class="SurvivorModal__rowTitle rowTitle--row6 family" :class="[themeClass]">
             <span>Family information:</span>
           </div>
           <div class="SurvivorModal__familyInfoGroup" :class="[themeClass]">
@@ -475,8 +475,8 @@
             </div>
           </div>
         </div>
-        <div class="SurvivorModal__rowBox rowBox--row6--otherBox">
-          <div class="SurvivorModal__rowTitle rowTitle--row6">
+        <div class="SurvivorModal__rowBox rowBox--row6--otherBox" :class="[themeClass]">
+          <div class="SurvivorModal__rowTitle rowTitle--row6" :class="[themeClass]">
             <span>Other information:</span>
           </div>
           <textarea class="SurvivorModal__otherTextArea"
@@ -594,11 +594,17 @@ export default {
 
 <style lang="scss" scoped>
 .SurvivorModal {
+
   &__row {
     display: flex;
     flex-direction: row;
+    background-color: rgba(0, 0, 0, 0) !important;
 
     &.row {
+      &.theme-dark {
+        border-color: $dark-border;
+      }
+
       &--row1 {}
 
       &--row2 {
@@ -633,6 +639,7 @@ export default {
     width: 47%;
     border-bottom-width: 3px;
     border-bottom-style: solid;
+    background-color: rgba(0, 0, 0, 0) !important;
   }
 
   &__yeeIcon {
@@ -657,6 +664,7 @@ export default {
     margin-left: auto;
     border-bottom-width: 3px;
     border-bottom-style: solid;
+    background-color: rgba(0, 0, 0, 0) !important;
   }
 
   &__extraNames {
@@ -669,6 +677,7 @@ export default {
   &__extraNameInput {
     border-bottom-width: 1px;
     border-bottom-style: solid;
+    background-color: rgba(0, 0, 0, 0) !important;
 
     &.extraNameInput {
       &--nickname {
@@ -735,7 +744,7 @@ export default {
     border: none;
 
     &.theme-dark {
-      background-color: $dark-bg;
+      background-color: $dark-bg-alt;
     }
 
     &.green {
@@ -746,6 +755,7 @@ export default {
   &__rowBox {
     border-width: 2px;
     border-style: solid;
+    background-color: rgba(0, 0, 0, 0) !important;
 
     &.rowBox {
       &--row3 {
@@ -817,6 +827,7 @@ export default {
     font-family: "PT Sans";
     border-bottom-width: 1px;
     border-bottom-style: solid;
+    background-color: rgba(0, 0, 0, 0) !important;
 
     &.rowTitle {
       &--row3 {
@@ -935,6 +946,7 @@ export default {
     margin-left: 18px;
     border-bottom-width: 1px;
     border-bottom-style: dotted;
+    background-color: rgba(0, 0, 0, 0) !important;
   }
 
   &__weaponTypeText {
@@ -954,6 +966,7 @@ export default {
     width: 46%;
     border-bottom-width: 1px;
     border-bottom-style: dotted;
+    background-color: rgba(0, 0, 0, 0) !important;
 
     &.skillInputWrapper {
       &--right {
@@ -975,6 +988,7 @@ export default {
     padding-right: 6px;
     border-right-width: 1px;
     border-right-style: solid;
+    background-color: rgba(0, 0, 0, 0) !important;
 
     &.armorPointBox {
       &--last {
@@ -1024,6 +1038,7 @@ export default {
     border-style: solid;
     border-radius: 0 0 4px 4px;
     border-top: none;
+    background-color: rgba(0, 0, 0, 0) !important;
   }
 
   &__parents,
@@ -1034,6 +1049,7 @@ export default {
   &__children {
     border-left-width: 1px;
     border-left-style: dotted;
+    background-color: rgba(0, 0, 0, 0) !important;
   }
 
   &__parentsTitle,
@@ -1073,6 +1089,11 @@ export default {
     border-top: none;
     resize: none;
     outline: none;
+    background-color: rgba(0, 0, 0, 0) !important;
+
+    &.theme-dark {
+      border-color: $dark-border;
+    }
   }
 }
 </style>

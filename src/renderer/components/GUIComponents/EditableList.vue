@@ -1,6 +1,6 @@
 <template>
   <div class="EditableList" :style="fixedStyle">
-    <div class="EditableList__scrollBox" :class="[fixedHeight ? 'fixedScroll' : '']">
+    <div class="EditableList__scrollBox" :class="[fixedHeight ? 'fixedScroll' : '', themeClass]">
       <ul class="EditableList__list" :class="[themeClass, fixedHeight ? 'fixedScroll' : '']">
         <editable-list-item
           v-for="(item, index) in listItems"
@@ -130,6 +130,7 @@ export default {
 <style lang="scss" scoped>
 .EditableList {
   display: block;
+  background-color: rgba(0, 0, 0, 0) !important;
 
   &__scrollBox {
     &.fixedScroll {
@@ -137,10 +138,20 @@ export default {
       border: 2px solid;
       border-radius: 2px 2px 0 2px;
       overflow-y: scroll;
+      background-color: inherit;
     }
 
     &::-webkit-scrollbar { 
       display: none; 
+    }
+
+    &.theme-light {
+      background-color: inherit;
+    }
+
+    &.theme-dark {
+      border-color: $dark-border;
+      background-color: inherit;
     }
   }
 
@@ -152,11 +163,16 @@ export default {
     border-style: solid;
     border-radius: 2px 2px 0 2px;
     border-top: none;
+    background-color: inherit;
 
     &.fixedScroll {
       border-left: none;
       border-right: none;
       border-radius: 0;
+    }
+
+    &.theme-dark {
+      border-color: $dark-border;
     }
   }
 
@@ -168,20 +184,18 @@ export default {
     border-radius: 0 0 2px 2px;
     border-top: none;
 
-    &.theme-dark {
-      background-color: $dark-bg;
-    }
+    background-color: inherit;
 
     &:hover {
       font-weight: bold;
       font-size: 10pt;
 
       &.theme-light {
-        background-color: $light-bg;
+        background-color: inherit;
       }
 
       &.theme-dark {
-        background-color: $dark-bg;
+        background-color: inherit;
       }
     }
 

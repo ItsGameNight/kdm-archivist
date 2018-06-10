@@ -16,7 +16,7 @@
       </modal>
     </div>
     <td class="SurvivorTableRow__tableData"
-      :class="[mouseDownState ? 'mouse-down' : '']"
+      :class="[mouseDownState ? 'mouse-down' : '', themeClass]"
       @dblclick="collapsedState = !collapsedState"
       @mousedown="mouseDownState = true"
       @mouseup="mouseDownState = false"
@@ -416,7 +416,6 @@ export default {
   }
 
   &__tableData {
-    //min-width: 633px;
     width: 100%;
 
     &.mouse-down {
@@ -432,12 +431,12 @@ export default {
 
     &.theme-light {
       border-color: $light-border;
-      background-color: $light-bg;
+      background-color: $light-bg-alt;
     }
 
     &.theme-dark {
       border-color: $dark-border;
-      background-color: $dark-bg;
+      background-color: $dark-bg-alt;
     }
   }
 
@@ -448,10 +447,12 @@ export default {
 
     &.theme-light {
       color: $light-highlight;
+      background-color: $light-bg-alt;
     }
 
     &.theme-dark {
       color: $dark-highlight;
+      background-color: $dark-bg-alt;
     }
   }
 
@@ -481,12 +482,12 @@ export default {
 
       &.theme-light {
         color: $light-highlight;
-        background-color: $light-bg;
+        background-color: $light-bg-alt;
       }
 
       &.theme-dark {
         color: $dark-highlight;
-        background-color: $dark-bg;
+        background-color: $dark-bg-alt;
       }
 
       &:hover {
@@ -494,12 +495,12 @@ export default {
 
         &.theme-light {
           color: $light-text;
-          background-color: $light-bg;
+          background-color: $light-bg-alt;
         }
 
         &.theme-dark {
           color: $dark-text;
-          background-color: $dark-bg;
+          background-color: $dark-bg-alt;
         }
       }
 
@@ -508,12 +509,12 @@ export default {
 
         &.theme-light {
           color: $light-text;
-          background-color: $light-bg;
+          background-color: $light-bg-alt;
         }
 
         &.theme-dark {
           color: $dark-text;
-          background-color: $dark-bg;
+          background-color: $dark-bg-alt;
         }
       }
     }
@@ -523,12 +524,12 @@ export default {
 
       &.theme-light {
         color: $light-text;
-        background-color: $light-bg;
+        background-color: $light-bg-alt;
       }
 
       &.theme-dark {
         color: $dark-text;
-        background-color: $dark-bg;
+        background-color: $dark-bg-alt;
       }
 
       &.red {

@@ -75,12 +75,12 @@ export default {
     transition: all 0.3s ease;
 
     &.theme-light {
-      background-color: $light-bg;
+      background-color: $light-bg-alt;
       border-color: $light-border;
     }
 
     &.theme-dark {
-      background-color: $dark-bg;
+      background-color: $dark-bg-alt;
       border-color: $dark-border;
     }
   }

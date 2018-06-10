@@ -133,6 +133,7 @@ export default {
 .EditableStat {
   display: block;
   padding: 0 0.2em;
+  background-color: rgba(0, 0, 0, 0) !important;
 
   &__incrementBox {
   }
@@ -193,13 +194,7 @@ export default {
       }
 
       &--borderless {
-        &.theme-light {
-          border-color: $light-bg;
-        }
-
-        &.theme-dark {
-          border-color: $dark-bg;
-        }
+        border-color: rgba(0, 0, 0, 0) !important;
       }
     }
   }

@@ -14,6 +14,11 @@ export default new Router({
       path: '/main',
       name: 'main',
       component: require('@/views/MainView').default
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: require('@/views/SettingsView').default
     }
   ]
 })

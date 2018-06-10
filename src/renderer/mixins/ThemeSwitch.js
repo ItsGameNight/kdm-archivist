@@ -1,10 +1,10 @@
 var themeSwitchMixin = {
   methods: {
-    switchTheme: function () {
-      if (this.$store.getters.theme === 'theme-light') {
-        this.$store.dispatch('setTheme', 'theme-dark')
-      } else {
+    setThemeByIndex: function (index) {
+      if (index === 0) {
         this.$store.dispatch('setTheme', 'theme-light')
+      } else if (index === 1) {
+        this.$store.dispatch('setTheme', 'theme-dark')
       }
     }
   }

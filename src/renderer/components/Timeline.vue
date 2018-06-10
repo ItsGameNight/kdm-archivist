@@ -106,6 +106,10 @@ export default {
     table-layout: fixed;
     border-spacing: 0;
 
+    &.theme-dark {
+      border-color: $dark-border;
+    }
+
     thead tr {
       display: block;
       position: relative;
