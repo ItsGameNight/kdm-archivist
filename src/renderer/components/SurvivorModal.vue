@@ -373,6 +373,7 @@
               :max="3"
               :placeholder="'Fighting Art'"
               :autocompleteList="fightingArtNames"
+              :fixedHeight="'74px'"
               @update="update('fightingArts', $event)" />
           </div>
           <div class="SurvivorModal__cannotFight">
@@ -397,6 +398,7 @@
             :max="3"
             :placeholder="'Disorder'"
             :autocompleteList="disorderNames"
+            :fixedHeight="'74px'"
             @update="update('disorders', $event)" />
         </div>
         <div class="SurvivorModal__rowBox rowBox--row5--abilities">
@@ -410,6 +412,7 @@
               <editable-list
                 :listItems="survivor.abilities"
                 :placeholder="'Ability'"
+                :fixedHeight="'74px'"
                 @update="update('abilities', $event)" />
             </div>
           </div>
@@ -426,6 +429,7 @@
                 :listItems="survivor.impairments"
                 :placeholder="'Impairment'"
                 :autocompleteList="impairmentsNames"
+                :fixedHeight="'74px'"
                 @update="update('impairments', $event)" />
             </div>
           </div>
@@ -991,9 +995,10 @@ export default {
   }
 
   &__row5scrollbox {
-    min-height: 86px;
-    max-height: 86px;
-    overflow-y: scroll;
+    min-height: 112px;
+    max-height: 112px;
+    height: 112px;
+    //overflow-y: scroll;
   }
 
   &__row5scrollWrapper {
@@ -1006,7 +1011,7 @@ export default {
 
   &__cannotFight {
     width: 80%;
-    padding-top: 4px;
+    padding-top: 10px;
     margin: 0 auto;
   }
 

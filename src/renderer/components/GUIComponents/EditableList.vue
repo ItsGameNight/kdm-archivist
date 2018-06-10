@@ -136,7 +136,11 @@ export default {
       height: 100%;
       border: 2px solid;
       border-radius: 2px 2px 0 2px;
-      overflow: scroll;
+      overflow-y: scroll;
+    }
+
+    &::-webkit-scrollbar { 
+      display: none; 
     }
   }
 
