@@ -5,12 +5,6 @@
       <div class="MainView__tabBar" :class="[themeClass]">
         <button
           class="MainView__tabButton"
-          :class="[themeClass]"
-          @click="leaveHistoryMode(); $router.push({ name: 'welcome' })">
-          <font-awesome-icon :icon="homeIcon" />
-        </button>
-        <button
-          class="MainView__tabButton"
           :class="[{'tabSelected' : currentTab === 'timeline'}, themeClass]"
           @click="currentTab = 'timeline'">
             Timeline
@@ -27,6 +21,18 @@
           @click="currentTab = 'storage'">
             Storage
         </button>
+        <button
+          class="MainView__tabButton tabButton--right"
+          :class="[themeClass]"
+          @click="leaveHistoryMode(); $router.push({ name: 'welcome' })">
+            <font-awesome-icon :icon="homeIcon" />
+        </button>
+        <button
+          class="MainView__tabButton tabButton--right"
+          :class="[themeClass]"
+          @click="">
+            <font-awesome-icon :icon="settingsIcon" />
+        </button>
       </div>
       <div v-if="currentTab === 'timeline'" class="MainView__tab tab--timeline">
         <settlement-timeline />
@@ -40,7 +46,7 @@
     </div>
     <button
       class="MainView__notesButton"
-      :class="[themeClass]"
+      :class="[themeClass, notesOpen ? 'notesOpen' : '']"
       @click="notesOpen = !notesOpen">
       <font-awesome-icon v-if="!notesOpen" :icon="bookIcon" />
       <font-awesome-icon v-else :icon="closeIcon" />
@@ -68,7 +74,7 @@ import NotesTab from '@/components/NotesTab'
 import ThemeClass from '@/mixins/ThemeClass'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-import { faHome, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
+import { faPowerOff, faCog, faWindowClose, faBook } from '@fortawesome/fontawesome-free-solid'
 
 export default {
   name: 'main-view',
@@ -91,7 +97,10 @@ export default {
     ...mapState(['currentSmt']),
     ...mapGetters(['inHistoryMode']),
     homeIcon: function () {
-      return faHome
+      return faPowerOff
+    },
+    settingsIcon: function () {
+      return faCog
     },
     bookIcon: function () {
       return faBook
@@ -171,6 +180,13 @@ export default {
         color: $dark-bg;
       }
     }
+
+    &.tabButton {
+      &--right {
+        float: right;
+        margin-left: 4px;
+      }
+    }
   }
 
   &__tab {
@@ -182,13 +198,23 @@ export default {
 
   &__notesButton {
     position: absolute;
-    right: 1.5%;
-    top: 4px;
-    width: 30px;
-    height: 30px;
-    z-index: 99;
-    border-width: 2px;
-    border-radius: 4px;
+    right: -70px;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    text-align: left;
+    z-index: 97;
+    border: none;
+    border-radius: 0;
+    transition: all .5s ease;
+
+    &.theme-light {
+      background-color: $light-highlight;
+    }
+
+    &.notesOpen {
+      right: 200px;
+    }
   }
 
   &__historyBar {
