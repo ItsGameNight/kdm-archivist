@@ -55,7 +55,7 @@
             <editable-text-input
               :inputType="'number'"
               :textValue="survivor.birthYear"
-              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}"
+              :textStyle="{width:'2.6em', fontSize: '10pt', border: '1px solid', borderRadius: '2px', textAlign: 'center', backgroundPosition: 'left 2px center'}"
               :placeholder="''"
               @update="update('birthYear', $event)" />
           </div>
@@ -67,7 +67,7 @@
             <editable-text-input
               :inputType="'number'"
               :textValue="survivor.deathYear"
-              :textStyle="{width:'1.4em', fontSize: '10pt', border: '1px solid', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}"
+              :textStyle="{width:'2.6em', fontSize: '10pt', border: '1px solid', borderRadius: '2px',  textAlign: 'center', backgroundPosition: 'left 2px center'}"
               :placeholder="''"
               @update="update('deathYear', $event); update('alive', false)" />
           </div>
@@ -687,8 +687,8 @@ export default {
 
   &__aliveLabel {
     padding: 2px 4px 0 0;
-    font-size: 10pt;
-    line-height: 15pt;
+    font-size: 9pt;
+    line-height: 16pt;
 
     &.aliveLabel {
       &--birth {
@@ -696,29 +696,29 @@ export default {
       }
 
       &--death {
-        padding-left: 12px;
+        padding-left: 8px;
       }
     }
   }
 
   &__aliveYearInput {
-    width: 1.8em;
+    width: 2.6em;
     margin-top: 1px;
 
     &.aliveYearInput {
       &--birth {
-        margin-right: 10px;
+        //margin-right: 1px;
       }
 
       &--death {
-        margin-right: 2px;
+        //margin-right: 2px;
       }
     }
   }
 
   &__deadOrAlive {
     width: 58px;
-    margin-right: 4px;
+    margin-right: 2px;
   }
 
   &__departButtonWrapper {
