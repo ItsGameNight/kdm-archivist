@@ -78,11 +78,13 @@ export default {
       &.theme-light {
         color: $light-bg;
         background-color: $light-text;
+        border-color: $light-text;
       }
 
       &.theme-dark {
         color: $dark-bg;
         background-color: $dark-text;
+        border-color: $dark-text;
       }
     }
 
