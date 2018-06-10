@@ -1,199 +1,201 @@
 <template>
   <div class="SurvivorTable">
-    <div class="SurvivorTable__topButtons">
-      <button
-        class="SurvivorTable__topButtons__collapse"
-        :class="[themeClass]"
-        @click="collapsedState = !collapsedState">
-          <font-awesome-icon :icon="collapseIcon" />
-      </button>
-      <dropdown
-        :options="['Alive', 'Dead', 'All']"
-        :initSelected="filter"
-        title="Filter: "
-        @selected="filter = $event" />
-      <button
-        class="SurvivorTable__topButtons__resetDeparting"
-        :class="[themeClass]"
-        :disabled="inHistoryMode"
-        @click="resetDeparting">
-          Reset Departing
-      </button>
-      <button
-        class="SurvivorTable__topButtons__add"
-        :class="[themeClass]"
-        :disabled="inHistoryMode"
-        @click="newSurvivor()">
-          Add Survivor
-      </button>
-    </div>
-    <div class="SurvivorTable__sortControls" :class="[themeClass]">
-      <div class="SurvivorTable__sortControls__title">Sort:</div>
-      <button
-        class="SurvivorTable__sortControls__sortButton first"
-        :class="[sort === 'yeeScore' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('yeeScore', 'number')">
-        <span v-if="sort === 'yeeScore'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        Rank
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'name' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('name', 'text')">
-        <span v-if="sort === 'name'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        Name
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'sex' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('sex', 'text')">
-        <span v-if="sort === 'sex'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        Sex
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'xp' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('xp', 'number')">
-        <span v-if="sort === 'xp'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        XP
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'survival' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('survival', 'number')">
-        <span v-if="sort === 'survival'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        Survival
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'insanity' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('insanity', 'number')">
-        <span v-if="sort === 'insanity'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        Insanity
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'movement' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('movement', 'number')">
-        <span v-if="sort === 'movement'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        MOV
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'accuracy' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('accuracy', 'number')">
-        <span v-if="sort === 'accuracy'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        ACC
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'strength' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('strength', 'number')">
-        <span v-if="sort === 'strength'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        STR
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'evasion' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('evasion', 'number')">
-        <span v-if="sort === 'evasion'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        EVA
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'luck' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('luck', 'number')">
-        <span v-if="sort === 'luck'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        LCK
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'speed' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('speed', 'number')">
-        <span v-if="sort === 'speed'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        SPD
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'weaponProficiencyLevel' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('weaponProficiencyLevel', 'number')">
-        <span v-if="sort === 'weaponProficiencyLevel'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        Weapon
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'courage' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('courage', 'number')">
-        <span v-if="sort === 'courage'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        CRG
-      </button>
-      <button
-        class="SurvivorTable__sortControls__sortButton"
-        :class="[sort === 'understanding' ? 'selectedSort' : '', themeClass]"
-        @click="sortBy('understanding', 'number')">
-        <span v-if="sort === 'understanding'">
-          <font-awesome-icon
-            :icon="sortDirectionIcon"
-            class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
-        </span>
-        UND
-      </button>
+    <div class="SurvivorTable__header">
+      <div class="SurvivorTable__topButtons">
+        <button
+          class="SurvivorTable__topButtons__collapse"
+          :class="[themeClass]"
+          @click="collapsedState = !collapsedState">
+            <font-awesome-icon :icon="collapseIcon" />
+        </button>
+        <dropdown
+          :options="['Alive', 'Dead', 'All']"
+          :initSelected="filter"
+          title="Filter: "
+          @selected="filter = $event" />
+        <button
+          class="SurvivorTable__topButtons__resetDeparting"
+          :class="[themeClass]"
+          :disabled="inHistoryMode"
+          @click="resetDeparting">
+            Reset Departing
+        </button>
+        <button
+          class="SurvivorTable__topButtons__add"
+          :class="[themeClass]"
+          :disabled="inHistoryMode"
+          @click="newSurvivor()">
+            Add Survivor
+        </button>
+      </div>
+      <div class="SurvivorTable__sortControls" :class="[themeClass]">
+        <div class="SurvivorTable__sortControls__title">Sort:</div>
+        <button
+          class="SurvivorTable__sortControls__sortButton first"
+          :class="[sort === 'yeeScore' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('yeeScore', 'number')">
+          <span v-if="sort === 'yeeScore'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          Rank
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'name' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('name', 'text')">
+          <span v-if="sort === 'name'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          Name
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'sex' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('sex', 'text')">
+          <span v-if="sort === 'sex'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          Sex
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'xp' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('xp', 'number')">
+          <span v-if="sort === 'xp'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          XP
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'survival' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('survival', 'number')">
+          <span v-if="sort === 'survival'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          Survival
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'insanity' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('insanity', 'number')">
+          <span v-if="sort === 'insanity'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          Insanity
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'movement' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('movement', 'number')">
+          <span v-if="sort === 'movement'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          MOV
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'accuracy' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('accuracy', 'number')">
+          <span v-if="sort === 'accuracy'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          ACC
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'strength' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('strength', 'number')">
+          <span v-if="sort === 'strength'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          STR
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'evasion' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('evasion', 'number')">
+          <span v-if="sort === 'evasion'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          EVA
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'luck' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('luck', 'number')">
+          <span v-if="sort === 'luck'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          LCK
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'speed' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('speed', 'number')">
+          <span v-if="sort === 'speed'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          SPD
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'weaponProficiencyLevel' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('weaponProficiencyLevel', 'number')">
+          <span v-if="sort === 'weaponProficiencyLevel'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          Weapon
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'courage' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('courage', 'number')">
+          <span v-if="sort === 'courage'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          CRG
+        </button>
+        <button
+          class="SurvivorTable__sortControls__sortButton"
+          :class="[sort === 'understanding' ? 'selectedSort' : '', themeClass]"
+          @click="sortBy('understanding', 'number')">
+          <span v-if="sort === 'understanding'">
+            <font-awesome-icon
+              :icon="sortDirectionIcon"
+              class="SurvivorTable__sortControls__sortButton__sortDirectionIcon" />
+          </span>
+          UND
+        </button>
+      </div>
     </div>
     <div class="SurvivorTable__tableScroll">
       <table>
@@ -382,6 +384,10 @@ export default {
 
 <style lang="scss" scoped>
 .SurvivorTable {
+  //box-sizing: border-box;
+  height: 100%;
+  position: relative;
+
   &__topButtons {
     display: flex;
     flex-direction: row;
@@ -450,7 +456,10 @@ export default {
   }
 
   &__tableScroll {
-    height: 560px;
+    position: absolute;
+    bottom: 0;
+    top: 55px;
+    width: 100%;
     overflow-y: scroll;
     padding-left: 8px;
 

@@ -2,39 +2,39 @@
   <div class="MainView">
     <settlement-inspector class="MainView__settlementInspector" :class="[themeClass]" />
     <div class="MainView__content" @click="notesOpen = false">
-      <div class="MainView__content__tabBar" :class="[themeClass]">
+      <div class="MainView__tabBar" :class="[themeClass]">
         <button
-          class="MainView__content__tabBar__tabButton"
+          class="MainView__tabButton"
           :class="[themeClass]"
           @click="leaveHistoryMode(); $router.push({ name: 'welcome' })">
           <font-awesome-icon :icon="homeIcon" />
         </button>
         <button
-          class="MainView__content__tabBar__tabButton"
+          class="MainView__tabButton"
           :class="[{'tabSelected' : currentTab === 'timeline'}, themeClass]"
           @click="currentTab = 'timeline'">
             Timeline
         </button>
         <button
-          class="MainView__content__tabBar__tabButton"
+          class="MainView__tabButton"
           :class="[{'tabSelected' : currentTab === 'survivors'}, themeClass]"
           @click="currentTab = 'survivors'">
             Survivors
         </button>
         <button
-          class="MainView__content__tabBar__tabButton"
+          class="MainView__tabButton"
           :class="[{'tabSelected' : currentTab === 'storage'}, themeClass]"
           @click="currentTab = 'storage'">
             Storage
         </button>
       </div>
-      <div v-if="currentTab === 'timeline'" class="MainView__content__tabTimeline">
+      <div v-if="currentTab === 'timeline'" class="MainView__tab tab--timeline">
         <settlement-timeline />
       </div>
-      <div v-if="currentTab === 'survivors'" class="MainView__content__tabSurvivors">
-        <survivor-table class="MainView__content__tabSurvivors__survivorTable" />
+      <div v-if="currentTab === 'survivors'" class="MainView__tab tab--survivors">
+        <survivor-table class="MainView__survivorTable" />
       </div>
-      <div v-if="currentTab === 'storage'" class="MainView__content__tabStorage">
+      <div v-if="currentTab === 'storage'" class="MainView__tab tab--storage">
         <settlement-storage />
       </div>
     </div>
@@ -108,15 +108,18 @@ export default {
 
 <style lang="scss" scoped>
 .MainView {
-  height: 600px;
-  min-height: 600px;
-  max-height: 600px;
+  position: relative;
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
+  min-height: 600px;
+  height: 100%;
+  overflow: hidden;
 
   &__settlementInspector {
-    width: 20%;
-    height: auto;
+    box-sizing: border-box;
+    width: 22%;
+    height: 100%;
     padding: 10px;
     margin-right: 15px;
 
@@ -132,40 +135,49 @@ export default {
   }
 
   &__content {
+    box-sizing: border-box;
     width: 70%;
+    height: 100%;
+  }
 
-    &__tabBar {
-      margin: 4px 0 10px 0;
+  &__tabBar {
+    margin: 8px 0 10px 0;
 
-      &.theme-light {
-        border-bottom: 2px solid $light-border;
-      }
+    &.theme-light {
+      border-bottom: 2px solid $light-border;
+    }
 
-      &.theme-dark {
-        border-bottom: 2px solid $dark-border;
-      }
+    &.theme-dark {
+      border-bottom: 2px solid $dark-border;
+    }
+  }
 
-      &__tabButton {
-        font-size: 12pt;
-        border-width: 2px;
-        border-radius: 4px 4px 0 0;
-        border-bottom: none;
+  &__tabButton {
+    font-size: 12pt;
+    border-width: 2px;
+    border-radius: 4px 4px 0 0;
+    border-bottom: none;
 
-        &.theme-light {
-          &.tabSelected {
-            background-color: $light-text;
-            color: $light-bg;
-          }
-        }
-
-        &.theme-dark {
-          &.tabSelected {
-            background-color: $dark-text;
-            color: $dark-bg;
-          }
-        }
+    &.theme-light {
+      &.tabSelected {
+        background-color: $light-text;
+        color: $light-bg;
       }
     }
+
+    &.theme-dark {
+      &.tabSelected {
+        background-color: $dark-text;
+        color: $dark-bg;
+      }
+    }
+  }
+
+  &__tab {
+    position: absolute;
+    bottom: 5px;
+    top: 45px;
+    width: 70%;
   }
 
   &__notesButton {

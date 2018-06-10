@@ -1,34 +1,38 @@
 <template>
   <div class="Timeline" :class="[themeClass]">
-    <table class="Timeline__table">
-      <thead>
+    <div class="Timeline__tableWrapper">
+      <table class="Timeline__table">
+        <thead>
+          <tr>
+            <th class="Timeline__yearHeader">Year</th>
+            <th class="Timeline__eventHeader">Settlement Event</th>
+            <th class="Timeline__storyHeader">Story Events</th>
+          </tr>
+        </thead>
+        <tbody :class="[themeClass]">
+          <div class="Timeline__bodyWrapper">
+            <timeline-year
+              v-for="(year, index) in currentSettlement.timeline"
+              :key="index"
+              :year="year"
+              :checked="year.number <= currentSettlement.lanternYear"
+              @update="update(index, $event)"
+              @updateYear="updateYear(index, $event)" />
+          </div>
+        </tbody>
         <tr>
-          <th>Year</th>
-          <th>Settlement Event</th>
-          <th>Story Events</th>
+          <td class="Timeline__buttonWrapper">
+            <button
+              class="Timeline__addButton"
+              :class="[themeClass]"
+              :disabled="inHistoryMode"
+              @click="addYear()">
+              +
+            </button>
+          </td>
         </tr>
-      </thead>
-      <tbody :class="[themeClass]">
-        <timeline-year
-          v-for="(year, index) in currentSettlement.timeline"
-          :key="index"
-          :year="year"
-          :checked="year.number <= currentSettlement.lanternYear"
-          @update="update(index, $event)"
-          @updateYear="updateYear(index, $event)" />
-      </tbody>
-      <tr>
-        <td class="Timeline__buttonWrapper">
-          <button
-            class="Timeline__addButton"
-            :class="[themeClass]"
-            :disabled="inHistoryMode"
-            @click="addYear()">
-            +
-          </button>
-        </td>
-      </tr>
-    </table>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -85,10 +89,19 @@ export default {
 
 <style lang="scss" scoped>
 .Timeline {
+  position: relative;
   width: 100%;
+  height: 100%;
+
+  &__tableWrapper {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+  }
 
   &__table {
-    width: 655px;
+    width: 95%;
+    height: 100%;
     margin: 0 auto;
     table-layout: fixed;
     border-spacing: 0;
@@ -99,15 +112,16 @@ export default {
     }
 
     th {
-      padding-right: 23px;
+      display: inline-block;
       padding-bottom: 4px;
       font-size: 10pt;
+      text-align: left;
     }
 
     tbody {
       display: block;
       width: 100%;
-      height: 560px;
+      height: 100%;
       border-width: 2px;
       border-style: solid;
       border-left: none;
@@ -124,9 +138,24 @@ export default {
     }
   }
 
+  &__yearHeader {
+    width: 50px;
+  }
+
+  &__eventHeader {
+    width: 27%;
+  }
+
+  &__bodyWrapper {
+    display: table;
+    width: 100%;
+    height: 100%;
+  }
+
   &__buttonWrapper {
     position: relative;
     width: 100%;
+    height: 40px;
   }
 
   &__addButton {

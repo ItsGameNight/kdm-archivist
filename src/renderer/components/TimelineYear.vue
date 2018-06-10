@@ -1,6 +1,6 @@
 <template>
   <tr class="TimelineYear">
-    <td class="TimelineYear__yearCell" :class="[themeClass]">
+    <td class="TimelineYear__tableCell tableCell--year" :class="[themeClass]">
       <div class="TimelineYear__squareToggleWrapper">
         <square-toggle
           :initValue="checked"
@@ -10,33 +10,39 @@
       </div>
       <span class="TimelineYear__year">{{ year.number }}</span>
     </td>
-    <td class="TimelineYear__eventCell" :class="[themeClass]">
-      <img v-if="themeClass==='theme-light'" src="~@/assets/img/se.png" />
-      <img v-if="themeClass==='theme-dark'" src="~@/assets/img/se-white.png" />
-      <div class="TimelineYear__inputWrapper inputWrapper--event">
-        <editable-text-input
-          :textValue="year.settlementEvent"
-          :textStyle="{fontSize: '11pt'}"
-          :placeholder="'Random'"
-          @update="update('settlementEvent', $event)" />
+    <td class="TimelineYear__tableCell tableCell--event" :class="[themeClass]">
+      <div class="TimelineYear__cellSection cellSection--event">
+        <img v-if="themeClass==='theme-light'" src="~@/assets/img/se.png" />
+        <img v-if="themeClass==='theme-dark'" src="~@/assets/img/se-white.png" />
+        <div class="TimelineYear__inputWrapper inputWrapper--event">
+          <editable-text-input
+            :textValue="year.settlementEvent"
+            :textStyle="{fontSize: '11pt'}"
+            :placeholder="'Random'"
+            @update="update('settlementEvent', $event)" />
+        </div>
       </div>
-      <img v-if="!nemesis && themeClass==='theme-light'" src="~@/assets/img/story.png" />
-      <img v-if="!nemesis && themeClass==='theme-dark'" src="~@/assets/img/story-white.png" />
-      <div v-if="!nemesis" class="TimelineYear__inputWrapper inputWrapper--story">
-        <editable-text-input
-          :textValue="year.story"
-          :textStyle="{fontSize: '11pt'}"
-          :placeholder="'None'"
-          @update="update('story', $event)" />
+      <div v-if="!nemesis" class="TimelineYear__cellSection cellSection--story">
+        <img v-if="themeClass==='theme-light'" src="~@/assets/img/story.png" />
+        <img v-if="themeClass==='theme-dark'" src="~@/assets/img/story-white.png" />
+        <div class="TimelineYear__inputWrapper inputWrapper--story">
+          <editable-text-input
+            :textValue="year.story"
+            :textStyle="{ fontSize: '11pt', textOverflow: 'ellipsis' }"
+            :placeholder="'None'"
+            @update="update('story', $event)" />
+        </div>
       </div>
-      <img v-if="nemesis && themeClass==='theme-light'" src="~@/assets/img/nemesis.png" />
-      <img v-if="nemesis && themeClass==='theme-dark'" src="~@/assets/img/nemesis-white.png" />
-      <div v-if="nemesis" class="TimelineYear__inputWrapper inputWrapper--nemesis">
-        <editable-text-input
-          :textValue="year.nemesis"
-          :textStyle="{fontSize: '11pt'}"
-          :placeholder="'None'"
-          @update="update('nemesis', $event)" />
+      <div v-if="nemesis" class="TimelineYear__cellSection cellSection--nemesis">
+        <img v-if="themeClass==='theme-light'" src="~@/assets/img/nemesis.png" />
+        <img v-if="themeClass==='theme-dark'" src="~@/assets/img/nemesis-white.png" />
+        <div class="TimelineYear__inputWrapper inputWrapper--nemesis">
+          <editable-text-input
+            :textValue="year.nemesis"
+            :textStyle="{ fontSize: '11pt', textOverflow: 'ellipsis' }"
+            :placeholder="'None'"
+            @update="update('nemesis', $event)" />
+        </div>
       </div>
     </td>
   </tr>
@@ -71,7 +77,7 @@ export default {
 
 <style lang="scss" scoped>
 .TimelineYear {
-  td {
+  &__tableCell {
     padding: 2px;
     border-width: 2px;
     border-style: solid;
@@ -84,16 +90,33 @@ export default {
     &.theme-dark {
       background: $dark-bg;
     }
+
+    &.tableCell {
+      &--year {
+        width: 45px;
+        border-right: none;
+      }
+
+      &--event {
+        border-left: none;
+      }
+    }
   }
 
-  &__yearCell {
-    width: 50px;
-    border-right: none !important;
-  }
+  &__cellSection {
+    display: inline-block;
 
-  &__eventCell {
-    width: 620px;
-    border-left: none !important;
+    &.cellSection {
+      &--event {
+        width: 30%;
+        min-width: 135px;
+      }
+
+      &--story,
+      &--nemesis {
+        width: 68%;
+      }
+    }
   }
 
   &__year {
@@ -118,12 +141,12 @@ export default {
 
     &.inputWrapper {
       &--event {
-        width: 15%;
+        width: -webkit-calc(100% - 50px);
       }
 
       &--story,
       &--nemesis {
-        width: 65%;
+        width: -webkit-calc(100% - 50px);
       }
     }
   }
