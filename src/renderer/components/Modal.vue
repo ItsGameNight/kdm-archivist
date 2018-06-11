@@ -1,24 +1,28 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask" @click="$emit('close')">
-      <div class="modal-wrapper">
-        <div class="modal-container" :style="{ width: modalWidth + 'px'}" @click.stop>
-          <div class="modal-header">
+    <div class="Modal__mask" @click="$emit('close')">
+      <div class="Modal__wrapper">
+        <div class="Modal__container" :style="{ width: modalWidth + 'px'}" :class="[themeClass]" @click.stop>
+          <div class="Modal__header">
             <slot name="header">
               Default header.
             </slot>
           </div>
-          <div class="modal-body">
+          <div class="Modal__body">
             <slot name="body">
               Default body.
             </slot>
           </div>
-          <div class="modal-footer">
+          <div class="Modal__footer" v-if="!noFooter">
             <slot name="footer">
-              <button class="modal-default-button" @click="$emit('okay'); $emit('close')">
+              <button class="Modal__defaultButton"
+                :class="[themeClass]"
+                @click="$emit('okay'); $emit('close')">
                 Okay
               </button>
-              <button class="modal-default-button" @click="$emit('cancel'); $emit('close')">
+              <button class="Modal__defaultButton"
+                :class="[themeClass]"
+                @click="$emit('cancel'); $emit('close')">
                 Cancel
               </button>
             </slot>
@@ -29,60 +33,86 @@
   </transition>
 </template>
 
-<script>
+<script type="text/javascript">
+import ThemeClass from '@/mixins/ThemeClass'
+
 export default {
   name: 'modal',
+  mixins: [ThemeClass],
   props: {
-    modalWidth: { required: true }
+    modalWidth: { required: true },
+    noFooter: { required: false, default: false, type: Boolean }
   }
 }
 </script>
 
-<style>
-.modal-mask {
-  position: fixed;
-  z-index: 998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
+<style lang="scss" scoped>
+.Modal {
+  &__mask {
+    display: table;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: opacity 0.3s ease;
+  }
+
+  &__wrapper {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &__container {
+    margin: 0 auto;
+    padding: 0 30px 20px 30px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+
+    &.theme-light {
+      background-color: $light-bg-alt;
+      border-color: $light-border;
+    }
+
+    &.theme-dark {
+      background-color: $dark-bg-alt;
+      border-color: $dark-border;
+    }
+  }
+
+  &__header {
+    margin-top: 0;
+    padding: 0;
+  }
+
+  &__body {
+    margin: 20px 0;
+  }
+
+  &__footer {
+    padding-bottom: 15px;
+  }
+
+  &__defaultButton {
+    float: right;
+    margin-left: 5px;
+  }
 }
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-.modal-container {
-  margin: 0px auto;
-  padding: 0px 30px 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  border: 1px solid black;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-}
-.modal-header {
-  margin-top: 0;
-  padding: 0;
-}
-.modal-body {
-  margin: 20px 0;
-}
-.modal-footer {
-}
-.modal-default-button {
-  float: right;
-}
+
+// Transition styles
 .modal-enter {
   opacity: 0;
 }
 .modal-leave-active {
   opacity: 0;
 }
-.modal-enter .modal-container,
-.modal-leaver-active .modal-container {
+.modal-enter .Modal__container,
+.modal-leaver-active .Modal__container {
   -webkit-transform: scale(0.6);
   transform: scale(0.6);
 }

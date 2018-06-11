@@ -1,90 +1,103 @@
 <template>
-  <div class="survivor-table-row-wrapper">
-    <survivor-modal
-      v-if="modalVisible"
-      :survivor="survivor"
-      :yeeScore="yeeScore"
-      @close="modalVisible = false; $emit('modalClose')" />
-    <modal
-      v-if="deleteModalVisible"
-      :modalWidth="300"
-      @okay="deleteSurvivor({ id: survivor._id })"
-      @close="deleteModalVisible = false">
-      <h3 slot="header">Delete {{ survivor.name }}?</h3>
-      <p slot="body">Are you sure you want to delete this survivor?</p>
-    </modal>
-    <td class="survivor-table-row"
-      :class="[mouseDownState ? 'mouse-down' : '']"
+  <div class="SurvivorTableRow">
+    <div class="SurvivorTableRow__modals">
+      <survivor-modal
+        v-if="modalVisible"
+        :survivor="survivor"
+        :yeeScore="yeeScore"
+        @close="modalVisible = false; $emit('modalClose')" />
+      <modal
+        v-if="deleteModalVisible"
+        :modalWidth="300"
+        @okay="deleteSurvivor({ id: survivor._id })"
+        @close="deleteModalVisible = false">
+        <h3 slot="header">Delete {{ survivor.name }}?</h3>
+        <p slot="body">Are you sure you want to delete this survivor?</p>
+      </modal>
+    </div>
+    <td class="SurvivorTableRow__tableData"
+      :class="[mouseDownState ? 'mouse-down' : '', themeClass]"
       @dblclick="collapsedState = !collapsedState"
       @mousedown="mouseDownState = true"
       @mouseup="mouseDownState = false"
       v-long-press="onLongPress">
-      <div class="row-contents-wrapper">
-        <div class="right-hand-buttons">
-          <div class="modal-button-wrapper">
-            <button class="modal-button" @click="displayModal()" @dblclick.stop @mousedown.stop>
-              <font-awesome-icon :icon="modalButtonIcon" />
+      <div class="SurvivorTableRow__contentsWrapper" :class="[themeClass]">
+        <div class="SurvivorTableRow__rightButtons" :class="[themeClass]">
+          <div class="SurvivorTableRow__buttonWrapper buttonWrapper--right">
+            <button class="SurvivorTableRow__button button--right"
+              :class="[themeClass]"
+              @click="displayModal()"
+              @dblclick.stop
+              @mousedown.stop>
+                <font-awesome-icon :icon="modalButtonIcon" />
             </button>
           </div>
-          <div class="collapse-button-wrapper">
-            <button class="collapse-button" @click="collapsedState = !collapsedState" @dblclick.stop @mousedown.stop>
-              <font-awesome-icon :icon="collapseButtonIcon" />
+          <div class="SurvivorTableRow__buttonWrapper buttonWrapper--right">
+            <button class="SurvivorTableRow__button button--right"
+              :class="[themeClass]"
+              @click="collapsedState = !collapsedState"
+              @dblclick.stop
+              @mousedown.stop>
+                <font-awesome-icon :icon="collapseButtonIcon" />
             </button>
           </div>
-          <div class="delete-button-wrapper">
+          <div class="SurvivorTableRow__buttonWrapper buttonWrapper--right--bottom">
             <button
+              class="SurvivorTableRow__button button--right"
+              :class="[themeClass]"
               :disabled="inHistoryMode"
-              class="delete-button"
               @click="deleteModalVisible = true"
               @dblclick.stop
               @mousedown.stop>
-              <font-awesome-icon :icon="deleteIcon" />
+                <font-awesome-icon :icon="deleteIcon" />
             </button>
           </div>
         </div>
-        <div class="warning">
-            <span v-if="warning"><font-awesome-icon :icon="warningIcon" /></span>
-            <span v-if="survivor.cannotSpendSurvival">Survivor cannot spend surival!</span>
-            <span v-if="survivor.skipHunt">Survivor must skip next hunt!</span>
-            <span v-if="survivor.cannotUseFighting">Survivor cannot use fighting arts!</span>
+        <div class="SurvivorTableRow__warnings">
+            <span v-if="warning" :class="[themeClass]"><font-awesome-icon :icon="warningIcon" /></span>
+            <span v-if="survivor.cannotSpendSurvival" :class="[themeClass]">Survivor cannot spend surival!</span>
+            <span v-if="survivor.skipHunt" :class="[themeClass]">Survivor must skip next hunt!</span>
+            <span v-if="survivor.cannotUseFighting" :class="[themeClass]">Survivor cannot use fighting arts!</span>
         </div>
-        <div class="content-section">
-          <div class="row-section section1">
-            <div class="section-contents-wrapper">
-              <div class="left-icons">
-                <div class="yee-icon">
-                  <font-awesome-icon
-                    :icon="yeeIcon"
-                    :style="yeeColor" />
+        <div class="SurvivorTableRow__contents">
+          <div class="SurvivorTableRow__rowSection--section1">
+            <div class="SurvivorTableRow__sectionWrapper">
+              <div class="SurvivorTableRow__leftIcons">
+                <div class="SurvivorTableRow__buttonWrapper buttonWrapper--left">
+                  <div class="SurvivorTableRow__yeeIcon">
+                    <font-awesome-icon
+                      :icon="yeeIcon"
+                      :style="yeeColor" />
+                  </div>
                 </div>
-                <div class="alive-button-wrapper">
-                  <button class="alive-button"
+                <div class="SurvivorTableRow__buttonWrapper buttonWrapper--left">
+                  <button class="SurvivorTableRow__button button--left"
                     :disabled="inHistoryMode"
-                    :class="[survivor.alive ? 'red' : '']"
+                    :class="[themeClass, survivor.alive ? 'red' : '']"
                     @click="update('alive', !survivor.alive)"
                     @dblclick.stop @mousedown.stop>
                     <font-awesome-icon :icon="aliveIcon" />
                   </button>
                 </div>
-                <div v-if="survivor.alive" class="depart-button-wrapper">
-                  <button class="depart-button"
+                <div v-if="survivor.alive" class="SurvivorTableRow__buttonWrapper buttonWrapper--left">
+                  <button class="SurvivorTableRow__button button--left"
+                    :class="[themeClass, survivor.departing ? 'green' : '']"
                     :disabled="inHistoryMode"
-                    :class="[survivor.departing ? 'green' : '']"
                     @click="setDeparting(!survivor.departing)"
                     @dblclick.stop @mousedown.stop>
                     <font-awesome-icon :icon="departIcon" />
                   </button>
                 </div>
               </div>
-              <div class="general-info">
-                <div class="name-input-wrapper" @dblclick.stop @mousedown.stop>
+              <div class="SurvivorTableRow__generalInfo">
+                <div class="SurvivorTableRow__nameInputWrapper" @dblclick.stop @mousedown.stop>
                   <editable-text-input
                     :textValue="survivor.name"
                     :textStyle="{fontSize:'12pt', textOverflow:'ellipsis'}"
                     :placeholder="'Unnamed'"
                     @update="update('name', $event)" />
                 </div>
-                <div class="mf-toggle-wrapper" @dblclick.stop @mousedown.stop>
+                <div class="SurvivorTableRow__sexToggleWrapper" @dblclick.stop @mousedown.stop>
                   <male-female-toggle
                     :survivorID="survivor._id"
                     :initSex="survivor.sex" />
@@ -92,116 +105,116 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row-section section4">
-          <div class="section-contents-wrapper">
-            <div @dblclick.stop @mousedown.stop>
-              <editable-stat
-                :initValue="survivor.xp"
-                :statDisplayName="'XP'"
-                :minValue="0"
-                :maxValue="16"
-                noBorder
-                @update="update('xp', $event)" />
-            </div>
-            <div @dblclick.stop @mousedown.stop>
-              <editable-stat
-                :initValue="survivor.survival"
-                :statDisplayName="'SUR'"
-                :minValue="0"
-                :maxValue="currentSettlement.survivalLimit"
-                noBorder
-                @update="update('survival', $event)" />
-            </div>
-            <div @dblclick.stop @mousedown.stop>
-              <editable-stat
-                :initValue="survivor.insanity"
-                :statDisplayName="'INS'"
-                :minValue="0"
-                noBorder
-                @update="update('insanity', $event)" />
-            </div>
-          </div>
-        </div>
-        <div class="row-section section3">
-          <div class="section-contents-wrapper">
-            <div class="stat-row-padding">
+          <div class="SurvivorTableRow__rowSection--section2">
+            <div class="SurvivorTableRow__sectionWrapper">
               <div @dblclick.stop @mousedown.stop>
                 <editable-stat
-                  :initValue="survivor.movement"
-                  :statDisplayName="'MOV'"
-                  @update="update('movement', $event)" />
+                  :initValue="survivor.xp"
+                  :statDisplayName="'XP'"
+                  :minValue="0"
+                  :maxValue="16"
+                  noBorder
+                  @update="update('xp', $event)" />
               </div>
               <div @dblclick.stop @mousedown.stop>
                 <editable-stat
-                  :initValue="survivor.accuracy"
-                  :statDisplayName="'ACC'"
-                  @update="update('accuracy', $event)" />
+                  :initValue="survivor.survival"
+                  :statDisplayName="'SUR'"
+                  :minValue="0"
+                  :maxValue="currentSettlement.survivalLimit"
+                  noBorder
+                  @update="update('survival', $event)" />
               </div>
               <div @dblclick.stop @mousedown.stop>
                 <editable-stat
-                  :initValue="survivor.strength"
-                  :statDisplayName="'STR'"
-                  @update="update('strength', $event)" />
-              </div>
-              <div @dblclick.stop @mousedown.stop>
-                <editable-stat
-                  :initValue="survivor.evasion"
-                  :statDisplayName="'EVA'"
-                  @update="update('evasion', $event)" />
-              </div>
-              <div @dblclick.stop @mousedown.stop>
-                <editable-stat
-                  :initValue="survivor.luck"
-                  :statDisplayName="'LCK'"
-                  @update="update('luck', $event)" />
-              </div>
-              <div @dblclick.stop @mousedown.stop>
-                <editable-stat
-                  :initValue="survivor.speed"
-                  :statDisplayName="'SPD'"
-                  @update="update('speed', $event)" />
+                  :initValue="survivor.insanity"
+                  :statDisplayName="'INS'"
+                  :minValue="0"
+                  noBorder
+                  @update="update('insanity', $event)" />
               </div>
             </div>
           </div>
-        </div>
-        <div class="row-section section4">
-          <div class="section-contents-wrapper">
-            <div @dblclick.stop @mousedown.stop>
-              <editable-stat
-                :initValue="survivor.weaponProficiencyLevel"
-                :statDisplayName="'WPN'"
-                :minValue="0"
-                :maxValue="8"
-                noBorder
-                @update="update('weaponProficiencyLevel', $event)" />
+          <div class="SurvivorTableRow__rowSection--section3">
+            <div class="SurvivorTableRow__sectionWrapper">
+              <div class="SurvivorTableRow__statRowPadding">
+                <div @dblclick.stop @mousedown.stop>
+                  <editable-stat
+                    :initValue="survivor.movement"
+                    :statDisplayName="'MOV'"
+                    @update="update('movement', $event)" />
+                </div>
+                <div @dblclick.stop @mousedown.stop>
+                  <editable-stat
+                    :initValue="survivor.accuracy"
+                    :statDisplayName="'ACC'"
+                    @update="update('accuracy', $event)" />
+                </div>
+                <div @dblclick.stop @mousedown.stop>
+                  <editable-stat
+                    :initValue="survivor.strength"
+                    :statDisplayName="'STR'"
+                    @update="update('strength', $event)" />
+                </div>
+                <div @dblclick.stop @mousedown.stop>
+                  <editable-stat
+                    :initValue="survivor.evasion"
+                    :statDisplayName="'EVA'"
+                    @update="update('evasion', $event)" />
+                </div>
+                <div @dblclick.stop @mousedown.stop>
+                  <editable-stat
+                    :initValue="survivor.luck"
+                    :statDisplayName="'LCK'"
+                    @update="update('luck', $event)" />
+                </div>
+                <div @dblclick.stop @mousedown.stop>
+                  <editable-stat
+                    :initValue="survivor.speed"
+                    :statDisplayName="'SPD'"
+                    @update="update('speed', $event)" />
+                </div>
+              </div>
             </div>
-            <div @dblclick.stop @mousedown.stop>
-              <editable-stat
-                :initValue="survivor.courage"
-                :statDisplayName="'CRG'"
-                :minValue="0"
-                :maxValue="9"
-                noBorder
-                @update="update('courage', $event)" />
-            </div>
-            <div @dblclick.stop @mousedown.stop>
-              <editable-stat
-                :initValue="survivor.understanding"
-                :statDisplayName="'UND'"
-                :minValue="0"
-                :maxValue="9"
-                noBorder
-                @update="update('understanding', $event)" />
+          </div>
+          <div class="SurvivorTableRow__rowSection--section4">
+            <div class="SurvivorTableRow__sectionWrapper">
+              <div @dblclick.stop @mousedown.stop>
+                <editable-stat
+                  :initValue="survivor.weaponProficiencyLevel"
+                  :statDisplayName="'WPN'"
+                  :minValue="0"
+                  :maxValue="8"
+                  noBorder
+                  @update="update('weaponProficiencyLevel', $event)" />
+              </div>
+              <div @dblclick.stop @mousedown.stop>
+                <editable-stat
+                  :initValue="survivor.courage"
+                  :statDisplayName="'CRG'"
+                  :minValue="0"
+                  :maxValue="9"
+                  noBorder
+                  @update="update('courage', $event)" />
+              </div>
+              <div @dblclick.stop @mousedown.stop>
+                <editable-stat
+                  :initValue="survivor.understanding"
+                  :statDisplayName="'UND'"
+                  :minValue="0"
+                  :maxValue="9"
+                  noBorder
+                  @update="update('understanding', $event)" />
+              </div>
             </div>
           </div>
         </div>
         <transition name="expand">
-          <div v-if="!collapsedState" class="expand-content">
-            <div class="development-inputs flex-wrapper">
-              <div class="development-wrapper">
+          <div v-if="!collapsedState" class="SurvivorTableRow__expandContent" :class="[themeClass]">
+            <div class="SurvivorTableRow__development">
+              <div class="SurvivorTableRow__developmentSection">
                 <span>Weapon Type:</span>
-                <div class="development-wrapper-input">
+                <div class="SurvivorTableRow__developmentInputWrapper" :class="[themeClass]">
                   <editable-text-input
                     :textValue="survivor.weaponProficiency"
                     :textStyle="{fontSize:'9pt',fontStyle:'oblique'}"
@@ -209,9 +222,9 @@
                     @update="update('weaponProficiency', $event)" />
                 </div>
               </div>
-              <div class="development-wrapper">
+              <div class="SurvivorTableRow__developmentSection">
                 <span>Bold Skill:</span>
-                <div class="development-wrapper-input">
+                <div class="SurvivorTableRow__developmentInputWrapper" :class="[themeClass]">
                   <editable-text-input
                     :textValue="survivor.boldSkill"
                     :textStyle="{fontSize:'9pt'}"
@@ -219,9 +232,9 @@
                     @update="update('boldSkill', $event)" />
                 </div>
               </div>
-              <div class="development-wrapper">
+              <div class="SurvivorTableRow__developmentSection">
                 <span>Insight Skill:</span>
-                <div class="development-wrapper-input">
+                <div class="SurvivorTableRow__developmentInputWrapper" :class="[themeClass]">
                   <editable-text-input
                     :textValue="survivor.insightSkill"
                     :textStyle="{fontSize:'9pt'}"
@@ -230,22 +243,22 @@
                 </div>
               </div>
             </div>
-            <div class="other-info flex-wrapper">
-              <div class="other-wrapper">
+            <div class="SurvivorTableRow__otherInfo">
+              <div class="SurvivorTableRow__otherWrapper">
                 <span>Fighting Arts:</span>
                 <ul><li v-for="(fa, index) in survivor.fightingArts">{{ fa }}<template v-if="index<2&&fa!=null&&survivor.fightingArts[index+1]!=null">,</template></li></ul>
               </div>
-              <div class="other-wrapper">
+              <div class="SurvivorTableRow__otherWrapper">
                 <span>Disorders:</span>
                 <ul><li v-for="(dis, index) in survivor.disorders">{{ dis }}<template v-if="index<2&&dis!=null&&survivor.disorders[index+1]!=null">,</template></li></ul>
               </div>
             </div>
-            <div class="other-info flex-wrapper">
-              <div class="other-wrapper">
+            <div class="SurvivorTableRow__otherInfo">
+              <div class="SurvivorTableRow__otherWrapper">
                 <span>Abilities:</span>
                 <ul><li v-for="(ab, index) in survivor.abilities">{{ ab }}<template v-if="index<survivor.abilities.length-1&&ab!=null">,</template></li></ul>
               </div>
-              <div class="other-wrapper">
+              <div class="SurvivorTableRow__otherWrapper">
                 <span>Impairments:</span>
                 <ul><li v-for="(imp, index) in survivor.impairments">{{ imp }}<template v-if="index<survivor.impairments.length-1&&imp!=null">,</template></li></ul>
               </div>
@@ -278,6 +291,7 @@ import Modal from './Modal'
 import { EditableTextInput, EditableStat } from './GUIComponents'
 import { MaleFemaleToggle } from './SurvivorComponents'
 import YeeScoreMixin from '../mixins/YeeScore'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'survivor-table-row',
@@ -289,7 +303,7 @@ export default {
     EditableStat,
     MaleFemaleToggle
   },
-  mixins: [YeeScoreMixin],
+  mixins: [YeeScoreMixin, ThemeClass],
   props: {
     survivor: { required: true },
     collapsed: { default: false },
@@ -389,192 +403,315 @@ export default {
 }
 </script>
 
-<style scoped>
-div.survivor-table-row-wrapper {
+<style lang="scss" scoped>
+.SurvivorTableRow {
   user-select: none;
   cursor: default;
   display: table;
   margin: 0 auto;
+  width: 100%;
+
+  &__modals {
+    display: table-caption;
+  }
+
+  &__tableData {
+    width: 100%;
+
+    &.mouse-down {
+      transform: translateY(2px);
+    }
+  }
+
+  &__contentsWrapper {
+    position: relative;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 3px;
+
+    &.theme-light {
+      border-color: $light-border;
+      background-color: $light-bg-alt;
+    }
+
+    &.theme-dark {
+      border-color: $dark-border;
+      background-color: $dark-bg-alt;
+    }
+  }
+
+  &__rightButtons {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    &.theme-light {
+      color: $light-highlight;
+      background-color: $light-bg-alt;
+    }
+
+    &.theme-dark {
+      color: $dark-highlight;
+      background-color: $dark-bg-alt;
+    }
+  }
+
+  &__buttonWrapper {
+    &.buttonWrapper--right {
+      margin-bottom: 4px;
+
+      &--bottom {
+        margin-bottom: 0;
+      }
+    }
+
+    &.buttonWrapper--left {
+      padding: 2px 2px 2px 0;
+      text-align: center;
+    }
+  }
+
+  &__button {
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+
+    &.button--right {
+      font-size: 11pt;
+
+      &.theme-light {
+        color: $light-highlight;
+        background-color: $light-bg-alt;
+      }
+
+      &.theme-dark {
+        color: $dark-highlight;
+        background-color: $dark-bg-alt;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        &.theme-light {
+          color: $light-text;
+          background-color: $light-bg-alt;
+        }
+
+        &.theme-dark {
+          color: $dark-text;
+          background-color: $dark-bg-alt;
+        }
+      }
+
+      &:active {
+        transform: translateY(2px);
+
+        &.theme-light {
+          color: $light-text;
+          background-color: $light-bg-alt;
+        }
+
+        &.theme-dark {
+          color: $dark-text;
+          background-color: $dark-bg-alt;
+        }
+      }
+    }
+
+    &.button--left {
+      font-size: 12pt;
+
+      &.theme-light {
+        color: $light-text;
+        background-color: $light-bg-alt;
+      }
+
+      &.theme-dark {
+        color: $dark-text;
+        background-color: $dark-bg-alt;
+      }
+
+      &.red {
+        color: $blood-red;
+      }
+
+      &.green {
+        color: $departing;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:active {
+        transform: translateY(2px);
+      }
+    }
+  }
+
+  &__warnings {
+    position: absolute;
+    left: 35px;
+    top: 0;
+
+    span {
+      font-size: 8pt;
+
+      &.theme-light {
+        color: $light-alert;
+      }
+
+      &.theme-dark {
+        color: $dark-alert;
+      }
+    }
+  }
+
+  &__contents {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__rowSection {
+    display: inline-block;
+    vertical-align: top;
+
+    &--section1 {
+      min-width: 115px;
+      flex: 1;
+      padding-top: 6px;
+    }
+
+    &--section2, &--section3 {
+      margin-right: 10px;
+    }
+
+    &--section4 {
+      margin-right: 30px;
+    }
+  }
+
+  &__sectionWrapper {
+    display: flex;
+    flex-direction: row;
+    min-height: 75px;
+  }
+
+  &__leftIcons {
+    margin: auto 5px;
+  }
+
+  &__yeeIcon {
+    font-size: 12pt;
+    padding-left: 0;
+  }
+
+  &__generalInfo {
+    width: 95%;
+    padding-left: 5px;
+    margin: auto 0;
+  }
+
+  &__nameInputWrapper {
+    margin-bottom: 6px;
+  }
+
+  &__sexToggleWrapper {
+    margin-left: 3px;
+    margin-bottom: 4px;
+  }
+
+  &__statRowPadding {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 6px;
+  }
+
+  &__expandContent {
+    padding: 4px;
+    border-top-width: 1px;
+    border-top-style: solid;
+
+    &.theme-light {
+      border-top-color: $light-border;
+    }
+
+    &.theme-dark {
+      border-top-color: $dark-border;
+    }
+  }
+
+  &__development {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+
+    span {
+      font-size: 10pt;
+      padding-left: 12px;
+      line-height: 15pt;
+    }
+  }
+
+  &__developmentSection {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__developmentInputWrapper {
+    width: 100px;
+    margin-left: 4px;
+    margin-bottom: 2px;
+    padding-right: 14px;
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;
+
+    &.theme-light {
+      border-bottom-color: $light-border;
+    }
+
+    &.theme-dark {
+      border-bottom-color: $dark-border;
+    }
+  }
+
+  &__otherInfo {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__otherWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    margin-bottom: 5px;
+
+    span {
+      font-size: 10pt;
+      padding-left: 12px;
+      min-width: 80px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 10px;
+      font-size: 9pt;
+      font-style: italic;
+      line-height: 12pt;
+      max-width: 300px;
+    }
+
+    li {
+      display: inline-block;
+      list-style-type: none;
+      padding-right: 5px;
+      text-overflow: ellipsis;
+    }
+  }
 }
-td.survivor-table-row {
-  min-width: 633px;
-}
-.mouse-down {
-  transform: translateY(2px);
-}
-div.row-contents-wrapper {
-  position: relative;
-  border: 2px solid black;
-  border-radius: 3px;
-  background-color: white;
-}
-div.right-hand-buttons {
-  position: absolute;
-  top: 12px;
-  right: 6px;
-  color: gray;
-}
-div.modal-button-wrapper,
-div.collapse-button-wrapper {
-  margin-bottom: 4px;
-}
-.modal-button,
-.collapse-button,
-.delete-button {
-  outline: none;
-  border: none;
-  background-color: white;
-  font-size: 11pt;
-  color: gray;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-.modal-button:hover,
-.collapse-button:hover,
-.delete-button:hover {
-  color: black;
-  cursor: pointer;
-}
-.modal-button:active,
-.collapse-button:active,
-.delete-button:active {
-  transform: translateY(2px);
-}
-div.warning {
-  position: absolute;
-  left: 35px;
-  top: 0;
-}
-div.warning span {
-  font-size: 8pt;
-  color: orange;
-}
-div.content-section {
-  display: inline-block;
-}
-div.row-section {
-  display: inline-block;
-  vertical-align: top;
-}
-div.section1 {
-  width: 115px;
-  padding-top: 6px;
-}
-div.section2 {
-}
-div.section3 {
-}
-div.section4 {
-}
-div.section-contents-wrapper {
-  display: flex;
-  flex-direction: row;
-  min-height: 75px;
-}
-div.left-icons {
-  margin: auto 5px;
-}
-div.yee-icon,
-div.alive-button-wrapper,
-div.depart-button-wrapper {
-  padding: 2px 2px 2px 0;
-  text-align: center;
-}
-div.yee-icon {
-  font-size: 12pt;
-  padding-left: 0;
-}
-.alive-button,
-.depart-button {
-  outline: none;
-  border: none;
-  background-color: white;
-  font-size: 12pt;
-  color: black;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-.alive-button:hover,
-.depart-button:hover {
-  cursor: pointer;
-}
-.alive-button:active,
-.depart-button:active {
-  transform: translateY(2px);
-}
-.red {
-  color: #8a0707;
-}
-.green {
-  color: #00ab66;
-}
-div.general-info {
-  padding-left: 5px;
-  margin: auto 0;
-}
-div.name-input-wrapper {
-  width: 95%;
-  margin-bottom: 6px;
-}
-div.mf-toggle-wrapper {
-  margin-left: 3px;
-  margin-bottom: 4px;
-}
-div.stat-row-padding {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 6px;
-}
-div.expand-content {
-  padding: 4px;
-  border-top: 1px solid black;
-}
-div.development-wrapper {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 10px;
-}
-div.development-wrapper span {
-  font-size: 10pt;
-  padding-left: 12px;
-  line-height: 15pt;
-  font-variant-caps: small-caps;
-}
-div.development-wrapper-input {
-  width: 100px;
-  border-bottom: 1px dotted black;
-  margin-bottom: 2px;
-  margin-left: 4px;
-  padding-right: 14px;
-}
-div.other-wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 50%;
-  margin-bottom: 5px;
-}
-div.other-wrapper span {
-  font-size: 10pt;
-  padding-left: 12px;
-  min-width: 80px;
-  font-variant-caps: small-caps;
-}
-div.other-wrapper ul {
-  margin: 0;
-  padding-left: 10px;
-  font-size: 9pt;
-  font-style: oblique;
-  line-height: 12pt;
-  max-width: 300px;
-}
-div.other-wrapper li {
-  display: inline-block;
-  list-style-type: none;
-  padding-right: 5px;
-  text-overflow: ellipsis;
-}
+
+// Transition styles
 .expand-enter-active,
 .expand-leave-active {
   transition: all 0.2s ease-in-out;

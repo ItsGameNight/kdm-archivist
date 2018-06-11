@@ -76,9 +76,10 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapGetters, mapActions } from 'vuex'
 import { EditableList } from './GUIComponents'
+import ThemeClass from '@/mixins/ThemeClass'
 import {
   Innovations,
   Principles,
@@ -93,6 +94,7 @@ function getNames (obj) {
 export default {
   name: 'settlement-inspector',
   components: { EditableList },
+  mixins: [ThemeClass],
   data: function () {
     return {
       height: 0
@@ -156,7 +158,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 input.value {
   text-align: center;
   width: 20px;

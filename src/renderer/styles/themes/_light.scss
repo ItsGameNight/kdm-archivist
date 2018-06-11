@@ -1,0 +1,57 @@
+@import '../base/color';
+
+div.theme-light {
+  color: $light-text;
+  background-color: $light-bg;
+}
+
+button.theme-light {
+  color: $light-text;
+  background-color: $light-input;
+  border-color: $light-border;
+
+  &:hover {
+    background-color: $light-hover;
+  }
+
+  &:active {
+    background-color: $light-text;
+    color: $light-bg;
+  }
+}
+
+input.theme-light {
+  color: $light-text;
+  background-color: rgba(0, 0, 0, 0) !important;
+  border-color: $light-border;
+
+  &::selection {
+    background: $light-highlight;
+  }
+}
+
+.theme-light::placeholder {
+  color: $light-hover;
+}
+
+textarea.theme-light {
+  color: $light-text;
+  background-color: $light-bg;
+}
+
+.square.theme-light {
+  background-color: $light-text;
+  border-color: $light-text;
+}
+
+.emptySquare.theme-light,
+.emptySquareBold.theme-light,
+.emptySquareExtraBold.theme-light {
+  border-color: $light-text;
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.invisibleSquare.theme-light {
+  background-color: $light-bg-alt;
+  border-color: $light-bg-alt;
+}

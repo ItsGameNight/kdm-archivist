@@ -1,8 +1,15 @@
 <template>
-  <progress-bar :title="'Courage'" :initLevel="level" :maxLevel="9" :boldLevels="[3, 9]" :survivorID="survivorID" :stat="'courage'" :inline="false" />
+  <progress-bar
+    :title="'Courage'"
+    :initLevel="level"
+    :maxLevel="9"
+    :boldLevels="[3, 9]"
+    :survivorID="survivorID"
+    :stat="'courage'"
+    :inline="false" />
 </template>
 
-<script>
+<script type="text/javascript">
 import ProgressBar from './ProgressBar'
 
 export default {
@@ -15,6 +22,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>

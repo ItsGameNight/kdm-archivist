@@ -1,39 +1,43 @@
 <template>
-  <div class="editable-list-wrapper">
-    <ul class="editable-list">
-      <editable-list-item
-        v-for="(item, index) in listItems"
-        :initTextValue="numbered ? item.name : item"
-        :count="numbered ? item.count : null"
-        :placeholder="placeholder + ' ' + (index + 1)"
-        :key="index"
-        :autocompleteList="autocompleteList"
-        :numbered="numbered"
-        :numberEditable="numberEditable"
-        :textStyle="textStyle"
-        :parentHeight="parentHeight"
-        @update="updateItem(index, $event)"
-        @updateCount="updateCount(index, $event)"
-        @delete="deleteItem(index)" >
-      </editable-list-item>
-    </ul>
+  <div class="EditableList" :style="fixedStyle">
+    <div class="EditableList__scrollBox" :class="[fixedHeight ? 'fixedScroll' : '', themeClass]">
+      <ul class="EditableList__list" :class="[themeClass, fixedHeight ? 'fixedScroll' : '']">
+        <editable-list-item
+          v-for="(item, index) in listItems"
+          :initTextValue="numbered ? item.name : item"
+          :count="numbered ? item.count : null"
+          :placeholder="placeholder + ' ' + (index + 1)"
+          :key="index"
+          :autocompleteList="autocompleteList"
+          :numbered="numbered"
+          :numberEditable="numberEditable"
+          :textStyle="textStyle"
+          :parentHeight="parentHeight"
+          @update="updateItem(index, $event)"
+          @updateCount="updateCount(index, $event)"
+          @delete="deleteItem(index)" />
+      </ul>
+    </div>
     <button
       v-if="!max || listItems.length < max"
-      class="add-item"
+      class="EditableList__addButton"
+      :class="[themeClass]"
       :disabled="inHistoryMode"
       @click="addNew">
-      +
+        +
     </button>
   </div>
 </template>
 
-<script>
-import EditableListItem from './EditableListItem'
+<script type="text/javascript">
 import { mapGetters } from 'vuex'
+import EditableListItem from './EditableListItem'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'editable-list',
   components: { EditableListItem },
+  mixins: [ThemeClass],
   props: {
     listItems: { required: true },
     max: { required: false, default: null },
@@ -43,10 +47,18 @@ export default {
     numbered: { required: false, default: false, type: Boolean },
     numberEditable: { required: false, default: true, type: Boolean },
     textStyle: { required: false, default: () => { return { fontSize: '10pt' } } },
-    parentHeight: { required: false, default: 9999 }
+    parentHeight: { required: false, default: 9999 },
+    fixedHeight: { required: false, default: null }
   },
   computed: {
-    ...mapGetters(['inHistoryMode'])
+    ...mapGetters(['inHistoryMode']),
+    fixedStyle: function () {
+      if (this.fixedHeight) {
+        return { maxHeight: this.fixedHeight, height: this.fixedHeight }
+      } else {
+        return null
+      }
+    }
   },
   created: function () {
     // Deal with case where min is specified but
@@ -115,34 +127,89 @@ export default {
 }
 </script>
 
-<style scoped>
-ul.editable-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  border: 2px solid black;
-  border-top: none;
-  border-radius: 2px 2px 0 2px;
-}
-button.add-item {
-  float: right;
-  background-color: white;
-  font-size: 8pt;
-  font-weight: normal;
-  border: 2px solid black;
-  border-top: none;
-  border-radius: 0 0 2px 2px;
-  outline: none;
-}
-button.add-item:hover {
-  font-weight: bold;
-  font-size: 10pt;
-}
-button.add-item:active {
-  background: black;
-  color: white;
-}
-.editable-list-wrapper {
-  background: white;
+<style lang="scss" scoped>
+.EditableList {
+  display: block;
+  background-color: rgba(0, 0, 0, 0) !important;
+
+  &__scrollBox {
+    &.fixedScroll {
+      height: 100%;
+      border: 2px solid;
+      border-radius: 2px 2px 0 2px;
+      overflow-y: scroll;
+      background-color: inherit;
+    }
+
+    &::-webkit-scrollbar { 
+      display: none; 
+    }
+
+    &.theme-light {
+      background-color: inherit;
+    }
+
+    &.theme-dark {
+      border-color: $dark-border;
+      background-color: inherit;
+    }
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 2px 2px 0 2px;
+    border-top: none;
+    background-color: inherit;
+
+    &.fixedScroll {
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+    }
+
+    &.theme-dark {
+      border-color: $dark-border;
+    }
+  }
+
+  &__addButton {
+    float: right;
+    font-size: 8pt;
+    font-weight: normal;
+    border-width: 2px;
+    border-radius: 0 0 2px 2px;
+    border-top: none;
+
+    background-color: inherit;
+
+    &:hover {
+      font-weight: bold;
+      font-size: 10pt;
+
+      &.theme-light {
+        background-color: inherit;
+      }
+
+      &.theme-dark {
+        background-color: inherit;
+      }
+    }
+
+    &:active {
+      &.theme-light {
+        color: $light-bg;
+        background-color: $light-text;
+      }
+
+      &.theme-dark {
+        color: $dark-bg;
+        background-color: $dark-text;
+      }
+    }
+  }
 }
 </style>

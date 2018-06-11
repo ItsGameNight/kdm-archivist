@@ -1,32 +1,52 @@
 <template>
-  <div>
-    <div class="modals">
-      <modal v-if="showNewSettlementModal" @okay="newSmtModalOkayPressed()" @close="showNewSettlementModal = false" :modalWidth="300">
-        <h3 slot="header">New Settlement</h3>
-        <label slot="body">Settlement Name: <input v-model="newName" /></label>
+  <div class="SettlementTable">
+    <div class="SettlementTable__modals">
+      <modal v-if="showNewSettlementModal"
+        @okay="newSmtModalOkayPressed()"
+        @close="showNewSettlementModal = false"
+        :modalWidth="300">
+          <h3 slot="header">New Settlement</h3>
+          <label slot="body">Settlement Name: <input v-model="newName" /></label>
       </modal>
     </div>
-    <div class="table-scroll" @click="setCurrentSmt(null)">
+    <div class="SettlementTable__tableScroll" @click="setCurrentSmt(null)">
       <table>
         <tr><th>Settlements:</th></tr>
-        <tr v-for="(smt, index) in settlements"><settlement-table-row :smtID="smt._id" :index="index" :key="smt._id" :selected="smt._id === currentSmt" @smt-select="setCurrentSmt"></settlement-table-row></tr>
+        <tr v-for="(smt, index) in settlements">
+          <settlement-table-row
+            :smtID="smt._id"
+            :index="index"
+            :key="smt._id"
+            :selected="smt._id === currentSmt"
+            @smt-select="setCurrentSmt(smt._id)" />
+        </tr>
       </table>
     </div>
-    <div id="controls">
-      <button v-if="currentSmt !== null" @click="deleteSettlement(currentSmt)">Delete Settlement</button>
-      <button @click="newSmtButtonPressed()">New Settlement</button>
+    <div class="SettlementTable__bottomButtons">
+      <button v-if="currentSmt !== null"
+        :class="[themeClass]"
+        @click="deleteSettlement(currentSmt)">
+          Delete Settlement
+      </button>
+      <button
+        :class="[themeClass]"
+        @click="newSmtButtonPressed()">
+          New Settlement
+      </button>
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
+import { mapActions, mapState } from 'vuex'
 import SettlementTableRow from './SettlementTableRow'
 import Modal from './Modal'
-import { mapActions, mapState } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'settlement-table',
   components: { SettlementTableRow, Modal },
+  mixins: [ThemeClass],
   data () {
     return {
       showNewSettlementModal: false,
@@ -54,25 +74,29 @@ export default {
         this.createNamedSettlement(this.newName)
       }
     }
+  },
+  mounted () {
+    this.setCurrentSmt(null)
   }
 }
 </script>
 
-<style scoped>
-table {
-  width: 98%;
-  border-spacing: 0em 0.5em;
-  padding: 0 5px;
-}
-td {
-  border: 1px solid black;
-  padding: 5px;
-}
-.table-scroll {
-  height: 300px;
-  overflow-y: scroll;
-}
-#controls {
-  text-align: right;
+<style lang="scss" scoped>
+.SettlementTable {
+  &__tableScroll {
+    height: 300px;
+    overflow-y: scroll;
+
+    table {
+      width: 98%;
+      border-spacing: 0em 0.5em;
+      padding: 0 5px;
+    }
+  }
+
+  &__bottomButtons {
+    width: 98%;
+    text-align: right;
+  }
 }
 </style>

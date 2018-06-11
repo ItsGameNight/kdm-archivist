@@ -1,15 +1,14 @@
 <template>
-  <div class="editable-text-input-wrapper">
+  <div class="EditableTextInput">
     <input
-      class="editable-text-input"
+      class="EditableTextInput__input"
+      :class="[themeClass]"
       ref="eIn"
       :placeholder="placeholder"
       :type="inputType"
       :disabled="inHistoryMode"
-      :style="editableStyle"
+      :style="textStyle"
       :value="textValue"
-      @mouseover="hover = true"
-      @mouseleave="hover = false"
       @focus="focus = true; $emit('focus')"
       @blur="focus = false; selectCompletion(); $emit('blur');"
       @keyup.enter="selectCompletion(); $event.target.blur()"
@@ -19,35 +18,38 @@
       @keydown.tab.prevent
       @keyup.tab.prevent="selectCompletion()"
       @keyup.esc="filteredIdx = -1; $event.target.blur()" />
-
     <div
       v-if="okayToShowAutocomplete"
-      class="autocomplete-list"
+      class="EditableTextInput__autocompleteList"
+      :class="[themeClass]"
       :style="maxListHeightStyle"
       ref="autocompleteListElement">
       <div
         v-for="(item, index) in filteredList"
-        :class="['autocomplete-item', index === filteredIdx ? 'activeComplete' : '']"
+        class="EditableTextInput__autocompleteItem"
+        :class="[index === filteredIdx ? 'activeComplete' : '', themeClass]"
         :key="index"
         :id="'autoItem-' + index"
         @mouseover="filteredIdx = index"
         @mouseleave="filteredIdx = -1" >
-        <div v-if="textValue != null">
-        <b>{{ item.substring(0, textValue.length) }}</b>{{ item.substring(textValue.length) }}
-        </div>
-        <div v-else>
-          {{ item }}
-        </div>
+          <div v-if="textValue != null">
+            <b>{{ item.substring(0, textValue.length) }}</b>{{ item.substring(textValue.length) }}
+          </div>
+          <div v-else>
+            {{ item }}
+          </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapGetters } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'editable-text-input',
+  mixins: [ThemeClass],
   props: {
     placeholder: { required: false, default: 'Text...' },
     textValue: { required: true },
@@ -59,7 +61,6 @@ export default {
   data: function () {
     return {
       bgImgUrl: 'static/pencil.png',
-      hover: false,
       focus: false,
       filteredIdx: -1,
       windowHeight: 0,
@@ -97,25 +98,6 @@ export default {
   },
   computed: {
     ...mapGetters(['inHistoryMode']),
-    editableStyle: function () {
-      if (this.focus) {
-        return {
-          ...this.textStyle,
-          backgroundImage: 'url(' + this.bgImgUrl + ')',
-          paddingLeft: '1em',
-          fontWeight: 'normal',
-          fontStyle: 'normal'
-        }
-      } else if (this.hover) {
-        return {
-          ...this.textStyle,
-          backgroundImage: 'url(' + this.bgImgUrl + ')',
-          paddingLeft: '1em'
-        }
-      } else {
-        return this.textStyle
-      }
-    },
 
     okayToShowAutocomplete: function () {
       // check filtered list has stuff + focus on
@@ -195,52 +177,84 @@ export default {
 }
 </script>
 
-<style>
-.editable-text-input-wrapper {
+<style lang="scss" scoped>
+.EditableTextInput {
   position: relative;
-}
-.editable-text-input {
-  width: 100%;
-  outline: none;
-  border: none;
-  background-image: none;
-  background-repeat: no-repeat;
-  background-size: 0.8em;
-  background-position: left center;
-  user-select: default;
-  cursor: text;
-}
-::selection {
-  background: #d8d8d8;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-.autocomplete-list {
-  position: absolute;
-  background: white;
-  border-style: solid;
-  border-width: 0px 2px 2px 2px;
-  border-color: gray;
-  border-radius: 0px 0px 8px 8px;
-  margin-top: 2px;
-  padding-right: 4px;
-  left: -2px;
-  width: 100%;
-  z-index: 99;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  max-height: 126px;
-  overflow-y: scroll;
-}
+  &__input {
+    width: 100%;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: 0.8em;
+    background-position: left center;
+    border: none;
+    box-sizing: border-box;
 
-.autocomplete-item {
-  padding-left: 8px;
-}
+    &:hover {
+      padding-left: 1em;
 
-.activeComplete {
-  background-color: #E6E6E6;
+      &.theme-light {
+        background-image: url('~@/assets/img/pencil.png');
+      }
+
+      &.theme-dark {
+        background-image: url('~@/assets/img/pencil-white.png');
+      }
+    }
+
+    &:focus {
+      padding-left: 1em;
+      font-weight: normal;
+      font-style: normal;
+
+      &.theme-light {
+        background-image: url('~@/assets/img/pencil.png');
+      }
+
+      &.theme-dark {
+        background-image: url('~@/assets/img/pencil-white.png');
+      }
+    }
+  }
+
+  &__autocompleteList {
+    position: absolute;
+    left: -2px;
+    width: 100%;
+    max-height: 126px;
+    margin-top: 2px;
+    margin-right: 4px;
+    font-size: 10pt;
+    z-index: 99;
+    overflow-y: scroll;
+    border-width: 0 2px 2px 2px;
+    border-style: solid;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    &.theme-light {
+      background-color: $light-bg;
+      border-color: $light-hover;
+    }
+
+    &.theme-dark {
+      background-color: $dark-bg;
+      border-color: $dark-hover;
+    }
+  }
+
+  &__autocompleteItem {
+    padding-left: 8px;
+
+    &.activeComplete {
+      &.theme-light {
+        background-color: $light-highlight;
+      }
+
+      &.theme-dark {
+        background-color: $dark-highlight;
+      }
+    }
+  }
 }
 </style>

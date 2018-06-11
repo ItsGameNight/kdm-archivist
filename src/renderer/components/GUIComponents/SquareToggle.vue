@@ -1,19 +1,28 @@
 <template>
   <div
-    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
-    class="square-toggle"
+    class="SquareToggle"
+    :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '']"
     :style="titleSize"
     @click="toggle()">
-    <div class="flex-wrapper">
-      <div :class="[checkValue ? 'square' : 'empty-square']" :style="toggleSize"></div><div class="toggle-title">{{ statDisplayName }}</div>
+    <div class="SquareToggle__wrapper">
+      <div
+        :class="[checkValue ? 'square' : 'emptySquare', themeClass]"
+        :style="toggleSize">
+      </div>
+      <div class="SquareToggle__title">
+        {{ statDisplayName }}
+      </div>
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapGetters } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
+
 export default {
   name: 'square-toggle',
+  mixins: [ThemeClass],
   props: {
     initValue: { required: true },
     statDisplayName: { required: true },
@@ -55,23 +64,15 @@ export default {
 }
 </script>
 
-<style>
-.square-toggle {
-}
-.toggle-title {
-  padding-left: 2px;
-}
-.square {
-  background: black;
-  border: 1px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.empty-square {
-  border: 1px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+<style lang="scss" scoped>
+.SquareToggle {
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__title {
+    padding-left: 2px;
+  }
 }
 </style>

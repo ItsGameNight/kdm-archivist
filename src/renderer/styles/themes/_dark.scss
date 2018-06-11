@@ -1,0 +1,57 @@
+@import '../base/color';
+
+div.theme-dark {
+  color: $dark-text;
+  background-color: $dark-bg;
+  border-color: $dark-border;
+}
+
+button.theme-dark {
+  color: $dark-text;
+  background-color: $dark-input;
+  border-color: $dark-border;
+
+  &:hover {
+    background-color: $dark-hover;
+  }
+
+  &:active {
+    background-color: $dark-text;
+    color: $dark-bg;
+  }
+}
+
+input.theme-dark {
+  color: $dark-text;
+  background-color: rgba(0, 0, 0, 0) !important;
+  border-color: $dark-border;
+
+  &::selection {
+    background: $dark-highlight;
+  }
+}
+
+.theme-dark::placeholder {
+  color: $dark-highlight;
+}
+
+textarea.theme-dark {
+  color: $dark-text;
+  background-color: $dark-bg;
+}
+
+.square.theme-dark {
+  background-color: $dark-text;
+  border-color: $dark-text;
+}
+
+.emptySquare.theme-dark,
+.emptySquareBold.theme-dark,
+.emptySquareExtraBold.theme-dark {
+  border-color: $dark-text;
+}
+
+.invisibleSquare.theme-dark {
+  background-color: $dark-bg;
+  border-color: $dark-bg;
+}

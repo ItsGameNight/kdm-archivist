@@ -1,0 +1,15 @@
+@import 'color';
+
+input {
+  border-width: 1px;
+  border-style: solid;
+  outline: none;
+  user-select: default;
+  cursor: text;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

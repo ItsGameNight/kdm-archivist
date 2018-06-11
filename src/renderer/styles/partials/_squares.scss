@@ -1,0 +1,43 @@
+%baseSquare {
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  min-height: 10px;
+  border: 1px solid black;
+  margin: 0px 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.square {
+  @extend %baseSquare;
+  background: black;
+}
+
+.emptySquare {
+  @extend %baseSquare;
+}
+
+.emptySquareBold {
+  @extend %baseSquare;
+  width: 8px;
+  min-width: 8px;
+  height: 8px;
+  min-height: 8px;
+  border-width: 2px;
+}
+
+.emptySquareExtraBold {
+  @extend %baseSquare;
+  width: 4px;
+  min-width: 4px;
+  height: 4px;
+  min-height: 4px;
+  border-width: 4px;
+}
+
+.invisibleSquare {
+  @extend %baseSquare;
+  background-color: rgba(0, 0, 0, 0) !important;
+  transition: none;
+}

@@ -1,8 +1,16 @@
 <template>
-  <progress-bar :title="'Weapon Proficiency'" :initLevel="level" :maxLevel="8" :boldLevels="[3, 8]" :paddingSquares="1" :survivorID="survivorID" :stat="'weaponProficiencyLevel'" :inline="false" />
+  <progress-bar
+    :title="'Weapon Proficiency'"
+    :initLevel="level"
+    :maxLevel="8"
+    :boldLevels="[3, 8]"
+    :paddingSquares="1"
+    :survivorID="survivorID"
+    :stat="'weaponProficiencyLevel'"
+    :inline="false" />
 </template>
 
-<script>
+<script type="text/javascript">
 import ProgressBar from './ProgressBar'
 
 export default {
@@ -15,6 +23,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>

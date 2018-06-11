@@ -1,21 +1,40 @@
 <template>
   <div
-    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
-    class="progress-bar" >
-    <span v-if="!inline && title" class="title above">{{ title }} ({{ level }}): </span>
-    <div class="flex-wrapper">
-      <span v-if="inline && title" class="title" :style="{minWidth: String(4 + maxLevel / 8) + 'em'}">{{ title }} ({{ level }}): </span>
-      <div v-for="n in maxLevel" :class="squareClass(n)" @click="setLevel(n)" @dblclick.stop></div>
-      <div v-for="n in paddingSquares" class="invisible-square"></div>
+    class="ProgressBar"
+    :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '']">
+    <span
+      v-if="!inline && title"
+      class="ProgressBar__title above">
+        {{ title }} ({{ level }}):
+    </span>
+    <div class="ProgressBar__bar">
+      <span
+        v-if="inline && title"
+        class="ProgressBar__title"
+        :style="{minWidth: String(4 + maxLevel / 8) + 'em'}">
+          {{ title }} ({{ level }}): 
+      </span>
+      <div
+        v-for="n in maxLevel"
+        :class="[squareClass(n), themeClass]"
+        @click="setLevel(n)" @dblclick.stop>
+      </div>
+      <div
+        v-for="n in paddingSquares"
+        class="invisibleSquare"
+        :class="[themeClass]">
+      </div>
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import { mapActions, mapGetters } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'progress-bar',
+  mixins: [ThemeClass],
   props: {
     title: { required: true },
     initLevel: { required: true },
@@ -46,11 +65,11 @@ export default {
       if (n <= this.level) {
         return 'square'
       } else if (this.boldLevels.includes(n)) {
-        return 'empty-square-bold'
+        return 'emptySquareBold'
       } else if (this.extraBoldLevels && this.extraBoldLevels.includes(n)) {
-        return 'empty-square-extra-bold'
+        return 'emptySquareExtraBold'
       } else {
-        return 'empty-square'
+        return 'emptySquare'
       }
     },
     setLevel: function (n) {
@@ -75,76 +94,29 @@ export default {
 }
 </script>
 
-<style>
-.progress-bar {
+<style lang="scss" scoped>
+.ProgressBar {
+  display: inline-block;
   height: 16px;
+  margin-top: 2px;
   line-height: 8px;
   text-align: right;
-  margin-top: 2px;
-  display: inline-block;
-}
-.progress-bar .title {
-  font-size: 10pt;
-  font-variant-caps: small-caps;
-  text-align: left;
-  display: block;
-  padding-top: 2px;
-  min-width: 4em;
-}
-.above {
-  padding-bottom: 6px;
-}
-.flex-wrapper {
-  display: flex;
-  flex-direction: row;
-}
-.square {
-  width: 10px;
-  min-width: 10px;
-  height: 10px;
-  min-height: 10px;
-  background: black;
-  border: 1px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.empty-square {
-  width: 10px;
-  min-width: 10px;
-  height: 10px;
-  min-height: 10px;
-  border: 1px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.empty-square-bold {
-  width: 8px;
-  min-width: 8px;
-  height: 8px;
-  min-height: 8px;
-  border: 2px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.empty-square-extra-bold {
-  width: 4px;
-  min-width: 4px;
-  height: 4px;
-  min-height: 4px;
-  border: 4px solid black;
-  margin: 0px 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.invisible-square {
-  width: 10px;
-  min-width: 10px;
-  height: 10px;
-  min-height: 10px;
-  border: 1px solid white;
-  margin: 0px 2px;
+
+  &__title {
+    display: block;
+    padding-top: 2px;
+    min-width: 4em;
+    font-size: 9pt;
+    text-align: left;
+
+    &.above {
+      padding-bottom: 6px;
+    }
+  }
+
+  &__bar {
+    display: flex;
+    flex-direction: row;
+  }
 }
 </style>

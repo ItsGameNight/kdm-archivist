@@ -1,33 +1,34 @@
 <template>
-  <div class="notes-tab">
+  <div class="Notes" :class="[themeClass]">
     <h2>Notes</h2>
     <textarea
-      class="notes-input"
+      class="Notes__input"
+      :class="[themeClass]"
       :disabled="inHistoryMode"
       placeholder="What happened this year?"
-      v-model="currNote"
-      >
+      v-model="currNote">
     </textarea>
-
     <button
-      class="add-note"
+      class="Notes__button button--add"
+      :class="[themeClass]"
       :disabled="inHistoryMode"
       @click="addNote">
       +
     </button>
-
     <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
-      <div v-for="(note, index) in sortedNotes" class="past-note">
+      <div v-for="(note, index) in sortedNotes" class="Notes__pastNote">
         <b> Lantern Year {{ note.lanternYear }} </b>
         <button
-          class="delete-note"
+          class="Notes__button button--delete"
+          :class="[themeClass]"
           :disabled="inHistoryMode"
           @click="deleteNote(index)">
           x
         </button>
         <button
-          class="delete-note"
+          class="Notes__button button--history"
+          :class="[themeClass]"
           :disabled="inHistoryMode"
           @click="setCurrentSnapByLanternYearAndNoteID({ ly: note.lanternYear, noteID: note._id })">
           <font-awesome-icon :icon="histIcon"/>
@@ -35,7 +36,7 @@
         <br>
         {{ note.body }}
         <br>
-        <p class="note-timestamp">
+        <p class="Notes__timestamp" :class="[themeClass]">
         {{ note.timeStr }}
         </p>
       </div>
@@ -48,10 +49,12 @@
 import { mapGetters, mapActions } from 'vuex'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faHistory } from '@fortawesome/fontawesome-free-solid'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'notes-tab',
   components: { FontAwesomeIcon },
+  mixins: [ThemeClass],
   computed: {
     ...mapGetters([
       'inHistoryMode',
@@ -104,83 +107,110 @@ export default {
 }
 </script>
 
-<style scoped>
-.notes-input {
-  display: block;
-  overflow-y: scroll;
-  width:100%;
-  height:40%;
-  background: white;
-  box-sizing: border-box;
-  border-style: solid;
-  border-width: 2px;
-  padding: 10px;
-  font-size: 12pt;
-  outline: none;
-}
-.past-note {
-  background: white;
-  margin-bottom: 10px;
-  padding-left: 5px;
-  box-sizing: border-box;
-  border-style: solid;
-  border-width: 2px;
-}
-div.notes-tab {
-  background: white;
-  height: 600px;
-  width: 250px;
+<style lang="scss" scoped>
+.Notes {
   position: absolute;
-  right: 0px;
+  top: 0;
+  right: 0;
+  min-height: 600px;
+  height: 100%;
+  width: 250px;
+  padding: 0 10px;
   overflow-y: scroll;
   z-index: 98;
-  border-left: 1px solid black;
-  padding: 0px 10px 0px 10px;
-}
-p.note-timestamp {
-  color: gray;
-  font-size: 8px;
-  text-align: right;
-  margin-right: 5px;
-}
-button.add-note {
-  float: right;
-  background-color: white;
-  font-size: 14pt;
-  font-weight: normal;
-  padding: 0px 8px 3px 8px;
-  border: 2px solid black;
-  border-top: none;
-  border-radius: 0 0 2px 2px;
-  outline: none;
-}
-button.add-note:hover {
-  font-weight: bold;
-  font-size: 16pt;
-}
-button.add-note:active {
-  background: black;
-  color: white;
-}
+  border-left: 1px solid;
 
-button.delete-note {
-  float: right;
-  background-color: white;
-  font-size: 8pt;
-  font-weight: normal;
-  padding: 0px 8px 3px 8px;
-  border: 2px solid black;
-  border-top: none;
-  border-right: none;
-  border-radius: 0 0 2px 2px;
-  outline: none;
-}
-button.delete-note:hover {
-  font-weight: bold;
-  font-size: 10pt;
-}
-button.delete-note:active {
-  background: black;
-  color: white;
+  &__input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 40%;
+    padding: 10px;
+    font-size: 12pt;
+    border: 2px solid;
+    overflow-y: scroll;
+    outline: none;
+    resize: none;
+
+    &.theme-light {
+      background-color: $light-bg;
+    }
+
+    &.theme-dark {
+      background-color: $dark-bg;
+    }
+  }
+
+  &__pastNote {
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    border: 2px solid;
+  }
+
+  &__timestamp {
+    margin-right: 5px;
+    font-size: 8pt;
+    text-align: right;
+
+    &.theme-light {
+      color: $light-hover;
+    }
+
+    &.theme-dark {
+      color: $dark-hover;
+    }
+  }
+
+  &__button {
+    float: right;
+    font-size: 14pt;
+    font-weight: normal;
+    padding: 0 8px 3px 8px;
+    border-width: 2px;
+    border-radius: 0 0 2px 2px;
+    border-top: none;
+
+    &.theme-dark {
+      background-color: $dark-bg;
+    }
+
+    &:hover {
+      font-weight: bold;
+      font-size: 16pt;
+
+      &.theme-light {
+        background-color: $light-bg;
+      }
+
+      &.theme-dark {
+        background-color: $dark-bg;
+      }
+    }
+
+    &:active {
+      &.theme-light {
+        color: $light-bg;
+        background-color: $light-text;
+      }
+
+      &.theme-dark {
+        color: $dark-bg;
+        background-color: $dark-text;
+      }
+    }
+
+    &.button {
+      &--delete,
+      &--history {
+        font-size: 8pt;
+        border-right: none;
+
+        &:hover {
+          font-size: 10pt;
+        }
+      }
+    }
+  }
 }
 </style>

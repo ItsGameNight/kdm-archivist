@@ -1,35 +1,62 @@
 <template>
-  <div 
-    :class="[ inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '' ]"
-    class="editable-stat">
-    <div class="increment-box" @mouseover="hover = true" @mouseleave="hover = false">
-      <div class="chevron top"><font-awesome-icon :icon="chevronUp" :class="[topBounce ? 'animated bounce' : '']" :style="chevronStyle" @mousedown="updateStat(statValue + 1); bounceTop()" /></div>
-      <div :class="{ maxbox : limitBox }">
-        <input
-        type="number"
-        class="statbox"
-        :class="{ borderless : limitBox, 'no-border': noBorder }"
-        :value="statValue"
-        @input="updateStat($event.target.value)"
-        @focus="$event.target.select(); focus = true"
-        @blur="focus = false"
-        @keydown.enter="$event.target.blur()" />
-        <span v-if="limitBox" class="limitbox"><div class="limit-label">Limit</div>{{ maxValue }}</span>
+  <div
+    class="EditableStat"
+    :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '', themeClass]">
+    <div
+      class="EditableStat__incrementBox"
+      @mouseover="hover = true"
+      @mouseleave="hover = false">
+      <div class="EditableStat__chevron chevron--top" :class="[limitBox ? 'limit' : '']">
+        <font-awesome-icon
+          :icon="chevronUp"
+          :class="[topBounce ? 'animated bounce' : '']"
+          :style="chevronStyle"
+          @mousedown="updateStat(statValue + 1); bounceTop()" />
       </div>
-      <div v-if="statDisplayName" class="stat-display-name" :style="displayNameStyle">{{ statDisplayName }}</div>
-      <div :class="[statDisplayName ? 'chevron bottom withDisplayName' : 'chevron bottom']"><font-awesome-icon :icon="chevronDown" :class="[bottomBounce ? 'animated bounceDown' : '']" :style="chevronStyle" @mousedown="updateStat(statValue - 1); bounceBottom()" /></div>
+      <div :class="{ 'EditableStat__maxbox' : limitBox }">
+        <input
+          class="EditableStat__statbox"
+          type="number"
+          :class="[limitBox ? 'statbox--limit' : '', noBorder ? 'statbox--borderless' : '', themeClass]"
+          :value="statValue"
+          @input="updateStat($event.target.value)"
+          @focus="$event.target.select(); focus = true"
+          @blur="focus = false"
+          @keydown.enter="$event.target.blur()" />
+        <span v-if="limitBox" class="EditableStat__limitbox" :class="[themeClass]">
+          <div class="EditableStat__limitLabel">Limit</div>
+          {{ maxValue }}
+        </span>
+      </div>
+      <div
+        v-if="statDisplayName"
+        class="EditableStat__displayName"
+        :style="displayNameStyle">
+          {{ statDisplayName }}
+      </div>
+      <div
+        class="EditableStat__chevron chevron--bottom"
+        :class="[statDisplayName ? 'withDisplayName' : '', limitBox ? 'limit' : '']">
+        <font-awesome-icon
+          :icon="chevronDown"
+          :class="[bottomBounce ? 'animated bounceDown' : '']"
+          :style="chevronStyle" 
+          @mousedown="updateStat(statValue - 1); bounceBottom()" />
+      </div>
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
+import { mapGetters } from 'vuex'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/fontawesome-free-solid'
-import { mapGetters } from 'vuex'
+import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'editable-stat',
   components: { FontAwesomeIcon },
+  mixins: [ThemeClass],
   props: {
     statDisplayName: { required: false },
     initValue: { required: true },
@@ -102,84 +129,101 @@ export default {
 }
 </script>
 
-<style scoped>
-.editable-stat {
-  padding: 0 0.2em;
+<style lang="scss" scoped>
+.EditableStat {
   display: block;
-  /*border: 1px solid red;*/
+  padding: 0 0.2em;
+  background-color: rgba(0, 0, 0, 0) !important;
+
+  &__incrementBox {
+  }
+
+  &__maxbox {
+    display: flex;
+    flex-direction: row;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+  }
+
+  &__limitbox {
+    width: 2em;
+    min-width: 2em;
+    margin-left: auto;
+    padding-top: 0.1em;
+    font-weight: bold;
+    font-size: 11pt;
+    text-align: center;
+    border-left-width: 1px;
+    border-left-style: solid;
+
+    &.theme-light {
+      background-color: $light-highlight;
+    }
+
+    &.theme-dark {
+      background-color: $dark-highlight;
+    }
+  }
+
+  &__limitLabel {
+    //padding: 0 1px;
+    font-size: 7pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+
+  &__statbox {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
+    padding: 0;
+    text-align: center;
+    font-family: "Gloria Hallelujah";
+    font-size: 20pt;
+    border-radius: 2px;
+
+    &.statbox {
+      &--limit {
+        border: none;
+        padding-top: 3px;
+      }
+
+      &--borderless {
+        border-color: rgba(0, 0, 0, 0) !important;
+      }
+    }
+  }
+
+  &__displayName {
+    height: 0;
+    padding-top: 2px;
+    font-size: 9pt;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  &__chevron {
+    position: relative;
+    text-align: center;
+    height: 1.2em;
+
+    &.withDisplayName {
+      top: -0.25em;
+    }
+
+    &.limit {
+      text-align: left;
+      left: 0.6em;
+    }
+  }
 }
-.increment-box {
-  text-align: center;
-  font-size: 18pt;
-  /*border: 1px solid blue;*/
-}
-.maxbox {
-  display: flex;
-  flex-direction: row;
-  border: 1px solid black;
-  border-radius: 2px;
-}
-.statbox {
-  width: 1.2em;
-  min-width: 1.2em;
-  text-align: center;
-  font-size: 18pt;
-  border: 1px solid black;
-  border-radius: 2px;
-  outline: none;
-}
-.limitbox {
-  font-family: system-ui;
-  font-weight: bold;
-  font-size: 12pt;
-  border-left: 1px solid black;
-  width: 1.8em;
-  min-width: 1.8em;
-  margin-left: auto;
-  padding-top: 0.1em;
-  background-color: #d2d2d2;
-}
-.borderless {
-  border: none;
-}
-.no-border {
-  border: 1px solid white;
-}
-.stat-display-name {
-  height: 0;
-  font-size: 9pt;
-  text-transform: uppercase;
-  text-align: center;
-  padding-top: 2px;
-}
-.limit-label {
-  font-size: 7pt;
-  font-weight: bold;
-  text-transform: uppercase;
-  text-align: center;
-  border-bottom: 1px solid black;
-}
-.chevron {
-  position: relative;
-  text-align: left;
-  padding-left: 6px;
-  /*border: 1px solid green;*/
-}
-.top {
-  height: 0.9em;
-}
-.bottom {
-  height: 0.9em;
-  top: -0.1em;
-}
-.withDisplayName {
-  top: -0.2em;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+
+// Animation styles
 .animated {
   -webkit-animation-duration: 0.15s;
   animation-duration: 0.15s;
