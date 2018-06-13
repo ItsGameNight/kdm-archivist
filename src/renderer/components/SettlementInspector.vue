@@ -1,5 +1,5 @@
 <template>
-  <div class="SettlementInspector">
+  <div class="SettlementInspector" @dblclick="toggleAll">
     <h2 class="SettlementInspector__settlementName">
       {{ currentSettlement.name }}
     </h2>
@@ -7,7 +7,7 @@
       Settlement Inspector
     </h5>
     <div class="SettlementInspector__settlementStats">
-      <div class="SettlementInspector__statbox">
+      <div class="SettlementInspector__statbox" @dblclick.stop>
         <editable-stat
           :statDisplayName="'Lantern Year'"
           :initValue="currentSettlement.lanternYear"
@@ -15,7 +15,7 @@
           large
           @update="update('lanternYear', $event)" />
       </div>
-      <div class="SettlementInspector__statbox">
+      <div class="SettlementInspector__statbox" @dblclick.stop>
         <editable-stat
           :statDisplayName="'Survival Limit'"
           :initValue="currentSettlement.survivalLimit"
@@ -23,7 +23,7 @@
           large
           @update="update('survivalLimit', $event)" />
       </div>
-      <div class="SettlementInspector__statbox">
+      <div class="SettlementInspector__statbox" @dblclick.stop>
         <editable-stat
           :statDisplayName="'Survival on Depart'"
           :initValue="currentSettlement.survivalOnDepart"
@@ -34,9 +34,9 @@
     </div>
     <div class="SettlementInspector__topScrollFade" :class="[themeClass]" :style="titleAdjust">
     </div>
-    <div class="SettlementInspector__scrollbox" :style="titleAdjust">
+    <div class="SettlementInspector__scrollbox" :style="titleAdjust" @dblclick.stop>
       <div class="SettlementInspector__populationStats">
-        <collapse-group :title="'Settlement Stats'">
+        <collapse-group :title="'Settlement Stats'" ref="cg1">
           <div slot="body">
             <ul class="SettlementInspector__populationList">
               <li>Population: <strong>{{ numberAliveInSettlement }}</strong></li>
@@ -47,7 +47,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Milestone Story Events'">
+        <collapse-group :title="'Milestone Story Events'" ref="cg2">
           <div slot="body" class="SettlementInspector__editableListWrapper" style="padding-bottom: 6px;">
             <div class="SettlementInspector__milestoneToggle">
               <square-toggle
@@ -88,7 +88,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Principles'">
+        <collapse-group :title="'Principles'" ref="cg3">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-list
               :listItems="currentSettlement.principles"
@@ -99,7 +99,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Innovations'">
+        <collapse-group :title="'Innovations'" ref="cg4">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-list
               :listItems="currentSettlement.innovations"
@@ -110,7 +110,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Settlement Locations'">
+        <collapse-group :title="'Settlement Locations'" ref="cg5">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-list
               :listItems="currentSettlement.locations"
@@ -121,7 +121,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Quarries'">
+        <collapse-group :title="'Quarries'" ref="cg6">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-list
               :listItems="currentSettlement.quarries"
@@ -132,7 +132,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Nemesis Monsters'">
+        <collapse-group :title="'Nemesis Monsters'" ref="cg7">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-list
               :listItems="currentSettlement.nemeses"
@@ -142,7 +142,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Lantern Research Level'" :initCollapse="true">
+        <collapse-group :title="'Lantern Research Level'" :initCollapse="true" ref="cg8">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-stat
               :statDisplayName="'Lantern Research Level'"
@@ -158,7 +158,7 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Lost Settlements'" :initCollapse="true">
+        <collapse-group :title="'Lost Settlements'" :initCollapse="true" ref="cg9">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-stat
               :statDisplayName="'Lost Settlement Count'"
@@ -198,7 +198,8 @@ export default {
   data: function () {
     return {
       height: 0,
-      titleHeight: 41
+      titleHeight: 41,
+      collapseState: false
     }
   },
   mounted: function () {
@@ -267,6 +268,12 @@ export default {
         alert(this.currentSettlement.name + ' has completed 5 innovations! Read story event Hooded Knight.')
       } else if (milestone === 'over') {
         alert(this.currentSettlement.name + ' has been wiped out. Read story event Game Over.')
+      }
+    },
+    toggleAll: function () {
+      this.collapseState = !this.collapseState
+      for (var i = 1; i <= 9; i++) {
+        this.$refs['cg' + i].setCollapseState(this.collapseState)
       }
     }
   }

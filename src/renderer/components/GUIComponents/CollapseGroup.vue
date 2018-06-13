@@ -11,11 +11,13 @@
         <font-awesome-icon :icon="collapseIcon" />
       </button>
     </div>
-    <div v-if="!collapseState" class="CollapseGroup__body" :class="[themeClass]">
-      <slot name="body">
-        Default body.
-      </slot>
-    </div>
+    <transition name="expand">
+      <div v-if="!collapseState" class="CollapseGroup__body" :class="[themeClass]">
+        <slot name="body">
+          Default body.
+        </slot>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -81,5 +83,17 @@ export default {
     font-size: 10pt;
     border-radius: 0 0 4px 4px;
   }
+}
+
+// Transition styles
+.expand-enter-active,
+.expand-leave-active {
+  transition: all 0.2s ease-in-out;
+  max-height: 120px;
+}
+.expand-enter,
+.expand-leave-to {
+  max-height: 0px;
+  opacity: 0;
 }
 </style>
