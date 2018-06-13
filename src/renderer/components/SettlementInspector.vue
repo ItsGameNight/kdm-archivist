@@ -47,6 +47,47 @@
         </collapse-group>
       </div>
       <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Milestone Story Events'">
+          <div slot="body" class="SettlementInspector__editableListWrapper" style="padding-bottom: 6px;">
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneBirth"
+                :statDisplayName="'First child is born'"
+                :squareSize="11"
+                @update="update('milestoneBirth', $event)" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneDeath"
+                :statDisplayName="'First time death count is updated'"
+                :squareSize="11"
+                @update="update('milestoneDeath', $event)" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestonePopulation"
+                :statDisplayName="'Population reaches 15'"
+                :squareSize="11"
+                @update="update('milestonePopulation', $event)" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneInnovation"
+                :statDisplayName="'Settlement has 5 innovations'"
+                :squareSize="11"
+                @update="update('milestoneInnovation', $event)" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneGameOver"
+                :statDisplayName="'Population reaches 0'"
+                :squareSize="11"
+                @update="update('milestoneGameOver', $event)" />
+            </div>
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
         <collapse-group :title="'Principles'">
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-list
@@ -65,16 +106,6 @@
               :autocompleteList="innovationNames"
               :parentHeight="height"
               @update="update('innovations', $event)" />
-          </div>
-        </collapse-group>
-      </div>
-      <div class="SettlementInspector__statlist">
-        <collapse-group :title="'Milestone Story Events'">
-          <div slot="body" class="SettlementInspector__editableListWrapper">
-            <editable-list
-              :listItems="currentSettlement.milestones"
-              :parentHeight="height"
-              @update="update('milestones', $event)" />
           </div>
         </collapse-group>
       </div>
@@ -115,8 +146,9 @@
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-stat
               :statDisplayName="'Lantern Research Level'"
-              :initValue="0"
-              :minValue="0" />
+              :initValue="currentSettlement.researchLevel"
+              :minValue="0"
+              @update="update('researchLevel', $event)" />
             <h4>Monster Volumes</h4>
             <editable-list
               :listItems="currentSettlement.monsterVolumes"
@@ -130,8 +162,9 @@
           <div slot="body" class="SettlementInspector__editableListWrapper">
             <editable-stat
               :statDisplayName="'Lost Settlement Count'"
-              :initValue="0"
-              :minValue="0" />
+              :initValue="currentSettlement.lostSettlementCount"
+              :minValue="0"
+              @update="update('lostSettlementCount', $event)" />
           </div>
         </collapse-group>
       </div>
@@ -145,7 +178,11 @@
 
 <script type="text/javascript">
 import { mapGetters, mapActions } from 'vuex'
-import { EditableList, EditableStat, CollapseGroup } from '@/components/GUIComponents'
+import {
+  EditableList,
+  EditableStat,
+  CollapseGroup,
+  SquareToggle } from '@/components/GUIComponents'
 import ThemeClass from '@/mixins/ThemeClass'
 import {
   Innovations,
@@ -156,7 +193,7 @@ import {
 
 export default {
   name: 'settlement-inspector',
-  components: { EditableList, EditableStat, CollapseGroup },
+  components: { EditableList, EditableStat, CollapseGroup, SquareToggle },
   mixins: [ThemeClass],
   data: function () {
     return {
@@ -328,6 +365,10 @@ export default {
 
   &__editableListWrapper {
     padding-bottom: 25px;
+  }
+
+  &__milestoneToggle {
+    padding: 4px 0;
   }
 
   &__listPadding {
