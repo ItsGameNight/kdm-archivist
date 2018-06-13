@@ -19,7 +19,14 @@ import LockToggle from './LockToggle'
 import SquareToggle from './SquareToggle'
 import EditableList from './EditableList'
 import Dropdown from './Dropdown'
+import CollapseGroup from './CollapseGroup'
 
 export {
-  EditableStat, EditableTextInput, LockToggle, SquareToggle, EditableList, Dropdown
+  EditableStat,
+  EditableTextInput,
+  LockToggle,
+  SquareToggle,
+  EditableList,
+  Dropdown,
+  CollapseGroup
 }
