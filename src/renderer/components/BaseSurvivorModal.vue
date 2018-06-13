@@ -124,7 +124,7 @@
           <div class="BaseSurvivorModal__scrollPadding"></div>
         </div>
       </div>
-      <div class="BaseSurvivorModal__scrollFadeBottom"></div>
+      <div class="BaseSurvivorModal__scrollFadeBottom" :class="[themeClass]"></div>
     </div>
     <div slot="footer" style="display: none;"></div>
   </modal>
@@ -226,7 +226,14 @@ export default {
     right: 0;
     height: 20px;
     border-radius: 0 0 10px 10px;
-    background: linear-gradient(rgba(0,0,0,0), $light-bg);
+
+    &.theme-light {
+      background: linear-gradient(rgba(0,0,0,0), $light-bg);
+    }
+
+    &.theme-dark {
+      background: linear-gradient(rgba(0,0,0,0), $dark-bg);
+    }
   }
 
   &__sectionTitle {
@@ -273,8 +280,8 @@ export default {
 
   &__inputWrapper {
     width: 10em;
-    height: 1.3em;
-    margin-top: 10px;
+    height: 1.4em;
+    margin-top: 8px;
     margin-left: 50px;
     border-bottom: 1px dotted;
   }
