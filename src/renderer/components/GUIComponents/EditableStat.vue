@@ -59,7 +59,7 @@ export default {
   mixins: [ThemeClass],
   props: {
     statDisplayName: { required: false },
-    initValue: { required: true },
+    initValue: { required: true, type: Number },
     maxValue: { required: false, default: null },
     minValue: { required: false, default: null },
     noBorder: { required: false, default: false, type: Boolean },
@@ -111,7 +111,7 @@ export default {
           val = 0
         }
         this.statValue = Number(val)
-        this.$emit('update', val)
+        this.$emit('update', Number(val))
       }
     },
     bounceTop: function () {

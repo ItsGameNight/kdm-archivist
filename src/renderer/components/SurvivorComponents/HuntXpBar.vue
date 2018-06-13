@@ -6,7 +6,8 @@
     :boldLevels="[2, 6, 10, 15]"
     :extraBoldLevels="[16]"
     :survivorID="survivorID"
-    :stat="'xp'" />
+    :stat="'xp'"
+    @onChange="$emit('onChange', $event)" />
 </template>
 
 <script type="text/javascript">
@@ -16,7 +17,7 @@ export default {
   name: 'hunt-xp-bar',
   components: { ProgressBar },
   props: {
-    survivorID: { required: true },
+    survivorID: { required: false, default: null },
     level: { required: true }
   }
 }

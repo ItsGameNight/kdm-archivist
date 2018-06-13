@@ -1,5 +1,8 @@
 <template>
   <div class="SurvivorTable">
+    <div class="SurvivorTable__modals">
+      <base-survivor-modal v-if="showBaseSurvivor" @close="showBaseSurvivor = false" />
+    </div>
     <div class="SurvivorTable__header">
       <div class="SurvivorTable__topButtons">
         <button
@@ -19,6 +22,13 @@
           :disabled="inHistoryMode"
           @click="resetDeparting">
             Reset Departing
+        </button>
+        <button
+          class="SurvivorTable__topButtons__editBase"
+          :class="[themeClass]"
+          :disabled="inHistoryMode"
+          @click="showBaseSurvivor = true">
+            Edit Base Survivor
         </button>
         <button
           class="SurvivorTable__topButtons__add"
@@ -243,13 +253,13 @@ import {
   faCaretSquareDown
 } from '@fortawesome/fontawesome-free-solid'
 import SurvivorTableRow from './SurvivorTableRow'
-import SurvivorModal from './SurvivorModal'
+import BaseSurvivorModal from '@/components/BaseSurvivorModal'
 import { Dropdown } from './GUIComponents'
 import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'survivor-table',
-  components: { SurvivorTableRow, FontAwesomeIcon, Dropdown, SurvivorModal },
+  components: { SurvivorTableRow, FontAwesomeIcon, Dropdown, BaseSurvivorModal },
   mixins: [ThemeClass],
   data: function () {
     return {
@@ -257,7 +267,8 @@ export default {
       sort: 'yeeScore',
       sortAscending: false,
       filter: 0,
-      modalShowing: false
+      modalShowing: false,
+      showBaseSurvivor: false
     }
   },
   computed: {
@@ -391,7 +402,7 @@ export default {
     display: flex;
     flex-direction: row;
 
-    &__collapse, &__resetDeparting {
+    &__collapse, &__resetDeparting, &__editBase {
       margin-right: 5px;
     }
 

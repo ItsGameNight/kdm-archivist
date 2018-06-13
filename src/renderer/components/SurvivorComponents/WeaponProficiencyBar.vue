@@ -7,7 +7,8 @@
     :paddingSquares="1"
     :survivorID="survivorID"
     :stat="'weaponProficiencyLevel'"
-    :inline="false" />
+    :inline="false"
+    @onChange="$emit('onChange', $event)" />
 </template>
 
 <script type="text/javascript">
@@ -17,7 +18,7 @@ export default {
   name: 'weapon-proficiency-bar',
   components: { ProgressBar },
   props: {
-    survivorID: { required: true },
+    survivorID: { required: false, default: null },
     level: { required: true }
   }
 }
