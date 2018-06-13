@@ -54,35 +54,35 @@
                 :initValue="currentSettlement.milestoneBirth"
                 :statDisplayName="'First child is born'"
                 :squareSize="11"
-                @update="update('milestoneBirth', $event)" />
+                @update="update('milestoneBirth', $event); milestoneAlert($event, 'birth')" />
             </div>
             <div class="SettlementInspector__milestoneToggle">
               <square-toggle
                 :initValue="currentSettlement.milestoneDeath"
                 :statDisplayName="'First time death count is updated'"
                 :squareSize="11"
-                @update="update('milestoneDeath', $event)" />
+                @update="update('milestoneDeath', $event); milestoneAlert($event, 'death')" />
             </div>
             <div class="SettlementInspector__milestoneToggle">
               <square-toggle
                 :initValue="currentSettlement.milestonePopulation"
                 :statDisplayName="'Population reaches 15'"
                 :squareSize="11"
-                @update="update('milestonePopulation', $event)" />
+                @update="update('milestonePopulation', $event); milestoneAlert($event, 'population')" />
             </div>
             <div class="SettlementInspector__milestoneToggle">
               <square-toggle
                 :initValue="currentSettlement.milestoneInnovation"
                 :statDisplayName="'Settlement has 5 innovations'"
                 :squareSize="11"
-                @update="update('milestoneInnovation', $event)" />
+                @update="update('milestoneInnovation', $event); milestoneAlert($event, 'innovation')" />
             </div>
             <div class="SettlementInspector__milestoneToggle">
               <square-toggle
                 :initValue="currentSettlement.milestoneGameOver"
                 :statDisplayName="'Population reaches 0'"
                 :squareSize="11"
-                @update="update('milestoneGameOver', $event)" />
+                @update="update('milestoneGameOver', $event); milestoneAlert($event, 'over')" />
             </div>
           </div>
         </collapse-group>
@@ -252,6 +252,22 @@ export default {
     },
     getNames: function (obj) {
       return Object.values(obj).map((o) => { return o.name })
+    },
+    milestoneAlert: function (set, milestone) {
+      if (!set) {
+        return
+      }
+      if (milestone === 'birth') {
+        alert('The first child of ' + this.currentSettlement.name + ' was born! Read story event Principle: New Life.')
+      } else if (milestone === 'death') {
+        alert('The first death of ' + this.currentSettlement.name + ' has occured. Read story event Principle: Death.')
+      } else if (milestone === 'population') {
+        alert('The population of ' + this.currentSettlement.name + ' has reached 15! Read story event Principle: Society.')
+      } else if (milestone === 'innovation') {
+        alert(this.currentSettlement.name + ' has completed 5 innovations! Read story event Hooded Knight.')
+      } else if (milestone === 'over') {
+        alert(this.currentSettlement.name + ' has been wiped out. Read story event Game Over.')
+      }
     }
   }
 }
