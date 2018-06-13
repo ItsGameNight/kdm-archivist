@@ -7,6 +7,10 @@
     <div slot="body" class="BaseSurvivorModal__body" :class="[themeClass]">
       <h5 class="BaseSurvivorModal__sectionTitle">Hunt XP</h5>
       <div class="BaseSurvivorModal__section">
+        <hunt-xp-bar
+          :level="currentSettlement.baseSurvivor.xp"
+          @onChange="update('xp', $event)" />
+        <p v-if="innovationUnlocked('saga')">+2 from the Saga innovation.</p>
       </div>
       <h5 class="BaseSurvivorModal__sectionTitle">Survival Actions</h5>
       <div class="BaseSurvivorModal__section">
@@ -51,6 +55,42 @@
       </div>
       <h5 class="BaseSurvivorModal__sectionTitle">Development Stats</h5>
       <div class="BaseSurvivorModal__section">
+        <div class="BaseSurvivorModal__devWrapper first">
+          <weapon-proficiency-bar
+            :level="currentSettlement.baseSurvivor.weaponProficiencyLevel"
+            @onChange="update('weaponProficiencyLevel', $event)" />
+        </div>
+        <div class="BaseSurvivorModal__devWrapper">
+          <div class="BaseSurvivorModal__flexWrapper">
+            <courage-bar
+              :level="currentSettlement.baseSurvivor.courage"
+              @onChange="update('courage', $event)" />
+            <div class="BaseSurvivorModal__inputWrapper">
+              <editable-text-input
+                :textValue="currentSettlement.baseSurvivor.boldSkill"
+                :textStyle="{ fontSize: '10pt' }"
+                :placeholder="'Base Bold Skill'"
+                @update="update('boldSkill', $event)" />
+            </div>
+          </div>
+          <p v-if="innovationUnlocked('saga')">+2 from the Saga innovation.</p>
+        </div>
+        <div class="BaseSurvivorModal__devWrapper">
+          <div class="BaseSurvivorModal__flexWrapper">
+            <understanding-bar
+              :level="currentSettlement.baseSurvivor.understanding"
+              @onChange="update('understanding', $event)" />
+            <div class="BaseSurvivorModal__inputWrapper">
+              <editable-text-input
+                :textValue="currentSettlement.baseSurvivor.insightSkill"
+                :textStyle="{ fontSize: '10pt' }"
+                :placeholder="'Base Insight Skill'"
+                @update="update('insightSkill', $event)" />
+            </div>
+          </div>
+          <p v-if="principleUnlocked('graves')">+1 from the Graves principle.</p>
+          <p v-if="innovationUnlocked('saga')">+2 from the Saga innovation.</p>
+        </div>
       </div>
     </div>
   </modal>
@@ -59,13 +99,26 @@
 <script type="text/javascript">
 import { mapGetters, mapActions } from 'vuex'
 import Modal from '@/components/Modal'
-import { SquareToggle } from '@/components/GUIComponents'
+import { SquareToggle, EditableTextInput } from '@/components/GUIComponents'
+import {
+  HuntXpBar,
+  CourageBar,
+  UnderstandingBar,
+  WeaponProficiencyBar
+} from '@/components/SurvivorComponents'
 import ThemeClass from '@/mixins/ThemeClass'
 
 export default {
   name: 'base-survivor-modal',
   mixins: [ThemeClass],
-  components: { Modal, SquareToggle },
+  components: {
+    Modal,
+    SquareToggle,
+    EditableTextInput,
+    HuntXpBar,
+    CourageBar,
+    UnderstandingBar,
+    WeaponProficiencyBar },
   computed: {
     ...mapGetters([
       'inHistoryMode',
@@ -81,6 +134,14 @@ export default {
       newBase[stat] = value
       var update = { baseSurvivor: newBase }
       this.updateSettlement({ id: this.currentSettlement._id, update: update })
+    },
+    principleUnlocked: function (princ) {
+      for (var principle of this.currentSettlement.principles) {
+        if (principle && principle.toLowerCase() === princ) {
+          return true
+        }
+      }
+      return false
     },
     innovationUnlocked: function (inn) {
       for (var innovation of this.currentSettlement.innovations) {
@@ -115,12 +176,6 @@ export default {
 
   &__section {
     margin-bottom: 10px;
-  }
-
-  &__survivalAction {
-    display: flex;
-    flex-direction: row;
-    padding-bottom: 4px;
 
     p {
       margin: 0 0 0 10px;
@@ -128,6 +183,34 @@ export default {
       font-style: italic;
       line-height: 10pt;
     }
+  }
+
+  &__survivalAction {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 4px;
+  }
+
+  &__devWrapper {
+    padding-top: 8px;
+
+    &.first {
+      padding-top: 0;
+    }
+  }
+
+  &__flexWrapper {
+    display: flex;
+    flex-direction: row;
+    height: 35px;
+  }
+
+  &__inputWrapper {
+    width: 10em;
+    height: 1.3em;
+    margin-top: 10px;
+    margin-left: 50px;
+    border-bottom: 1px dotted;
   }
 }
 </style>

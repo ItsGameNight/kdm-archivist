@@ -88,7 +88,7 @@ export default {
         this.updateSurvivor({ id: this.survivorID, update: update })
       }
       // Emit event in case parent wants to take further action
-      this.$emit('onChange', n)
+      this.$emit('onChange', this.level)
     }
   }
 }
