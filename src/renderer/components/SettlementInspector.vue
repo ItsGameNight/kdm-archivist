@@ -1,84 +1,188 @@
 <template>
-  <div style="overflow-y: scroll;">
-    <h2>{{ currentSettlement.name }}</h2>
-    <p>
-    <b>Overview:</b>
-    <br>
-      Lantern Year:
-      <input
-        class="value"
-        :value="currentSettlement.lanternYear"
-        :disabled="inHistoryMode"
-        :stat="'lanternYear'"
-        @input="updateNumberValue"/>
-    <br>
-      Survival Limit:
-      <input
-        class="value"
-        :value="currentSettlement.survivalLimit"
-        :stat="'survivalLimit'"
-        :disabled="inHistoryMode"
-        @input="updateNumberValue"/>
-    <br>
-      Survival on Depart:
-      <input
-        class="value"
-        :value="currentSettlement.survivalOnDepart"
-        :stat="'survivalOnDepart'"
-        :disabled="inHistoryMode"
-        @input="updateNumberValue"/>
-    </p>
-    <p>
-    <b>Stats:</b>
-    <br>
-      Survivors: {{ numberAliveInSettlement }}
-    <br>
-      Death Count: {{ settlementDeathCount }}
-    <br>
-      M/F Ratio: {{ settlementMaleCount }} / {{ settlementFemaleCount }}
-    </p>
-    <p>
-      <b>Principles: </b>
-      <editable-list
-        :listItems="currentSettlement.principles"
-        :max="4"
-        :autocompleteList="principleNames"
-        :parentHeight="height"
-        @update="update('principles', $event)"
-        ></editable-list>
-    </p>
-    <p>
-      <b>Locations: </b>
-      <editable-list
-        :listItems="currentSettlement.locations"
-        :autocompleteList="settlementLocationNames"
-        :parentHeight="height"
-        @update="update('locations', $event)"
-        ></editable-list>
-    </p>
-    <p>
-      <b>Innovations: </b>
-      <editable-list
-        :listItems="currentSettlement.innovations"
-        :autocompleteList="innovationNames"
-        :parentHeight="height"
-        @update="update('innovations', $event)"
-        ></editable-list>
-    </p>
-    <p>
-      <b>Quarries: </b>
-      <editable-list
-        :listItems="currentSettlement.quarries"
-        :autocompleteList="quarryNames"
-        :parentHeight="height"
-        @update="update('quarries', $event)"></editable-list>
-    </p>
+  <div class="SettlementInspector" @dblclick="toggleAll">
+    <h2 class="SettlementInspector__settlementName">
+      {{ currentSettlement.name }}
+    </h2>
+    <h5 class="SettlementInspector__settlementLabel" :class="[themeClass]">
+      Settlement Inspector
+    </h5>
+    <div class="SettlementInspector__settlementStats">
+      <div class="SettlementInspector__statbox" @dblclick.stop>
+        <editable-stat
+          :statDisplayName="'Lantern Year'"
+          :initValue="currentSettlement.lanternYear"
+          :minValue="0"
+          large
+          @update="update('lanternYear', $event)" />
+      </div>
+      <div class="SettlementInspector__statbox" @dblclick.stop>
+        <editable-stat
+          :statDisplayName="'Survival Limit'"
+          :initValue="currentSettlement.survivalLimit"
+          :minValue="0"
+          large
+          @update="update('survivalLimit', $event)" />
+      </div>
+      <div class="SettlementInspector__statbox" @dblclick.stop>
+        <editable-stat
+          :statDisplayName="'Survival on Depart'"
+          :initValue="currentSettlement.survivalOnDepart"
+          :minValue="0"
+          large
+          @update="update('survivalOnDepart', $event)" />
+      </div>
+    </div>
+    <div class="SettlementInspector__topScrollFade" :class="[themeClass]" :style="titleAdjust">
+    </div>
+    <div class="SettlementInspector__scrollbox" :style="titleAdjust" @dblclick.stop>
+      <div class="SettlementInspector__populationStats">
+        <collapse-group :title="'Settlement Stats'" ref="cg1">
+          <div slot="body">
+            <ul class="SettlementInspector__populationList">
+              <li>Population: <strong>{{ numberAliveInSettlement }}</strong></li>
+              <li>Death Count: <strong>{{ settlementDeathCount }}</strong></li>
+              <li>Male/Female Ratio: <strong>{{ settlementMaleCount }} / {{ settlementFemaleCount }}</strong></li>
+            </ul>
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Milestone Story Events'" ref="cg2">
+          <div slot="body" class="SettlementInspector__editableListWrapper" style="padding-bottom: 6px;">
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneBirth"
+                :statDisplayName="'First child is born'"
+                :squareSize="11"
+                @update="update('milestoneBirth', $event); milestoneAlert($event, 'birth')" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneDeath"
+                :statDisplayName="'First time death count is updated'"
+                :squareSize="11"
+                @update="update('milestoneDeath', $event); milestoneAlert($event, 'death')" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestonePopulation"
+                :statDisplayName="'Population reaches 15'"
+                :squareSize="11"
+                @update="update('milestonePopulation', $event); milestoneAlert($event, 'population')" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneInnovation"
+                :statDisplayName="'Settlement has 5 innovations'"
+                :squareSize="11"
+                @update="update('milestoneInnovation', $event); milestoneAlert($event, 'innovation')" />
+            </div>
+            <div class="SettlementInspector__milestoneToggle">
+              <square-toggle
+                :initValue="currentSettlement.milestoneGameOver"
+                :statDisplayName="'Population reaches 0'"
+                :squareSize="11"
+                @update="update('milestoneGameOver', $event); milestoneAlert($event, 'over')" />
+            </div>
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Principles'" ref="cg3">
+          <div slot="body" class="SettlementInspector__editableListWrapper">
+            <editable-list
+              :listItems="currentSettlement.principles"
+              :autocompleteList="principleNames"
+              :parentHeight="height"
+              @update="update('principles', $event)" />
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Innovations'" ref="cg4">
+          <div slot="body" class="SettlementInspector__editableListWrapper">
+            <editable-list
+              :listItems="currentSettlement.innovations"
+              :autocompleteList="innovationNames"
+              :parentHeight="height"
+              @update="update('innovations', $event)" />
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Settlement Locations'" ref="cg5">
+          <div slot="body" class="SettlementInspector__editableListWrapper">
+            <editable-list
+              :listItems="currentSettlement.locations"
+              :autocompleteList="settlementLocationNames"
+              :parentHeight="height"
+              @update="update('locations', $event)" />
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Quarries'" ref="cg6">
+          <div slot="body" class="SettlementInspector__editableListWrapper">
+            <editable-list
+              :listItems="currentSettlement.quarries"
+              :autocompleteList="quarryNames"
+              :parentHeight="height"
+              @update="update('quarries', $event)" />
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Nemesis Monsters'" ref="cg7">
+          <div slot="body" class="SettlementInspector__editableListWrapper">
+            <editable-list
+              :listItems="currentSettlement.nemeses"
+              :parentHeight="height"
+              @update="update('nemeses', $event)" />
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Lantern Research Level'" :initCollapse="true" ref="cg8">
+          <div slot="body" class="SettlementInspector__editableListWrapper">
+            <editable-stat
+              :statDisplayName="'Lantern Research Level'"
+              :initValue="currentSettlement.researchLevel"
+              :minValue="0"
+              @update="update('researchLevel', $event)" />
+            <h4>Monster Volumes</h4>
+            <editable-list
+              :listItems="currentSettlement.monsterVolumes"
+              :parentHeight="height"
+              @update="update('monsterVolumes', $event)" />
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__statlist">
+        <collapse-group :title="'Lost Settlements'" :initCollapse="true" ref="cg9">
+          <div slot="body" class="SettlementInspector__editableListWrapper">
+            <editable-stat
+              :statDisplayName="'Lost Settlement Count'"
+              :initValue="currentSettlement.lostSettlementCount"
+              :minValue="0"
+              @update="update('lostSettlementCount', $event)" />
+          </div>
+        </collapse-group>
+      </div>
+      <div class="SettlementInspector__listPadding">
+      </div>
+    </div>
+    <div class="SettlementInspector__bottomScrollFade" :class="[themeClass]">
+    </div>
   </div>
 </template>
 
 <script type="text/javascript">
 import { mapGetters, mapActions } from 'vuex'
-import { EditableList } from './GUIComponents'
+import {
+  EditableList,
+  EditableStat,
+  CollapseGroup,
+  SquareToggle } from '@/components/GUIComponents'
 import ThemeClass from '@/mixins/ThemeClass'
 import {
   Innovations,
@@ -87,25 +191,25 @@ import {
   Quarries
 } from '../assets/StaticGameData'
 
-function getNames (obj) {
-  return Object.values(obj).map((o) => { return o.name })
-}
-
 export default {
   name: 'settlement-inspector',
-  components: { EditableList },
+  components: { EditableList, EditableStat, CollapseGroup, SquareToggle },
   mixins: [ThemeClass],
   data: function () {
     return {
-      height: 0
+      height: 0,
+      titleHeight: 41,
+      collapseState: false
     }
   },
   mounted: function () {
     this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+    this.titleHeight = this.$el.querySelector('.SettlementInspector__settlementName').getBoundingClientRect().bottom
     this.$nextTick(() => {
       // Detect window resizes
       window.addEventListener('resize', (e) => {
         this.height = this.$el.getBoundingClientRect().height + this.$el.getBoundingClientRect().top
+        this.titleHeight = this.$el.querySelector('.SettlementInspector__settlementName').getBoundingClientRect().bottom
       })
       // Detect scrolls
       window.addEventListener('scroll', (e) => {
@@ -123,16 +227,19 @@ export default {
       'currentSettlement'
     ]),
     principleNames: function () {
-      return getNames(Principles)
+      return this.getNames(Principles)
     },
     innovationNames: function () {
-      return getNames(Innovations)
+      return this.getNames(Innovations)
     },
     settlementLocationNames: function () {
-      return getNames(SettlementLocations)
+      return this.getNames(SettlementLocations)
     },
     quarryNames: function () {
-      return getNames(Quarries)
+      return this.getNames(Quarries)
+    },
+    titleAdjust: function () {
+      return { top: 165 + (this.titleHeight - 41) + 'px' }
     }
   },
   methods: {
@@ -144,14 +251,29 @@ export default {
       update[stat] = val
       this.updateSettlement({ id: this.currentSettlement._id, update: update })
     },
-    updateNumberValue (e) {
-      var value = e.target.value
-      if (value !== '' && !isNaN(parseFloat(value))) {
-        // unpack the event
-        var update = {}
-        update[e.target.getAttribute('stat')] = Number(value)
-        // update backend
-        this.updateSettlement({ id: this.currentSettlement._id, update: update })
+    getNames: function (obj) {
+      return Object.values(obj).map((o) => { return o.name })
+    },
+    milestoneAlert: function (set, milestone) {
+      if (!set) {
+        return
+      }
+      if (milestone === 'birth') {
+        alert('The first child of ' + this.currentSettlement.name + ' was born! Read story event Principle: New Life.')
+      } else if (milestone === 'death') {
+        alert('The first death of ' + this.currentSettlement.name + ' has occured. Read story event Principle: Death.')
+      } else if (milestone === 'population') {
+        alert('The population of ' + this.currentSettlement.name + ' has reached 15! Read story event Principle: Society.')
+      } else if (milestone === 'innovation') {
+        alert(this.currentSettlement.name + ' has completed 5 innovations! Read story event Hooded Knight.')
+      } else if (milestone === 'over') {
+        alert(this.currentSettlement.name + ' has been wiped out. Read story event Game Over.')
+      }
+    },
+    toggleAll: function () {
+      this.collapseState = !this.collapseState
+      for (var i = 1; i <= 9; i++) {
+        this.$refs['cg' + i].setCollapseState(this.collapseState)
       }
     }
   }
@@ -159,9 +281,121 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-input.value {
-  text-align: center;
-  width: 20px;
-  font-size: 10pt;
+.SettlementInspector {
+  position: relative;
+  min-width: 230px;
+
+  &__settlementName {
+    margin: 0 auto;
+    text-transform: capitalize;
+  }
+
+  &__settlementLabel {
+    margin: 0 auto;
+    line-height: 6pt;
+
+    &.theme-light {
+      color: $light-highlight;
+    }
+
+    &.theme-dark {
+      color: $dark-highlight;
+    }
+  }
+
+  &__settlementStats {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+  &__statbox {
+    width: 33%;
+  }
+
+  &__topScrollFade {
+    position: absolute;
+    top: 165px;
+    left: 0;
+    right: 5px;
+    height: 20px;
+    z-index: 12;
+
+    &.theme-light {
+      background: linear-gradient($light-bg-alt, rgba(0,0,0,0));
+    }
+
+    &.theme-dark {
+      background: linear-gradient($dark-bg-alt, rgba(0,0,0,0));
+    }
+  }
+
+  &__bottomScrollFade {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 5px;
+    height: 40px;
+    z-index: 12;
+
+    &.theme-light {
+      background: linear-gradient(rgba(0,0,0,0), $light-bg-alt);
+    }
+
+    &.theme-dark {
+      background: linear-gradient(rgba(0,0,0,0), $dark-bg-alt);
+    }
+  }
+
+  &__scrollbox {
+    position: absolute;
+    top: 165px;
+    bottom: 5px;
+    right: 5px;
+    left: 10px;
+    padding-top: 20px;
+    overflow-y: scroll;
+    z-index: 11;
+
+    &::-webkit-scrollbar { 
+      display: none; 
+    }
+  }
+
+  &__populationStats {
+    width: 95%;
+  }
+
+  &__populationList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+
+    li {
+      font-size: 11pt;
+    }
+
+    strong {
+      font-style: normal;
+      padding-left: 4px;
+    }
+  }
+
+  &__statlist {
+    margin-top: 10px;
+    width: 95%;
+  }
+
+  &__editableListWrapper {
+    padding-bottom: 25px;
+  }
+
+  &__milestoneToggle {
+    padding: 4px 0;
+  }
+
+  &__listPadding {
+    height: 120px;
+  }
 }
 </style>

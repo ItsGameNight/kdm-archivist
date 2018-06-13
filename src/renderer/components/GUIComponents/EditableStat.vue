@@ -17,7 +17,7 @@
         <input
           class="EditableStat__statbox"
           type="number"
-          :class="[limitBox ? 'statbox--limit' : '', noBorder ? 'statbox--borderless' : '', themeClass]"
+          :class="[limitBox ? 'statbox--limit' : '', noBorder ? 'statbox--borderless' : '', large ? 'large' : '', themeClass]"
           :value="statValue"
           @input="updateStat($event.target.value)"
           @focus="$event.target.select(); focus = true"
@@ -63,7 +63,8 @@ export default {
     maxValue: { required: false, default: null },
     minValue: { required: false, default: null },
     noBorder: { required: false, default: false, type: Boolean },
-    limitBox: { required: false, default: false, type: Boolean }
+    limitBox: { required: false, default: false, type: Boolean },
+    large: { required: false, default: false, type: Boolean }
   },
   data: function () {
     return {
@@ -136,6 +137,7 @@ export default {
   background-color: rgba(0, 0, 0, 0) !important;
 
   &__incrementBox {
+    text-align: center;
   }
 
   &__maxbox {
@@ -197,13 +199,19 @@ export default {
         border-color: rgba(0, 0, 0, 0) !important;
       }
     }
+
+    &.large {
+      width: 45px;
+      min-width: 45px;
+      height: 45px;
+      min-height: 45px;
+    }
   }
 
   &__displayName {
     height: 0;
     padding-top: 2px;
     font-size: 9pt;
-    text-transform: uppercase;
     text-align: center;
   }
 
