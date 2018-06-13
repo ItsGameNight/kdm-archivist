@@ -127,18 +127,19 @@ export default {
 
   &__settlementInspector {
     box-sizing: border-box;
-    width: 22%;
+    width: 23%;
     height: 100%;
-    padding: 10px;
+    padding: 10px 20px 10px 15px;
     margin-right: 15px;
+    border-right: 4px solid;
 
     &.theme-light {
-      border-right: 1px solid $light-border;
+      border-right-color: $light-bg-alt;
       background-color: $light-bg-alt;
     }
 
     &.theme-dark {
-      border-right: 1px solid $dark-border;
+      border-right-color: $dark-border;
       background-color: $dark-bg-alt;
     }
   }
