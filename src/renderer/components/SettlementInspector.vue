@@ -39,9 +39,9 @@
         <collapse-group :title="'Settlement Stats'">
           <div slot="body">
             <ul class="SettlementInspector__populationList">
-              <li>Population: </li>
-              <li>Death Count: </li>
-              <li>Male/Female Ratio: </li>
+              <li>Population: <strong>{{ numberAliveInSettlement }}</strong></li>
+              <li>Death Count: <strong>{{ settlementDeathCount }}</strong></li>
+              <li>Male/Female Ratio: <strong>{{ settlementMaleCount }} / {{ settlementFemaleCount }}</strong></li>
             </ul>
           </div>
         </collapse-group>
@@ -310,6 +310,15 @@ export default {
     list-style-type: none;
     padding: 0;
     margin: 0 auto;
+
+    li {
+      font-size: 11pt;
+    }
+
+    strong {
+      font-style: normal;
+      padding-left: 4px;
+    }
   }
 
   &__statlist {
