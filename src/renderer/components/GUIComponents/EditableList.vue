@@ -1,7 +1,13 @@
 <template>
-  <div class="EditableList" :style="fixedStyle">
-    <div class="EditableList__scrollBox" :class="[fixedHeight ? 'fixedScroll' : '', themeClass]">
-      <ul class="EditableList__list" :class="[themeClass, fixedHeight ? 'fixedScroll' : '']">
+  <div
+    class="EditableList"
+    :style="fixedStyle">
+    <div
+      class="EditableList__scrollBox"
+      :class="[themeClass, fixedHeight ? 'fixedScroll' : '', altColor]">
+      <ul
+        class="EditableList__list"
+        :class="[themeClass, fixedHeight ? 'fixedScroll' : '']">
         <editable-list-item
           v-for="(item, index) in listItems"
           :initTextValue="numbered ? item.name : item"
@@ -21,7 +27,7 @@
     <button
       v-if="!max || listItems.length < max"
       class="EditableList__addButton"
-      :class="[themeClass]"
+      :class="[themeClass, altColor]"
       :disabled="inHistoryMode"
       @click="addNew">
         +
@@ -130,28 +136,18 @@ export default {
 <style lang="scss" scoped>
 .EditableList {
   display: block;
-  background-color: rgba(0, 0, 0, 0) !important;
 
   &__scrollBox {
     &.fixedScroll {
       height: 100%;
-      border: 2px solid;
+      border-width: 2px;
+      border-style: solid;
       border-radius: 2px 2px 0 2px;
       overflow-y: scroll;
-      background-color: inherit;
     }
 
     &::-webkit-scrollbar { 
       display: none; 
-    }
-
-    &.theme-light {
-      background-color: inherit;
-    }
-
-    &.theme-dark {
-      border-color: $dark-border;
-      background-color: inherit;
     }
   }
 
@@ -170,10 +166,6 @@ export default {
       border-right: none;
       border-radius: 0;
     }
-
-    &.theme-dark {
-      border-color: $dark-border;
-    }
   }
 
   &__addButton {
@@ -184,31 +176,9 @@ export default {
     border-radius: 0 0 2px 2px;
     border-top: none;
 
-    background-color: inherit;
-
     &:hover {
       font-weight: bold;
       font-size: 10pt;
-
-      &.theme-light {
-        background-color: inherit;
-      }
-
-      &.theme-dark {
-        background-color: inherit;
-      }
-    }
-
-    &:active {
-      &.theme-light {
-        color: $light-bg;
-        background-color: $light-text;
-      }
-
-      &.theme-dark {
-        color: $dark-bg;
-        background-color: $dark-text;
-      }
     }
   }
 }

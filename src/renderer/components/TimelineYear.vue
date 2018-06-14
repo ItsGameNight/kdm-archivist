@@ -83,15 +83,6 @@ export default {
     border-style: solid;
     border-bottom: none;
 
-    &.theme-light {
-      background: $light-bg;
-    }
-
-    &.theme-dark {
-      background: $dark-bg;
-      border-color: $dark-border;
-    }
-
     &.tableCell {
       &--year {
         width: 45px;
@@ -154,6 +145,7 @@ export default {
 }
 
 tr:last-child td {
-  border-bottom: 2px solid;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
 }
 </style>

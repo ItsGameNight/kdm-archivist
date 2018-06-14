@@ -3,32 +3,32 @@
     <h2>Notes</h2>
     <textarea
       class="Notes__input"
-      :class="[themeClass]"
+      :class="[themeClass, altColor]"
       :disabled="inHistoryMode"
       placeholder="What happened this year?"
       v-model="currNote">
     </textarea>
     <button
       class="Notes__button button--add"
-      :class="[themeClass]"
+      :class="[themeClass, altColor]"
       :disabled="inHistoryMode"
       @click="addNote">
       +
     </button>
     <div v-if="currentSettlement.notes.length > 0">
       <h3>Past Notes:</h3>
-      <div v-for="(note, index) in sortedNotes" class="Notes__pastNote">
+      <div v-for="(note, index) in sortedNotes" class="Notes__pastNote" :class="[themeClass, altColor]">
         <b> Lantern Year {{ note.lanternYear }} </b>
         <button
           class="Notes__button button--delete"
-          :class="[themeClass]"
+          :class="[themeClass, altColor]"
           :disabled="inHistoryMode"
           @click="deleteNote(index)">
           x
         </button>
         <button
           class="Notes__button button--history"
-          :class="[themeClass]"
+          :class="[themeClass, altColor]"
           :disabled="inHistoryMode"
           @click="setCurrentSnapByLanternYearAndNoteID({ ly: note.lanternYear, noteID: note._id })">
           <font-awesome-icon :icon="histIcon"/>
@@ -36,7 +36,7 @@
         <br>
         {{ note.body }}
         <br>
-        <p class="Notes__timestamp" :class="[themeClass]">
+        <p class="Notes__timestamp" :class="[themeClass, highlightColor]">
         {{ note.timeStr }}
         </p>
       </div>
@@ -118,7 +118,8 @@ export default {
   padding: 0 10px;
   overflow-y: scroll;
   z-index: 98;
-  border-left: 1px solid;
+  border-left-width: 1px;
+  border-left-style: solid;
 
   &__input {
     display: block;
@@ -127,39 +128,25 @@ export default {
     height: 40%;
     padding: 10px;
     font-size: 12pt;
-    border: 2px solid;
+    border-width: 2px;
+    border-style: solid;
     overflow-y: scroll;
     outline: none;
     resize: none;
-
-    &.theme-light {
-      background-color: $light-bg;
-    }
-
-    &.theme-dark {
-      background-color: $dark-bg;
-    }
   }
 
   &__pastNote {
     box-sizing: border-box;
     margin-bottom: 10px;
     padding-left: 5px;
-    border: 2px solid;
+    border-width: 2px;
+    border-style: solid;
   }
 
   &__timestamp {
     margin-right: 5px;
     font-size: 8pt;
     text-align: right;
-
-    &.theme-light {
-      color: $light-hover;
-    }
-
-    &.theme-dark {
-      color: $dark-hover;
-    }
   }
 
   &__button {
@@ -171,33 +158,9 @@ export default {
     border-radius: 0 0 2px 2px;
     border-top: none;
 
-    &.theme-dark {
-      background-color: $dark-bg;
-    }
-
     &:hover {
       font-weight: bold;
       font-size: 16pt;
-
-      &.theme-light {
-        background-color: $light-bg;
-      }
-
-      &.theme-dark {
-        background-color: $dark-bg;
-      }
-    }
-
-    &:active {
-      &.theme-light {
-        color: $light-bg;
-        background-color: $light-text;
-      }
-
-      &.theme-dark {
-        color: $dark-bg;
-        background-color: $dark-text;
-      }
     }
 
     &.button {

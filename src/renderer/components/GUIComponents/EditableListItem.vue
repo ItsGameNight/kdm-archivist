@@ -103,10 +103,6 @@ export default {
   border-top-style: solid;
   background-color: rgba(0, 0, 0, 0) !important;
 
-  &.theme-dark {
-    border-color: $dark-border;
-  }
-
   &__inputWrapper {
     display: inline-block;
     width: 85%;

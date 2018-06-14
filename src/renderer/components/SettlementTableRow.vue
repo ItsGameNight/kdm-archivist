@@ -1,6 +1,6 @@
 <template>
   <td class="SettlementTableRow"
-    :class="[selected ? 'selected' : '', themeClass]"
+    :class="[themeClass, selected ? highlightColor : '']"
     @click.stop="setCurrentSmt(smtID)">
     <span v-if="editing">
       <input v-model="name" placeholder="Unnamed Settlement"></input>
@@ -62,22 +62,8 @@ export default {
 <style lang="scss" scoped>
 .SettlementTableRow {
   padding: 5px;
-
-  &.theme-light {
-    border: 2px solid $light-border;
-
-    &.selected {
-      background-color: $light-highlight;
-    }
-  }
-
-  &.theme-dark {
-    border: 2px solid $dark-input;
-
-    &.selected {
-      background-color: $dark-highlight;
-    }
-  }
+  border-width: 2px;
+  border-style: solid;
 
   &__editButton {
     float: right;

@@ -1,7 +1,7 @@
 <template>
   <button
     class="AliveToggle"
-    :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '', themeClass]"
+    :class="[inHistoryMode ? 'DISABLE-CLICKS-HISTORY-MODE' : '', themeClass, toggleColor]"
     @click="toggle()">
     <div class="AliveToggle__wrapper">
       <div>
@@ -76,10 +76,6 @@ export default {
 <style lang="scss" scoped>
 .AliveToggle {
   border: none;
-
-  &.theme-dark {
-    background-color: $dark-bg-alt;
-  }
 
   &__wrapper {
     display: flex;

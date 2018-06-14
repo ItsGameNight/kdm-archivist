@@ -9,7 +9,7 @@
             <th class="Timeline__storyHeader">Story Events</th>
           </tr>
         </thead>
-        <tbody :class="[themeClass]">
+        <tbody :class="[themeClass, altColor]">
           <div class="Timeline__bodyWrapper">
             <timeline-year
               v-for="(year, index) in currentSettlement.timeline"
@@ -24,7 +24,7 @@
           <td class="Timeline__buttonWrapper">
             <button
               class="Timeline__addButton"
-              :class="[themeClass]"
+              :class="[themeClass, altColor]"
               :disabled="inHistoryMode"
               @click="addYear()">
               +
@@ -106,10 +106,6 @@ export default {
     table-layout: fixed;
     border-spacing: 0;
 
-    &.theme-dark {
-      border-color: $dark-border;
-    }
-
     thead tr {
       display: block;
       position: relative;
@@ -131,14 +127,6 @@ export default {
       border-left: none;
       border-right: none;
       overflow: auto;
-
-      &.theme-light {
-        border-color: $light-border;
-      }
-
-      &.theme-dark {
-        border-color: $dark-border;
-      }
     }
   }
 
@@ -172,33 +160,9 @@ export default {
     border-radius: 0 0 2px 2px;
     border-top: none;
 
-    &.theme-dark {
-      background-color: $dark-bg;
-    }
-
     &:hover {
       font-size: 14pt;
       font-weight: bold;
-
-      &.theme-light {
-        background-color: $light-bg;
-      }
-
-      &.theme-dark {
-        background-color: $dark-bg;
-      }
-    }
-
-    &:active {
-      &.theme-light {
-        color: $light-bg;
-        background-color: $light-text;
-      }
-
-      &.theme-dark {
-        color: $dark-bg;
-        background-color: $dark-text;
-      }
     }
   }
 }

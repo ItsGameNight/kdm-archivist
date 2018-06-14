@@ -11,7 +11,7 @@
       <ul :class="[themeClass]">
         <li
           v-for="(option, index) in options"
-          :class="[themeClass, selected === index ? 'selected' : '']"
+          :class="[themeClass, dropdownItem, selected === index ? 'selected' : '']"
           @click="setSelected(index); showOptions = false">
             {{ option }}
         </li>
@@ -69,14 +69,6 @@ export default {
     top: 23px;
     width: 100%;
     z-index: 789;
-
-    &.theme-light {
-      background-color: $light-bg;
-    }
-
-    &.theme-dark {
-      background-color: $dark-bg;
-    }
   }
 
   ul {
@@ -88,51 +80,9 @@ export default {
     border-radius: 0 0 3px 3px;
     border-top: none;
 
-    &.theme-dark {
-      border-color: $dark-border;
-    }
-
     li {
       padding: 2px 0 2px 8px;
       font-size: 9pt;
-
-      &.theme-dark {
-        border-color: $dark-border;
-      }
-
-      &:hover {
-        &.theme-light {
-          background-color: $light-hover;
-        }
-
-        &.theme-dark {
-          background-color: $dark-hover;
-        }
-      }
-
-      &:active {
-        &.theme-light {
-          color: $light-bg;
-          background-color: $light-text;
-        }
-
-        &.theme-dark {
-          color: $dark-bg;
-          background-color: $dark-text;
-        }
-      }
-
-      &.selected {
-        &.theme-light {
-          color: $light-text;
-          background-color: $light-highlight;
-        }
-
-        &.theme-dark {
-          color: $dark-text;
-          background-color: $dark-hover;
-        }
-      }
     }
   }
 }

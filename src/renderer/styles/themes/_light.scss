@@ -1,14 +1,74 @@
 @import '../base/color';
 
+// General
+.theme-light.alt {
+  background-color: $light-bg-alt;
+}
+
+.theme-light.inverseAlt {
+  color: $light-bg-alt;
+  background-color: $light-text;
+  border-color: $light-text;
+}
+
+.theme-light.alert {
+  color: $light-alert;
+}
+
+// Div
+// Default
 div.theme-light {
   color: $light-text;
   background-color: $light-bg;
 }
 
+div.theme-light.highlight {
+  background-color: $light-highlight;
+}
+
+// Span
+span.theme-light.highlight {
+  background-color: $light-highlight;
+}
+
+// Text
+p.theme-light.highlight,
+h1.theme-light.highlight,
+h2.theme-light.highlight,
+h3.theme-light.highlight,
+h4.theme-light.highlight,
+h5.theme-light.highlight,
+h6.theme-light.highlight, {
+  color: $light-highlight;
+}
+
+// Top Scroll Fade (used to create fade effect at top of scroll views)
+div.theme-light.topScrollFade {
+  background: linear-gradient($light-bg, rgba(0,0,0,0));
+}
+
+div.theme-light.topScrollFade.alt {
+  background: linear-gradient($light-bg-alt, rgba(0,0,0,0));
+}
+
+// Bottom Scroll Fade (used to create fade effect at bottom of scroll views)
+div.theme-light.bottomScrollFade {
+  background: linear-gradient(rgba(0,0,0,0), $light-bg);
+}
+
+div.theme-light.bottomScrollFade.alt {
+  background: linear-gradient(rgba(0,0,0,0), $light-bg-alt);
+}
+
+// Button
 button.theme-light {
   color: $light-text;
   background-color: $light-input;
   border-color: $light-border;
+
+  &.toggle {
+    background-color: $light-bg-alt;
+  }
 
   &:hover {
     background-color: $light-hover;
@@ -20,6 +80,42 @@ button.theme-light {
   }
 }
 
+button.theme-light.alt {
+  background-color: $light-bg-alt;
+
+  &:hover {
+    background-color: $light-bg-alt;
+  }
+
+  &:active {
+    background-color: $light-text;
+    color: $light-bg-alt;
+  }
+}
+
+button.theme-light.alt.noEffect {
+  &:active {
+    background-color: $light-bg-alt;
+    color: $light-text;
+  }
+}
+
+button.theme-light.highlight {
+  color: $light-highlight;
+  background-color: $light-bg-alt;
+
+  &:hover {
+    color: $light-text;
+    background-color: $light-bg-alt;
+  }
+
+  &:active {
+    color: $light-text;
+    background-color: $light-bg-alt;
+  }
+}
+
+// Text input
 input.theme-light {
   color: $light-text;
   background-color: rgba(0, 0, 0, 0) !important;
@@ -31,14 +127,55 @@ input.theme-light {
 }
 
 .theme-light::placeholder {
-  color: $light-hover;
+  color: $light-highlight;
 }
 
 textarea.theme-light {
   color: $light-text;
   background-color: $light-bg;
+  border-color: $light-border;
 }
 
+// Tables
+tbody.theme-light {
+  border-color: $light-border;
+}
+
+td.theme-light {
+  border-color: $light-border;
+}
+
+td.theme-light.highlight {
+  background-color: $light-highlight;
+}
+
+// Lists
+ul.theme-light {
+  border-color: $light-border;
+}
+
+li.theme-light {
+  border-color: $light-border;
+}
+
+// Dropdown
+li.theme-light.dropdownItem {
+  &:hover {
+    background-color: $light-hover;
+  }
+
+  &:active {
+    color: $light-bg;
+    background-color: $light-text;
+  }
+
+  &.selected {
+    color: $light-text;
+    background-color: $light-highlight;
+  }
+}
+
+// Squares (used in SquareToggle, ProgressBar, etc.)
 .square.theme-light {
   background-color: $light-text;
   border-color: $light-text;
@@ -49,9 +186,4 @@ textarea.theme-light {
 .emptySquareExtraBold.theme-light {
   border-color: $light-text;
   background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.invisibleSquare.theme-light {
-  background-color: $light-bg-alt;
-  border-color: $light-bg-alt;
 }

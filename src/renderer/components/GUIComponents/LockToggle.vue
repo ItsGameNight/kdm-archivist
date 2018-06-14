@@ -5,7 +5,7 @@
     @click="toggleState = !toggleState; $emit('update', toggleState)">
     <div class="LockToggle__wrapper">
       <div>
-        <div class="LockToggle__lock" :class="[lockClass, themeClass]">
+        <div class="LockToggle__lock" :class="[themeClass, toggleState ? inverseAltColor : altColor]">
           <font-awesome-icon :icon="icon" />
         </div>
       </div>
@@ -43,13 +43,6 @@ export default {
       } else {
         return faLockOpen
       }
-    },
-    lockClass: function () {
-      if (this.toggleState) {
-        return 'lockClosed'
-      } else {
-        return 'lockOpen'
-      }
     }
   }
 }
@@ -73,32 +66,6 @@ export default {
     border-radius: 3px;
     transition: background-color 0.5s ease;
     transition: color 0.5s ease;
-
-    &.lockClosed {
-      &.theme-light {
-        color: $light-bg;
-        background-color: $light-text;
-        border-color: $light-text;
-      }
-
-      &.theme-dark {
-        color: $dark-bg;
-        background-color: $dark-text;
-        border-color: $dark-text;
-      }
-    }
-
-    &.lockOpen {
-      &.theme-light {
-        color: $light-text;
-        background-color: $light-bg;
-      }
-
-      &.theme-dark {
-        color: $dark-text;
-        background-color: $dark-bg;
-      }
-    }
   }
 
   &__text {

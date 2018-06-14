@@ -1,5 +1,3 @@
-@import 'color';
-
 button {
   font-size: 10pt;
   font-weight: bold;
@@ -7,4 +5,5 @@ button {
   border-style: solid;
   border-radius: 3px;
   outline: none;
+  transition: background-color 0.2s ease, font-size 0.2s ease;
 }
