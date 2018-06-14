@@ -1,15 +1,75 @@
 @import '../base/color';
 
+// General
+.theme-dark.alt {
+  background-color: $dark-bg-alt;
+}
+
+.theme-dark.inverseAlt {
+  color: $dark-bg-alt;
+  background-color: $dark-text;
+  border-color: $dark-text;
+}
+
+.theme-dark.alert {
+  color: $dark-alert;
+}
+
+// Div
+// Default
 div.theme-dark {
   color: $dark-text;
   background-color: $dark-bg;
   border-color: $dark-border;
 }
 
+div.theme-dark.highlight {
+  background-color: $dark-highlight;
+}
+
+// Span
+span.theme-dark.highlight {
+  background-color: $dark-highlight;
+}
+
+// Text
+p.theme-dark.highlight,
+h1.theme-dark.highlight,
+h2.theme-dark.highlight,
+h3.theme-dark.highlight,
+h4.theme-dark.highlight,
+h5.theme-dark.highlight,
+h6.theme-dark.highlight, {
+  color: $dark-highlight;
+}
+
+// Top Scroll Fade (used to create fade effect at top of scroll views)
+div.theme-dark.topScrollFade {
+  background: linear-gradient($dark-bg, rgba(0,0,0,0));
+}
+
+div.theme-dark.topScrollFade.alt {
+  background: linear-gradient($dark-bg-alt, rgba(0,0,0,0));
+}
+
+// Bottom Scroll Fade (used to create fade effect at bottom of scroll views)
+div.theme-dark.bottomScrollFade {
+  background: linear-gradient(rgba(0,0,0,0), $dark-bg);
+}
+
+div.theme-dark.bottomScrollFade.alt {
+  background: linear-gradient(rgba(0,0,0,0), $dark-bg-alt);
+}
+
+// Button
 button.theme-dark {
   color: $dark-text;
   background-color: $dark-input;
   border-color: $dark-border;
+
+  &.toggle {
+    background-color: $dark-bg-alt;
+  }
 
   &:hover {
     background-color: $dark-hover;
@@ -21,6 +81,42 @@ button.theme-dark {
   }
 }
 
+button.theme-dark.alt {
+  background-color: $dark-bg-alt;
+
+  &:hover {
+    background-color: $dark-bg-alt;
+  }
+
+  &:active {
+    background-color: $dark-text;
+    color: $dark-bg-alt;
+  }
+}
+
+button.theme-dark.alt.noEffect {
+  &:active {
+    background-color: $dark-bg-alt;
+    color: $dark-text;
+  }
+}
+
+button.theme-dark.highlight {
+  color: $dark-highlight;
+  background-color: $dark-bg-alt;
+
+  &:hover {
+    color: $dark-text;
+    background-color: $dark-bg-alt;
+  }
+
+  &:active {
+    color: $dark-text;
+    background-color: $dark-bg-alt;
+  }
+}
+
+// Text input
 input.theme-dark {
   color: $dark-text;
   background-color: rgba(0, 0, 0, 0) !important;
@@ -38,8 +134,49 @@ input.theme-dark {
 textarea.theme-dark {
   color: $dark-text;
   background-color: $dark-bg;
+  border-color: $dark-border;
 }
 
+// Tables
+tbody.theme-dark {
+  border-color: $dark-border;
+}
+
+td.theme-dark {
+  border-color: $dark-border;
+}
+
+td.theme-dark.highlight {
+  background-color: $dark-highlight;
+}
+
+// Lists
+ul.theme-dark {
+  border-color: $dark-border;
+}
+
+li.theme-dark {
+  border-color: $dark-border;
+}
+
+// Dropdown
+li.theme-dark.dropdownItem {
+  &:hover {
+    background-color: $dark-hover;
+  }
+
+  &:active {
+    color: $dark-bg;
+    background-color: $dark-text;
+  }
+
+  &.selected {
+    color: $dark-text;
+    background-color: $dark-highlight;
+  }
+}
+
+// Squares (used in SquareToggle, ProgressBar, etc.)
 .square.theme-dark {
   background-color: $dark-text;
   border-color: $dark-text;
@@ -49,9 +186,4 @@ textarea.theme-dark {
 .emptySquareBold.theme-dark,
 .emptySquareExtraBold.theme-dark {
   border-color: $dark-text;
-}
-
-.invisibleSquare.theme-dark {
-  background-color: $dark-bg;
-  border-color: $dark-bg;
 }

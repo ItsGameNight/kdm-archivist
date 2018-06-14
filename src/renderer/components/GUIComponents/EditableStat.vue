@@ -17,13 +17,16 @@
         <input
           class="EditableStat__statbox"
           type="number"
-          :class="[limitBox ? 'statbox--limit' : '', noBorder ? 'statbox--borderless' : '', large ? 'large' : '', themeClass]"
+          :class="[limitBox ? 'statbox--limit' : '',
+                    noBorder ? 'statbox--borderless' : '',
+                    large ? 'large' : '',
+                    themeClass]"
           :value="statValue"
           @input="updateStat($event.target.value)"
           @focus="$event.target.select(); focus = true"
           @blur="focus = false"
           @keydown.enter="$event.target.blur()" />
-        <span v-if="limitBox" class="EditableStat__limitbox" :class="[themeClass]">
+        <span v-if="limitBox" class="EditableStat__limitbox" :class="[themeClass, highlightColor]">
           <div class="EditableStat__limitLabel">Limit</div>
           {{ maxValue }}
         </span>
@@ -158,18 +161,9 @@ export default {
     text-align: center;
     border-left-width: 1px;
     border-left-style: solid;
-
-    &.theme-light {
-      background-color: $light-highlight;
-    }
-
-    &.theme-dark {
-      background-color: $dark-highlight;
-    }
   }
 
   &__limitLabel {
-    //padding: 0 1px;
     font-size: 7pt;
     font-weight: bold;
     text-transform: uppercase;

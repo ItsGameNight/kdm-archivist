@@ -124,7 +124,7 @@
           <div class="BaseSurvivorModal__scrollPadding"></div>
         </div>
       </div>
-      <div class="BaseSurvivorModal__scrollFadeBottom" :class="[themeClass]"></div>
+      <div class="BaseSurvivorModal__scrollFadeBottom" :class="[themeClass, bottomScrollFade]"></div>
     </div>
     <div slot="footer" style="display: none;"></div>
   </modal>
@@ -226,14 +226,6 @@ export default {
     right: 0;
     height: 20px;
     border-radius: 0 0 10px 10px;
-
-    &.theme-light {
-      background: linear-gradient(rgba(0,0,0,0), $light-bg);
-    }
-
-    &.theme-dark {
-      background: linear-gradient(rgba(0,0,0,0), $dark-bg);
-    }
   }
 
   &__sectionTitle {

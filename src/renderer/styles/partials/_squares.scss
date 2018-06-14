@@ -16,6 +16,7 @@
 
 .emptySquare {
   @extend %baseSquare;
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 
 .emptySquareBold {
@@ -25,6 +26,7 @@
   height: 8px;
   min-height: 8px;
   border-width: 2px;
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 
 .emptySquareExtraBold {
@@ -34,10 +36,13 @@
   height: 4px;
   min-height: 4px;
   border-width: 4px;
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 
 .invisibleSquare {
   @extend %baseSquare;
   background-color: rgba(0, 0, 0, 0) !important;
+  border-color: rgba(0, 0, 0, 0) !important;
   transition: none;
+  cursor: default;
 }

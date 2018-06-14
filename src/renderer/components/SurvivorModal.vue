@@ -74,7 +74,7 @@
           <div v-if="survivor.alive" class="SurvivorModal__departButtonWrapper">
             <button class="SurvivorModal__departButton"
               :disabled="inHistoryMode"
-              :class="[themeClass, survivor.departing ? 'green' : '']"
+              :class="[themeClass, toggleColor, survivor.departing ? 'green' : '']"
               @click="setDeparting(!survivor.departing)"
               @dblclick.stop @mousedown.stop>
                 <font-awesome-icon :icon="departIcon" />
@@ -601,10 +601,6 @@ export default {
     background-color: rgba(0, 0, 0, 0) !important;
 
     &.row {
-      &.theme-dark {
-        border-color: $dark-border;
-      }
-
       &--row1 {}
 
       &--row2 {
@@ -742,10 +738,6 @@ export default {
     margin: 0;
     text-align: center;
     border: none;
-
-    &.theme-dark {
-      background-color: $dark-bg-alt;
-    }
 
     &.green {
       color: $departing;
@@ -1090,10 +1082,6 @@ export default {
     resize: none;
     outline: none;
     background-color: rgba(0, 0, 0, 0) !important;
-
-    &.theme-dark {
-      border-color: $dark-border;
-    }
   }
 }
 </style>

@@ -27,7 +27,7 @@
       <div
         v-for="(item, index) in filteredList"
         class="EditableTextInput__autocompleteItem"
-        :class="[index === filteredIdx ? 'activeComplete' : '', themeClass]"
+        :class="[themeClass, index === filteredIdx ? highlightColor : '']"
         :key="index"
         :id="'autoItem-' + index"
         @mouseover="filteredIdx = index"
@@ -189,6 +189,7 @@ export default {
     background-position: left center;
     border: none;
     box-sizing: border-box;
+    transition: padding-left 0.1s ease;
 
     &:hover {
       padding-left: 1em;
@@ -231,30 +232,10 @@ export default {
     border-style: solid;
     border-radius: 0 0 8px 8px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
-    &.theme-light {
-      background-color: $light-bg;
-      border-color: $light-hover;
-    }
-
-    &.theme-dark {
-      background-color: $dark-bg;
-      border-color: $dark-hover;
-    }
   }
 
   &__autocompleteItem {
     padding-left: 8px;
-
-    &.activeComplete {
-      &.theme-light {
-        background-color: $light-highlight;
-      }
-
-      &.theme-dark {
-        background-color: $dark-highlight;
-      }
-    }
   }
 }
 </style>

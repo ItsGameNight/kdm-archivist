@@ -421,19 +421,12 @@ export default {
     padding: 0 4px;
     overflow-x: scroll;
     z-index: 97;
-    border: 1px solid;
+    border-width: 1px;
+    border-style: solid;
     border-radius: 3px;
     box-shadow: 2px 2px 2px rgba(47, 47, 47, 0.67);
     &::-webkit-scrollbar { 
       display: none; 
-    }
-
-    &.theme-light {
-      border-color: $light-border;
-    }
-
-    &.theme-dark {
-      border-color: $dark-border;
     }
 
     &__title {
@@ -447,12 +440,14 @@ export default {
     &__sortButton {
       display: flex;
       font-weight: normal;
-      border: none;
-      border-right: 1px solid;
+      border-width: 0px;
+      border-right-width: 1px;
+      border-right-style: solid;
       border-radius: 0;
 
       &.first {
-        border-left: 1px solid;
+        border-left-width: 1px;
+        border-right-style: solid;
       }
 
       &.selectedSort {

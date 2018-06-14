@@ -3,7 +3,7 @@
     <h2 class="SettlementInspector__settlementName">
       {{ currentSettlement.name }}
     </h2>
-    <h5 class="SettlementInspector__settlementLabel" :class="[themeClass]">
+    <h5 class="SettlementInspector__settlementLabel" :class="[themeClass, highlightColor]">
       Settlement Inspector
     </h5>
     <div class="SettlementInspector__settlementStats">
@@ -32,7 +32,10 @@
           @update="update('survivalOnDepart', $event)" />
       </div>
     </div>
-    <div class="SettlementInspector__topScrollFade" :class="[themeClass]" :style="titleAdjust">
+    <div
+      class="SettlementInspector__topScrollFade"
+      :class="[themeClass, topScrollFade, altColor]"
+      :style="titleAdjust">
     </div>
     <div class="SettlementInspector__scrollbox" :style="titleAdjust" @dblclick.stop>
       <div class="SettlementInspector__populationStats">
@@ -171,7 +174,7 @@
       <div class="SettlementInspector__listPadding">
       </div>
     </div>
-    <div class="SettlementInspector__bottomScrollFade" :class="[themeClass]">
+    <div class="SettlementInspector__bottomScrollFade" :class="[themeClass, bottomScrollFade, altColor]">
     </div>
   </div>
 </template>
@@ -293,14 +296,6 @@ export default {
   &__settlementLabel {
     margin: 0 auto;
     line-height: 6pt;
-
-    &.theme-light {
-      color: $light-highlight;
-    }
-
-    &.theme-dark {
-      color: $dark-highlight;
-    }
   }
 
   &__settlementStats {
@@ -320,14 +315,6 @@ export default {
     right: 5px;
     height: 20px;
     z-index: 12;
-
-    &.theme-light {
-      background: linear-gradient($light-bg-alt, rgba(0,0,0,0));
-    }
-
-    &.theme-dark {
-      background: linear-gradient($dark-bg-alt, rgba(0,0,0,0));
-    }
   }
 
   &__bottomScrollFade {
@@ -337,14 +324,6 @@ export default {
     right: 5px;
     height: 40px;
     z-index: 12;
-
-    &.theme-light {
-      background: linear-gradient(rgba(0,0,0,0), $light-bg-alt);
-    }
-
-    &.theme-dark {
-      background: linear-gradient(rgba(0,0,0,0), $dark-bg-alt);
-    }
   }
 
   &__scrollbox {

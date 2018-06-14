@@ -21,11 +21,11 @@
       @mousedown="mouseDownState = true"
       @mouseup="mouseDownState = false"
       v-long-press="onLongPress">
-      <div class="SurvivorTableRow__contentsWrapper" :class="[themeClass]">
-        <div class="SurvivorTableRow__rightButtons" :class="[themeClass]">
+      <div class="SurvivorTableRow__contentsWrapper" :class="[themeClass, altColor]">
+        <div class="SurvivorTableRow__rightButtons" :class="[themeClass, altColor]">
           <div class="SurvivorTableRow__buttonWrapper buttonWrapper--right">
             <button class="SurvivorTableRow__button button--right"
-              :class="[themeClass]"
+              :class="[themeClass, highlightColor]"
               @click="displayModal()"
               @dblclick.stop
               @mousedown.stop>
@@ -34,7 +34,7 @@
           </div>
           <div class="SurvivorTableRow__buttonWrapper buttonWrapper--right">
             <button class="SurvivorTableRow__button button--right"
-              :class="[themeClass]"
+              :class="[themeClass, highlightColor]"
               @click="collapsedState = !collapsedState"
               @dblclick.stop
               @mousedown.stop>
@@ -44,7 +44,7 @@
           <div class="SurvivorTableRow__buttonWrapper buttonWrapper--right--bottom">
             <button
               class="SurvivorTableRow__button button--right"
-              :class="[themeClass]"
+              :class="[themeClass, highlightColor]"
               :disabled="inHistoryMode"
               @click="deleteModalVisible = true"
               @dblclick.stop
@@ -53,7 +53,10 @@
             </button>
           </div>
         </div>
-        <div class="SurvivorTableRow__warnings">
+        <div
+          class="SurvivorTableRow__warnings"
+            :class="[themeClass, altColor, alert]"
+            :style="warningAdjust()">
             <span v-if="warning" :class="[themeClass]"><font-awesome-icon :icon="warningIcon" /></span>
             <span v-if="survivor.cannotSpendSurvival" :class="[themeClass]">Survivor cannot spend surival!</span>
             <span v-if="survivor.skipHunt" :class="[themeClass]">Survivor must skip next hunt!</span>
@@ -73,7 +76,7 @@
                 <div class="SurvivorTableRow__buttonWrapper buttonWrapper--left">
                   <button class="SurvivorTableRow__button button--left"
                     :disabled="inHistoryMode"
-                    :class="[themeClass, survivor.alive ? 'red' : '']"
+                    :class="[themeClass, altColor, noEffect, survivor.alive ? 'red' : '']"
                     @click="update('alive', !survivor.alive)"
                     @dblclick.stop @mousedown.stop>
                     <font-awesome-icon :icon="aliveIcon" />
@@ -81,7 +84,7 @@
                 </div>
                 <div v-if="survivor.alive" class="SurvivorTableRow__buttonWrapper buttonWrapper--left">
                   <button class="SurvivorTableRow__button button--left"
-                    :class="[themeClass, survivor.departing ? 'green' : '']"
+                    :class="[themeClass, altColor, noEffect, survivor.departing ? 'green' : '']"
                     :disabled="inHistoryMode"
                     @click="setDeparting(!survivor.departing)"
                     @dblclick.stop @mousedown.stop>
@@ -314,8 +317,12 @@ export default {
       collapsedState: this.collapsed,
       modalVisible: false,
       deleteModalVisible: false,
-      mouseDownState: false
+      mouseDownState: false,
+      alertPos: 0
     }
+  },
+  mounted: function () {
+    this.alertPos = this.$el.querySelector('.SurvivorTableRow__contentsWrapper').getBoundingClientRect().height - 26
   },
   computed: {
     ...mapGetters([
@@ -398,6 +405,9 @@ export default {
     displayModal: function () {
       this.modalVisible = true
       this.$emit('modalOpen')
+    },
+    warningAdjust: function () {
+      return { top: this.alertPos + 'px' }
     }
   }
 }
@@ -428,32 +438,12 @@ export default {
     border-width: 2px;
     border-style: solid;
     border-radius: 3px;
-
-    &.theme-light {
-      border-color: $light-border;
-      background-color: $light-bg-alt;
-    }
-
-    &.theme-dark {
-      border-color: $dark-border;
-      background-color: $dark-bg-alt;
-    }
   }
 
   &__rightButtons {
     position: absolute;
     top: 6px;
     right: 6px;
-
-    &.theme-light {
-      color: $light-highlight;
-      background-color: $light-bg-alt;
-    }
-
-    &.theme-dark {
-      color: $dark-highlight;
-      background-color: $dark-bg-alt;
-    }
   }
 
   &__buttonWrapper {
@@ -477,60 +467,20 @@ export default {
     margin: 0;
     text-align: center;
 
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:active {
+      transform: translateY(2px);
+    }
+
     &.button--right {
       font-size: 11pt;
-
-      &.theme-light {
-        color: $light-highlight;
-        background-color: $light-bg-alt;
-      }
-
-      &.theme-dark {
-        color: $dark-highlight;
-        background-color: $dark-bg-alt;
-      }
-
-      &:hover {
-        cursor: pointer;
-
-        &.theme-light {
-          color: $light-text;
-          background-color: $light-bg-alt;
-        }
-
-        &.theme-dark {
-          color: $dark-text;
-          background-color: $dark-bg-alt;
-        }
-      }
-
-      &:active {
-        transform: translateY(2px);
-
-        &.theme-light {
-          color: $light-text;
-          background-color: $light-bg-alt;
-        }
-
-        &.theme-dark {
-          color: $dark-text;
-          background-color: $dark-bg-alt;
-        }
-      }
     }
 
     &.button--left {
       font-size: 12pt;
-
-      &.theme-light {
-        color: $light-text;
-        background-color: $light-bg-alt;
-      }
-
-      &.theme-dark {
-        color: $dark-text;
-        background-color: $dark-bg-alt;
-      }
 
       &.red {
         color: $blood-red;
@@ -539,32 +489,16 @@ export default {
       &.green {
         color: $departing;
       }
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      &:active {
-        transform: translateY(2px);
-      }
     }
   }
 
   &__warnings {
     position: absolute;
     left: 35px;
-    top: 0;
+    background-color: rgba(0,0,0,0) !important;
 
     span {
       font-size: 8pt;
-
-      &.theme-light {
-        color: $light-alert;
-      }
-
-      &.theme-dark {
-        color: $dark-alert;
-      }
     }
   }
 
@@ -632,14 +566,6 @@ export default {
     padding: 4px;
     border-top-width: 1px;
     border-top-style: solid;
-
-    &.theme-light {
-      border-top-color: $light-border;
-    }
-
-    &.theme-dark {
-      border-top-color: $dark-border;
-    }
   }
 
   &__development {
@@ -666,14 +592,6 @@ export default {
     padding-right: 14px;
     border-bottom-width: 1px;
     border-bottom-style: dotted;
-
-    &.theme-light {
-      border-bottom-color: $light-border;
-    }
-
-    &.theme-dark {
-      border-bottom-color: $dark-border;
-    }
   }
 
   &__otherInfo {

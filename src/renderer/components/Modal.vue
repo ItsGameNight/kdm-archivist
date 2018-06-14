@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="Modal__mask" @click="$emit('close')">
       <div class="Modal__wrapper">
-        <div class="Modal__container" :style="{ width: modalWidth + 'px'}" :class="[themeClass]" @click.stop>
+        <div class="Modal__container" :style="{ width: modalWidth + 'px'}" :class="[themeClass, altColor]" @click.stop>
           <div class="Modal__header">
             <slot name="header">
               Default header.
@@ -73,16 +73,6 @@ export default {
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
-
-    &.theme-light {
-      background-color: $light-bg-alt;
-      border-color: $light-border;
-    }
-
-    &.theme-dark {
-      background-color: $dark-bg-alt;
-      border-color: $dark-border;
-    }
   }
 
   &__header {
