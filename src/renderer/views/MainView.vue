@@ -130,10 +130,36 @@ export default {
     layoutForStep: function (prevStep, step) {
       // Undo prevStep setup
       switch (prevStep) {
+        // Set up
         case 0:
           break
+        // Survivors Return
         case 1:
           this.$refs.survivorTable.setDepartingCollapseState(true)
+          break
+        // Gain endeavors
+        case 2:
+          break
+        // Update Timeline
+        case 3:
+          break
+        // Check Milestones
+        case 4:
+          break
+        // Develop
+        case 5:
+          break
+        // Prepare Departing Survivors
+        case 6:
+          break
+        // Special Showdown
+        case 7:
+          break
+        // Record & Archive Resources
+        case 8:
+          break
+        // End Settlement Phase/Depart!
+        case 9:
           break
         default:
           break
@@ -144,6 +170,7 @@ export default {
         case 0:
           this.currentTab = 'survivors'
           this.$refs.setInsp.setSectionToggleState(['stats', 'milestones', 'quarries', 'nemeses', 'research', 'lost'], true)
+          this.$refs.setInsp.setSectionToggleState(['principles', 'innovations', 'locations'], false)
           break
         // Survivors Return
         case 1:
@@ -168,6 +195,8 @@ export default {
         // Prepare Departing Survivors
         case 6:
           this.currentTab = 'survivors'
+          this.$refs.setInsp.setSectionToggleState(['quarries', 'nemeses'], false)
+          this.$refs.setInsp.setSectionToggleState(['milestones', 'principles', 'innovations', 'locations'], true)
           break
         // Special Showdown
         case 7:
