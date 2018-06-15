@@ -218,7 +218,7 @@
               :yeeScore="yeeScore(surv)"
               :survivor="surv"
               :key="surv._id"
-              :collapsed="collapsedState"
+              :collapsed="collapsedState && departingCollapsedState"
               :ref="'surv-' + surv._id"
               @modalOpen="modalShowing = true"
               @modalClose="modalShowing = false" />
@@ -264,6 +264,7 @@ export default {
   data: function () {
     return {
       collapsedState: true,
+      departingCollapsedState: true,
       sort: 'yeeScore',
       sortAscending: false,
       filter: 0,
@@ -388,6 +389,9 @@ export default {
         var survRef = 'surv-' + newSurv._id
         this.$refs[survRef][0].displayModal()
       })
+    },
+    setDepartingCollapseState: function (val) {
+      this.departingCollapsedState = val
     }
   }
 }

@@ -278,6 +278,41 @@ export default {
       for (var i = 1; i <= 9; i++) {
         this.$refs['cg' + i].setCollapseState(this.collapseState)
       }
+    },
+    setSectionToggleState: function (sections, state) {
+      for (var section of sections) {
+        switch (section) {
+          case 'stats':
+            this.$refs.cg1.setCollapseState(state)
+            break
+          case 'milestones':
+            this.$refs.cg2.setCollapseState(state)
+            break
+          case 'principles':
+            this.$refs.cg3.setCollapseState(state)
+            break
+          case 'innovations':
+            this.$refs.cg4.setCollapseState(state)
+            break
+          case 'locations':
+            this.$refs.cg5.setCollapseState(state)
+            break
+          case 'quarries':
+            this.$refs.cg6.setCollapseState(state)
+            break
+          case 'nemeses':
+            this.$refs.cg7.setCollapseState(state)
+            break
+          case 'research':
+            this.$refs.cg8.setCollapseState(state)
+            break
+          case 'lost':
+            this.$refs.cg9.setCollapseState(state)
+            break
+          default:
+            break
+        }
+      }
     }
   }
 }

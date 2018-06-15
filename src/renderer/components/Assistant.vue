@@ -7,7 +7,7 @@
       <ul>
         <li v-for="(step, index) in steps"
           :class="[themeClass, dropdownItem, (index === currentStepIndex) ? 'selected' : '']"
-          @click="currentStepIndex=index; stepListVisible=false">
+          @click="setStep(index); stepListVisible=false">
           {{ index + 1 }}. {{ step.title }}
         </li>
       </ul>
@@ -82,6 +82,7 @@ export default {
   },
   methods: {
     nextStep: function () {
+      var prevStep = this.currentStepIndex
       this.currentStepIndex = (this.currentStepIndex + 1) % SettlementPhase.steps.length
       if (!this.tipTextVisible) {
         this.tipTextVisible = true
@@ -89,6 +90,12 @@ export default {
           this.tipTextVisible = false
         }, 2500)
       }
+      this.$emit('stepChanged', { prevStep: prevStep, step: this.currentStepIndex })
+    },
+    setStep: function (val) {
+      var prevStep = this.currentStepIndex
+      this.currentStepIndex = val
+      this.$emit('stepChanged', { prevStep: prevStep, step: this.currentStepIndex })
     }
   }
 }

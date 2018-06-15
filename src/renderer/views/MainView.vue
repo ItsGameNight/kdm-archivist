@@ -1,6 +1,6 @@
 <template>
   <div class="MainView" :class="[themeClass]">
-    <settlement-inspector class="MainView__settlementInspector" :class="[themeClass]" />
+    <settlement-inspector class="MainView__settlementInspector" :class="[themeClass]" ref="setInsp" />
     <div class="MainView__content" @click="notesOpen = false">
       <div class="MainView__tabBar" :class="[themeClass]">
         <button
@@ -38,7 +38,7 @@
         <settlement-timeline />
       </div>
       <div v-if="currentTab === 'survivors'" class="MainView__tab tab--survivors">
-        <survivor-table class="MainView__survivorTable" />
+        <survivor-table class="MainView__survivorTable" ref="survivorTable" />
       </div>
       <div v-if="currentTab === 'storage'" class="MainView__tab tab--storage">
         <settlement-storage />
@@ -54,7 +54,7 @@
     <transition name="slide">
       <notes-tab v-if="notesOpen"/>
     </transition>
-    <assistant />
+    <assistant @stepChanged="layoutForStep($event.prevStep, $event.step)" />
     <div
       v-if="inHistoryMode"
       class="MainView__historyBar"
@@ -113,7 +113,54 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['leaveHistoryMode'])
+    ...mapActions(['leaveHistoryMode']),
+    layoutForStep: function (prevStep, step) {
+      // Undo prevStep setup
+      switch (prevStep) {
+        case 0:
+          break
+        case 1:
+          this.$refs.survivorTable.setDepartingCollapseState(true)
+          break
+        default:
+          break
+      }
+      // Set up for step
+      switch (step) {
+        case 0:
+          this.currentTab = 'survivors'
+          this.$refs.setInsp.setSectionToggleState(['stats', 'milestones', 'quarries', 'nemeses', 'research', 'lost'], true)
+          break
+        case 1:
+          this.currentTab = 'survivors'
+          this.$refs.survivorTable.setDepartingCollapseState(false)
+          break
+        case 2:
+          break
+        case 3:
+          this.currentTab = 'timeline'
+          break
+        case 4:
+          this.$refs.setInsp.setSectionToggleState(['stats', 'milestones'], false)
+          break
+        case 5:
+          this.currentTab = 'storage'
+          break
+        case 6:
+          this.currentTab = 'survivors'
+          break
+        case 7:
+          break
+        case 8:
+          this.currentTab = 'storage'
+          break
+        case 9:
+          this.currentTab = 'survivors'
+          break
+        default:
+          break
+      }
+    }
   }
 }
 </script>
