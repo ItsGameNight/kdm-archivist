@@ -7,7 +7,7 @@
       <ul>
         <li v-for="(step, index) in steps"
           :class="[themeClass, dropdownItem, (index === currentStepIndex) ? 'selected' : '']"
-          @click="currentStepIndex=index">
+          @click="currentStepIndex=index; stepListVisible=false">
           {{ index + 1 }}. {{ step.title }}
         </li>
       </ul>
@@ -127,6 +127,8 @@ export default {
       list-style-type: none;
       padding: 0;
       margin: 0;
+      max-height: 200px;
+      overflow: auto;
 
       li {
         padding: 8px 6px;

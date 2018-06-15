@@ -7,7 +7,7 @@
         :autocompleteList="resourceNames"
         numbered
         :textStyle="{fontSize:'12pt'}"
-        :fixedHeight="'85%'"
+        :fixedHeight="'78%'"
         @update="update('resources', $event)"
         ></editable-list>
     </div>
@@ -17,7 +17,7 @@
         :listItems="currentSettlement.storedGear"
         numbered
         :textStyle="{fontSize:'12pt'}"
-        :fixedHeight="'85%'"
+        :fixedHeight="'78%'"
         @update="update('storedGear', $event)"
         ></editable-list>
     </div>

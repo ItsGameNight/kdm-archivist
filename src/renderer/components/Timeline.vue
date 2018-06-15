@@ -101,7 +101,7 @@ export default {
 
   &__table {
     width: 95%;
-    height: 100%;
+    height: 90%;
     margin: 0 auto;
     table-layout: fixed;
     border-spacing: 0;
