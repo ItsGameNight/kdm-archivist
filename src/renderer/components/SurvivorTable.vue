@@ -238,7 +238,9 @@
           </tr>
         </transition-group>
       </table>
+      <div class="SurvivorTable__bottomScrollPadding"></div>
     </div>
+    <div class="SurvivorTable__bottomScrollFade" :class="[themeClass, bottomScrollFade]"></div>
   </div>
 </template>
 
@@ -480,6 +482,18 @@ export default {
         padding-top: 6px;
       }
     }
+  }
+
+  &__bottomScrollPadding {
+    height: 120px;
+  }
+
+  &__bottomScrollFade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
   }
 }
 

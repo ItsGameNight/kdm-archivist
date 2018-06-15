@@ -127,33 +127,43 @@ export default {
       }
       // Set up for step
       switch (step) {
+        // Set up
         case 0:
           this.currentTab = 'survivors'
           this.$refs.setInsp.setSectionToggleState(['stats', 'milestones', 'quarries', 'nemeses', 'research', 'lost'], true)
           break
+        // Survivors Return
         case 1:
           this.currentTab = 'survivors'
           this.$refs.survivorTable.setDepartingCollapseState(false)
           break
+        // Gain endeavors
         case 2:
           break
+        // Update Timeline
         case 3:
           this.currentTab = 'timeline'
           break
+        // Check Milestones
         case 4:
           this.$refs.setInsp.setSectionToggleState(['stats', 'milestones'], false)
           break
+        // Develop
         case 5:
           this.currentTab = 'storage'
           break
+        // Prepare Departing Survivors
         case 6:
           this.currentTab = 'survivors'
           break
+        // Special Showdown
         case 7:
           break
+        // Record & Archive Resources
         case 8:
           this.currentTab = 'storage'
           break
+        // End Settlement Phase/Depart!
         case 9:
           this.currentTab = 'survivors'
           break
