@@ -4,6 +4,9 @@
       class="Assistant__stepList"
       v-if="stepListVisible"
       :class="[tipTextVisible ? 'shiftLeft' : '', themeClass]">
+      <ul>
+        <li v-for="(step, index) in steps">{{ index + 1 }}. {{ step.title }}</li>
+      </ul>
     </div>
     <div
       class="Assistant__floating"
@@ -18,19 +21,20 @@
         class="Assistant__currentStep"
         :class="[tipTextVisible ? 'shiftLeft' : '', themeClass]"
         @click="stepListVisible = !stepListVisible">
-        1. Survivors Return
+        {{ currentStep.title }}
       </button>
       <transition name="slide">
         <div
           v-if="tipTextVisible"
           class="Assistant__tipText"
           :class="[themeClass]">
-          Example text.
+          <pre>{{ currentStep.tipText }}</pre>
         </div>
       </transition>
       <button
         class="Assistant__circleButton"
-        :class="[themeClass]">
+        :class="[themeClass]"
+        @click="nextStep()">
           <font-awesome-icon :icon="nextIcon" />
       </button>
     </div>
@@ -41,6 +45,7 @@
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faArrowRight, faCaretLeft, faCaretRight } from '@fortawesome/fontawesome-free-solid'
 import ThemeClass from '@/mixins/ThemeClass'
+import SettlementPhase from '@/assets/StaticGameData/SettlementPhaseSteps'
 
 export default {
   name: 'assistant',
@@ -49,7 +54,8 @@ export default {
   data: function () {
     return {
       stepListVisible: false,
-      tipTextVisible: false
+      tipTextVisible: false,
+      currentStepIndex: 0
     }
   },
   computed: {
@@ -61,6 +67,23 @@ export default {
         return faCaretRight
       } else {
         return faCaretLeft
+      }
+    },
+    steps: function () {
+      return SettlementPhase.steps
+    },
+    currentStep: function () {
+      return SettlementPhase.steps[this.currentStepIndex]
+    }
+  },
+  methods: {
+    nextStep: function () {
+      this.currentStepIndex = (this.currentStepIndex + 1) % SettlementPhase.steps.length
+      if (!this.tipTextVisible) {
+        this.tipTextVisible = true
+        setTimeout(() => {
+          this.tipTextVisible = false
+        }, 2500)
       }
     }
   }
@@ -84,7 +107,7 @@ export default {
   &__stepList {
     position: absolute;
     bottom: 45px;
-    right: 25px;
+    right: 23px;
     height: 205px;
     width: 175px;
     border-width: 1px;
@@ -93,7 +116,7 @@ export default {
     transition: right 0.4s ease;
 
     &.shiftLeft {
-      right: 425px;
+      right: 423px;
     }
   }
 
@@ -141,9 +164,15 @@ export default {
     right: 25px;
     height: 50px;
     width: 400px;
+    padding: 4px;
+    font-size: 10pt;
     border-width: 2px;
     border-style: solid;
     box-sizing: border-box;
+
+    pre {
+      margin: 0;
+    }
   }
 
   &__circleButton {
