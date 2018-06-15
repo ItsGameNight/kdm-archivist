@@ -15,8 +15,8 @@ export default {
     this.$store.dispatch('loadSettlements')
     this.$store.dispatch('loadSurvivors')
     this.$store.dispatch('loadSnapshots')
-    // load theme
-    this.$store.dispatch('loadTheme')
+    // load user prefs
+    this.$store.dispatch('loadUserPrefs')
   }
 }
 </script>

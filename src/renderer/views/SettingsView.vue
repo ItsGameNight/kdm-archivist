@@ -16,6 +16,14 @@
           :initSelected="themeClass==='theme-light' ? 0 : 1"
           @selected="setThemeByIndex($event)"/>
       </div>
+      <div class="SettingsView__setting">
+        <span>Game Assistant:</span>
+        <dropdown
+          :options="['Enabled', 'Disabled']"
+          :width="100"
+          :initSelected="assistantEnabled ? 0 : 1"
+          @selected="setUserPref({ name: 'assistantEnabled', val: $event === 0 })"/>
+      </div>
     </div>
     <div class="SettingsView__info">
       <h4>Twilight Archivist is an unofficial companion app for Kingdom Death: Monster and is in no way affiliated with or endorsed by Adam Poots or Adam Poots Games LLC.</h4>
@@ -36,6 +44,7 @@
 </template>
 
 <script type="text/javascript">
+import { mapGetters, mapActions } from 'vuex'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import { faArrowAltCircleLeft } from '@fortawesome/fontawesome-free-solid'
 import { Dropdown } from '@/components/GUIComponents'
@@ -49,11 +58,13 @@ export default {
   components: { FontAwesomeIcon, Dropdown },
   mixins: [ThemeClass, ThemeSwitch],
   computed: {
+    ...mapGetters(['assistantEnabled']),
     backIcon: function () {
       return faArrowAltCircleLeft
     }
   },
   methods: {
+    ...mapActions(['setUserPref']),
     github: function () {
       shell.openExternal('https://github.com/ItsGameNight/kdm-archivist/')
     },

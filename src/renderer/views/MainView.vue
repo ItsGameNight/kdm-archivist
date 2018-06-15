@@ -55,6 +55,7 @@
       <notes-tab v-if="notesOpen"/>
     </transition>
     <assistant
+      v-if="assistantEnabled"
       :initStep="currentSettlement.currentStep"
       @stepChanged="setStep($event)" />
     <div
@@ -99,13 +100,18 @@ export default {
     }
   },
   mounted: function () {
-    this.layoutForStep(-1, this.currentSettlement.currentStep)
+    if (this.assistantEnabled) {
+      this.layoutForStep(-1, this.currentSettlement.currentStep)
+    } else {
+      this.updateSettlement({ id: this.currentSettlement._id, update: { currentStep: 0 } })
+    }
   },
   computed: {
     ...mapState(['currentSmt']),
     ...mapGetters([
       'inHistoryMode',
-      'currentSettlement']),
+      'currentSettlement',
+      'assistantEnabled']),
     homeIcon: function () {
       return faPowerOff
     },
