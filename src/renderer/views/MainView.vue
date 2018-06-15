@@ -54,7 +54,9 @@
     <transition name="slide">
       <notes-tab v-if="notesOpen"/>
     </transition>
-    <assistant @stepChanged="layoutForStep($event.prevStep, $event.step)" />
+    <assistant
+      :initStep="currentSettlement.currentStep"
+      @stepChanged="setStep($event)" />
     <div
       v-if="inHistoryMode"
       class="MainView__historyBar"
@@ -96,9 +98,14 @@ export default {
       notesOpen: false
     }
   },
+  mounted: function () {
+    this.layoutForStep(-1, this.currentSettlement.currentStep)
+  },
   computed: {
     ...mapState(['currentSmt']),
-    ...mapGetters(['inHistoryMode']),
+    ...mapGetters([
+      'inHistoryMode',
+      'currentSettlement']),
     homeIcon: function () {
       return faPowerOff
     },
@@ -113,7 +120,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['leaveHistoryMode']),
+    ...mapActions([
+      'leaveHistoryMode',
+      'updateSettlement']),
+    setStep: function (payload) {
+      this.updateSettlement({ id: this.currentSettlement._id, update: { currentStep: payload.step } })
+      this.layoutForStep(payload.prevStep, payload.step)
+    },
     layoutForStep: function (prevStep, step) {
       // Undo prevStep setup
       switch (prevStep) {

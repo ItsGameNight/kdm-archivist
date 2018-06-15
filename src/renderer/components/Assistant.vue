@@ -55,11 +55,14 @@ export default {
   name: 'assistant',
   mixins: [ThemeClass],
   components: { FontAwesomeIcon },
+  props: {
+    initStep: { required: false, default: 0 }
+  },
   data: function () {
     return {
       stepListVisible: false,
       tipTextVisible: false,
-      currentStepIndex: 0
+      currentStepIndex: this.initStep
     }
   },
   computed: {
