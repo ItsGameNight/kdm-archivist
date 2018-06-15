@@ -1,7 +1,7 @@
 <template>
   <div class="Timeline" :class="[themeClass]">
     <div class="Timeline__tableWrapper">
-      <table class="Timeline__table">
+      <table class="Timeline__table" :style="[assistantEnabled ? {} : { height: '100%' }]">
         <thead>
           <tr>
             <th class="Timeline__yearHeader">Year</th>
@@ -48,7 +48,8 @@ export default {
   computed: {
     ...mapGetters([
       'inHistoryMode',
-      'currentSettlement'
+      'currentSettlement',
+      'assistantEnabled'
     ])
   },
   methods: {

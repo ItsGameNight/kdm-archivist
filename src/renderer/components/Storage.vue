@@ -7,7 +7,7 @@
         :autocompleteList="resourceNames"
         numbered
         :textStyle="{fontSize:'12pt'}"
-        :fixedHeight="'78%'"
+        :fixedHeight="assistantEnabled ? '78%' : '85%'"
         @update="update('resources', $event)"
         ></editable-list>
     </div>
@@ -17,7 +17,7 @@
         :listItems="currentSettlement.storedGear"
         numbered
         :textStyle="{fontSize:'12pt'}"
-        :fixedHeight="'78%'"
+        :fixedHeight="assistantEnabled ? '78%' : '85%'"
         @update="update('storedGear', $event)"
         ></editable-list>
     </div>
@@ -36,7 +36,8 @@ export default {
   mixins: [ThemeClass],
   computed: {
     ...mapGetters([
-      'currentSettlement'
+      'currentSettlement',
+      'assistantEnabled'
     ]),
     resourceNames: function () {
       return Object.values(Resources).map((o) => { return o.name })
