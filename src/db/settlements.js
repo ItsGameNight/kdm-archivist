@@ -26,6 +26,7 @@ class SettlementsDatabase extends Database {
       milestoneInnovation: false,
       milestoneGameOver: false,
       notes: [],
+      currentStep: 0,
       baseSurvivor: {
         settlementID: null,
         name: null,

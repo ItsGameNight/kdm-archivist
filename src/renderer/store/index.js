@@ -3,8 +3,6 @@ import Vuex from 'vuex'
 import goodnessFunction from '../../db/goodness.js'
 import { BaseTimeline } from '../assets/StaticGameData'
 
-const settings = require('electron-settings')
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,7 +12,11 @@ export default new Vuex.Store({
     snapshots: [],
     currentSmt: null,
     currentSnap: null,
-    theme: null
+    theme: null,
+    userPrefs: {
+      theme: 'theme-light',
+      assistantEnabled: true
+    }
   },
   getters: {
     snapshotSurvivors: (state, getters) => {
@@ -83,7 +85,11 @@ export default new Vuex.Store({
     },
 
     theme: (state) => {
-      return state.theme
+      return state.userPrefs.theme
+    },
+
+    assistantEnabled: (state) => {
+      return state.userPrefs.assistantEnabled
     }
   },
   mutations: {
@@ -111,9 +117,12 @@ export default new Vuex.Store({
       var idx = state.survivors.findIndex((s) => { return s._id === payload.id })
       Vue.set(state.survivors, idx, payload.newObj)
     },
-    SET_THEME (state, themeName) {
-      state.theme = themeName
-      settings.set('theme', themeName)
+    LOAD_USER_PREF (state, payload) {
+      state.userPrefs[payload.name] = payload.val
+    },
+    SET_USER_PREF (state, payload) {
+      state.userPrefs[payload.name] = payload.val
+      this.$userPrefs.set(payload.name, payload.val)
     }
   },
   actions: {
@@ -137,6 +146,14 @@ export default new Vuex.Store({
       this.$snapshots.getAll((snaps) => {
         commit('SET_SNAPSHOTS', snaps)
       })
+    },
+
+    loadUserPrefs ({ state, commit }) {
+      for (var pref in state.userPrefs) {
+        if (this.$userPrefs.has(pref)) {
+          commit('LOAD_USER_PREF', { name: pref, val: this.$userPrefs.get(pref) })
+        }
+      }
     },
 
     updateSettlement ({ state, commit, getters }, payload) {
@@ -270,16 +287,8 @@ export default new Vuex.Store({
       })
     },
 
-    loadTheme ({ commit }) {
-      var theme = 'light-theme'
-      if (settings.has('theme')) {
-        theme = settings.get('theme')
-      }
-      commit('SET_THEME', theme)
-    },
-
-    setTheme ({ commit }, themeName) {
-      commit('SET_THEME', themeName)
+    setUserPref ({ commit }, payload) {
+      commit('SET_USER_PREF', payload)
     }
   },
   strict: process.env.NODE_ENV !== 'production'

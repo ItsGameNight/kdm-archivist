@@ -27,6 +27,7 @@ Vue.prototype.$snapshots = snaps
 store.$settlements = smts
 store.$survivors = survs
 store.$snapshots = snaps
+store.$userPrefs = require('electron-settings')
 
 // Add long press directive
 var longpress = require('vue-long-press-directive')

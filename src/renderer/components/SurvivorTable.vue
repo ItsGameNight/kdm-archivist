@@ -218,7 +218,7 @@
               :yeeScore="yeeScore(surv)"
               :survivor="surv"
               :key="surv._id"
-              :collapsed="collapsedState"
+              :collapsed="collapsedState && departingCollapsedState"
               :ref="'surv-' + surv._id"
               @modalOpen="modalShowing = true"
               @modalClose="modalShowing = false" />
@@ -238,7 +238,9 @@
           </tr>
         </transition-group>
       </table>
+      <div class="SurvivorTable__bottomScrollPadding"></div>
     </div>
+    <div class="SurvivorTable__bottomScrollFade" :class="[themeClass, bottomScrollFade]"></div>
   </div>
 </template>
 
@@ -264,6 +266,7 @@ export default {
   data: function () {
     return {
       collapsedState: true,
+      departingCollapsedState: true,
       sort: 'yeeScore',
       sortAscending: false,
       filter: 0,
@@ -388,6 +391,9 @@ export default {
         var survRef = 'surv-' + newSurv._id
         this.$refs[survRef][0].displayModal()
       })
+    },
+    setDepartingCollapseState: function (val) {
+      this.departingCollapsedState = val
     }
   }
 }
@@ -476,6 +482,18 @@ export default {
         padding-top: 6px;
       }
     }
+  }
+
+  &__bottomScrollPadding {
+    height: 120px;
+  }
+
+  &__bottomScrollFade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
   }
 }
 

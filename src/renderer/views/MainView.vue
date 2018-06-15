@@ -1,6 +1,6 @@
 <template>
   <div class="MainView" :class="[themeClass]">
-    <settlement-inspector class="MainView__settlementInspector" :class="[themeClass]" />
+    <settlement-inspector class="MainView__settlementInspector" :class="[themeClass]" ref="setInsp" />
     <div class="MainView__content" @click="notesOpen = false">
       <div class="MainView__tabBar" :class="[themeClass]">
         <button
@@ -38,7 +38,7 @@
         <settlement-timeline />
       </div>
       <div v-if="currentTab === 'survivors'" class="MainView__tab tab--survivors">
-        <survivor-table class="MainView__survivorTable" />
+        <survivor-table class="MainView__survivorTable" ref="survivorTable" />
       </div>
       <div v-if="currentTab === 'storage'" class="MainView__tab tab--storage">
         <settlement-storage />
@@ -54,6 +54,10 @@
     <transition name="slide">
       <notes-tab v-if="notesOpen"/>
     </transition>
+    <assistant
+      v-if="assistantEnabled"
+      :initStep="currentSettlement.currentStep"
+      @stepChanged="setStep($event)" />
     <div
       v-if="inHistoryMode"
       class="MainView__historyBar"
@@ -71,6 +75,7 @@ import SettlementInspector from '@/components/SettlementInspector'
 import SettlementStorage from '@/components/Storage'
 import SettlementTimeline from '@/components/Timeline'
 import NotesTab from '@/components/NotesTab'
+import Assistant from '@/components/Assistant'
 import ThemeClass from '@/mixins/ThemeClass'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
@@ -84,7 +89,8 @@ export default {
     FontAwesomeIcon,
     SettlementStorage,
     SettlementTimeline,
-    NotesTab
+    NotesTab,
+    Assistant
   },
   mixins: [ThemeClass],
   data: function () {
@@ -93,9 +99,19 @@ export default {
       notesOpen: false
     }
   },
+  mounted: function () {
+    if (this.assistantEnabled) {
+      this.layoutForStep(-1, this.currentSettlement.currentStep)
+    } else {
+      this.updateSettlement({ id: this.currentSettlement._id, update: { currentStep: 0 } })
+    }
+  },
   computed: {
     ...mapState(['currentSmt']),
-    ...mapGetters(['inHistoryMode']),
+    ...mapGetters([
+      'inHistoryMode',
+      'currentSettlement',
+      'assistantEnabled']),
     homeIcon: function () {
       return faPowerOff
     },
@@ -110,7 +126,99 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['leaveHistoryMode'])
+    ...mapActions([
+      'leaveHistoryMode',
+      'updateSettlement']),
+    setStep: function (payload) {
+      this.updateSettlement({ id: this.currentSettlement._id, update: { currentStep: payload.step } })
+      this.layoutForStep(payload.prevStep, payload.step)
+    },
+    layoutForStep: function (prevStep, step) {
+      // Undo prevStep setup
+      switch (prevStep) {
+        // Set up
+        case 0:
+          break
+        // Survivors Return
+        case 1:
+          this.$refs.survivorTable.setDepartingCollapseState(true)
+          break
+        // Gain endeavors
+        case 2:
+          break
+        // Update Timeline
+        case 3:
+          break
+        // Check Milestones
+        case 4:
+          break
+        // Develop
+        case 5:
+          break
+        // Prepare Departing Survivors
+        case 6:
+          break
+        // Special Showdown
+        case 7:
+          break
+        // Record & Archive Resources
+        case 8:
+          break
+        // End Settlement Phase/Depart!
+        case 9:
+          break
+        default:
+          break
+      }
+      // Set up for step
+      switch (step) {
+        // Set up
+        case 0:
+          this.currentTab = 'survivors'
+          this.$refs.setInsp.setSectionToggleState(['stats', 'milestones', 'quarries', 'nemeses', 'research', 'lost'], true)
+          this.$refs.setInsp.setSectionToggleState(['principles', 'innovations', 'locations'], false)
+          break
+        // Survivors Return
+        case 1:
+          this.currentTab = 'survivors'
+          this.$refs.survivorTable.setDepartingCollapseState(false)
+          break
+        // Gain endeavors
+        case 2:
+          break
+        // Update Timeline
+        case 3:
+          this.currentTab = 'timeline'
+          break
+        // Check Milestones
+        case 4:
+          this.$refs.setInsp.setSectionToggleState(['stats', 'milestones'], false)
+          break
+        // Develop
+        case 5:
+          this.currentTab = 'storage'
+          break
+        // Prepare Departing Survivors
+        case 6:
+          this.currentTab = 'survivors'
+          this.$refs.setInsp.setSectionToggleState(['quarries', 'nemeses'], false)
+          this.$refs.setInsp.setSectionToggleState(['milestones', 'principles', 'innovations', 'locations'], true)
+          break
+        // Special Showdown
+        case 7:
+          break
+        // Record & Archive Resources
+        case 8:
+          this.currentTab = 'storage'
+          break
+        // End Settlement Phase/Depart!
+        case 9:
+          this.currentTab = 'survivors'
+          break
+        default:
+          break
+      }
+    }
   }
 }
 </script>
