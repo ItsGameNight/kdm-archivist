@@ -12,6 +12,9 @@ var themeClassMixin = {
     highlightColor: function () {
       return 'highlight'
     },
+    hoverHighlight: function () {
+      return 'hoverHighlight'
+    },
     topScrollFade: function () {
       return 'topScrollFade'
     },

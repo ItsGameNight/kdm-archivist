@@ -54,6 +54,7 @@
     <transition name="slide">
       <notes-tab v-if="notesOpen"/>
     </transition>
+    <assistant />
     <div
       v-if="inHistoryMode"
       class="MainView__historyBar"
@@ -71,6 +72,7 @@ import SettlementInspector from '@/components/SettlementInspector'
 import SettlementStorage from '@/components/Storage'
 import SettlementTimeline from '@/components/Timeline'
 import NotesTab from '@/components/NotesTab'
+import Assistant from '@/components/Assistant'
 import ThemeClass from '@/mixins/ThemeClass'
 
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
@@ -84,7 +86,8 @@ export default {
     FontAwesomeIcon,
     SettlementStorage,
     SettlementTimeline,
-    NotesTab
+    NotesTab,
+    Assistant
   },
   mixins: [ThemeClass],
   data: function () {
