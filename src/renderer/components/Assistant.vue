@@ -5,7 +5,11 @@
       v-if="stepListVisible"
       :class="[tipTextVisible ? 'shiftLeft' : '', themeClass]">
       <ul>
-        <li v-for="(step, index) in steps">{{ index + 1 }}. {{ step.title }}</li>
+        <li v-for="(step, index) in steps"
+          :class="[themeClass, dropdownItem, (index === currentStepIndex) ? 'selected' : '']"
+          @click="currentStepIndex=index">
+          {{ index + 1 }}. {{ step.title }}
+        </li>
       </ul>
     </div>
     <div
@@ -21,7 +25,7 @@
         class="Assistant__currentStep"
         :class="[tipTextVisible ? 'shiftLeft' : '', themeClass]"
         @click="stepListVisible = !stepListVisible">
-        {{ currentStep.title }}
+        {{ currentStepIndex + 1 }}. {{ currentStep.title }}
       </button>
       <transition name="slide">
         <div
@@ -117,6 +121,19 @@ export default {
 
     &.shiftLeft {
       right: 423px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 8px 6px;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        cursor: default;
+      }
     }
   }
 
