@@ -109,7 +109,7 @@ export default {
   position: absolute;
   bottom: 20px;
   right: 40px;
-  z-index: 1001;
+  z-index: 990;
   opacity: 0.8;
   transition: opacity 0.3s ease;
 
