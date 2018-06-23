@@ -65,11 +65,15 @@ export default new Vuex.Store({
     },
 
     settlementMaleCount: (state, getters) => {
-      return getters.survivorsInSettlement.filter((s) => { return s.sex === 'm' }).length
+      return getters.survivorsInSettlement.filter((s) => {
+        return s.sex === 'm' && s.alive === true
+      }).length
     },
 
     settlementFemaleCount: (state, getters) => {
-      return getters.survivorsInSettlement.filter((s) => { return s.sex === 'f' }).length
+      return getters.survivorsInSettlement.filter((s) => {
+        return s.sex === 'f' && s.alive === true
+      }).length
     },
 
     settlementDepartingCount: (state, getters) => {
