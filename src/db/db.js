@@ -43,6 +43,18 @@ class Database {
     })
   }
 
+  removeAllByCondition (condObj, cb) {
+    this.db.remove(condObj, { multi: true }, (err, numRemoved) => {
+      if (err) {
+        throw (err)
+      }
+
+      if (cb && typeof cb === 'function') {
+        cb(numRemoved)
+      }
+    })
+  }
+
   createNew (obj, cb) {
     this.db.insert(obj, (err, newDoc) => {
       if (err) {

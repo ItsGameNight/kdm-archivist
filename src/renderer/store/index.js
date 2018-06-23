@@ -194,10 +194,25 @@ export default new Vuex.Store({
     },
 
     deleteSettlement ({ commit }, id) {
+      // remove the settlement
       this.$settlements.remove(id, () => {
         this.$settlements.getAll((smts) => {
           commit('SET_SETTLEMENTS', smts)
           commit('SET_CURRENTSMT', null)
+        })
+      })
+
+      // remove all associated survivors (doesn't need to be sync)
+      this.$survivors.removeAllByCondition({ settlementID: id }, () => {
+        this.$survivors.getAll((survs) => {
+          commit('SET_SURVIVORS', survs)
+        })
+      })
+
+      // remove all associated snapshots
+      this.$snapshots.removeAllByCondition({ 'settlement._id': id }, () => {
+        this.$snapshots.getAll((snaps) => {
+          commit('SET_SNAPSHOTS', snaps)
         })
       })
     },
